@@ -1,973 +1,225 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zorblify — Web Game Platform</title>
-  <meta property="og:image" content="https://bolt.new/static/og_default.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gravity Flip — Zorblify</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #080810;
-      --surface: #0f0f1a;
-      --primary: #7c3aed;
-      --secondary: #06b6d4;
-      --text: #ffffff;
-      --text-muted: #a0a0b0;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ── HEADER ── */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(8,8,16,0.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(124,58,237,0.15);
-      padding: 0 32px;
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .header-logo img { display: block; }
-
-    nav { display: flex; align-items: center; gap: 32px; }
-
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.4px;
-      transition: color 0.2s;
-    }
-    nav a:hover { color: var(--text); }
-
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
-      background: none;
-      border: none;
-    }
-    .hamburger span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: var(--text);
-      border-radius: 2px;
-      transition: transform 0.3s, opacity 0.3s;
-    }
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    .mobile-nav {
-      display: none;
-      flex-direction: column;
-      position: fixed;
-      top: 72px;
-      left: 0;
-      right: 0;
-      background: rgba(8,8,16,0.97);
-      border-bottom: 1px solid rgba(124,58,237,0.2);
-      z-index: 99;
-    }
-    .mobile-nav.open { display: flex; }
-    .mobile-nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 600;
-      padding: 16px 28px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      transition: color 0.2s, background 0.2s;
-    }
-    .mobile-nav a:hover { color: var(--text); background: rgba(124,58,237,0.08); }
-
-    /* ── HERO ── */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 80px 24px;
-      overflow: hidden;
-    }
-
-    .hero-particles {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .dot {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0;
-      animation: floatDot linear infinite;
-    }
-
-    @keyframes floatDot {
-      0%   { transform: translateY(0) scale(1);    opacity: 0; }
-      10%  { opacity: 1; }
-      85%  { opacity: 0.5; }
-      100% { transform: translateY(-105vh) scale(0.4); opacity: 0; }
-    }
-
-    .hero-wordmark { position: relative; z-index: 1; margin-bottom: 28px; }
-    .hero-wordmark img { max-width: 600px; width: 100%; }
-
-    .hero-subtitle {
-      position: relative;
-      z-index: 1;
-      font-size: clamp(15px, 2.5vw, 18px);
-      color: var(--text-muted);
-      margin-bottom: 40px;
-      font-weight: 400;
-    }
-
-    .hero-actions {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 13px 32px;
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      cursor: pointer;
-      transition: transform 0.18s, box-shadow 0.18s;
-      text-decoration: none;
-      letter-spacing: 0.3px;
-    }
-
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      border: 2px solid var(--primary);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 28px rgba(124,58,237,0.6);
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--text);
-      border: 2px solid rgba(255,255,255,0.22);
-    }
-    .btn-outline:hover {
-      border-color: var(--secondary);
-      color: var(--secondary);
-      transform: translateY(-2px);
-      box-shadow: 0 0 22px rgba(6,182,212,0.28);
-    }
-
-    /* ── DIVIDER ── */
-    .section-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(124,58,237,0.3), rgba(6,182,212,0.3), transparent);
-    }
-
-    /* ── SECTION WRAPPER ── */
-    .section-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 96px 40px;
-    }
-
-    .section-title {
-      font-size: clamp(24px, 4vw, 36px);
-      font-weight: 800;
-      text-align: center;
-      margin-bottom: 56px;
-      letter-spacing: -0.5px;
-    }
-    .section-title span {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* ── GAME CARDS ── */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 16px;
-      padding: 32px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
-    }
-    .card:hover {
-      transform: translateY(-6px);
-      border-color: var(--primary);
-      box-shadow: 0 8px 40px rgba(124,58,237,0.2);
-    }
-
-    .card-icon { font-size: 36px; line-height: 1; margin-bottom: 4px; }
-    .card-title { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; }
-    .card-desc { font-size: 14px; color: var(--text-muted); line-height: 1.65; flex: 1; }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 8px;
-    }
-
-    .tag {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: rgba(6,182,212,0.12);
-      color: var(--secondary);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .btn-play {
-      font-size: 13px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      padding: 8px 20px;
-      border-radius: 8px;
-      background: rgba(124,58,237,0.15);
-      color: #c084fc;
-      border: 1px solid rgba(124,58,237,0.35);
-      cursor: pointer;
-      transition: background 0.18s, box-shadow 0.18s, transform 0.18s, color 0.18s;
-    }
-    .btn-play:hover {
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 0 18px rgba(124,58,237,0.45);
-      transform: translateY(-1px);
-    }
-
-    /* ── ABOUT ── */
-    .about-text {
-      font-size: clamp(15px, 2vw, 17px);
-      color: var(--text-muted);
-      max-width: 640px;
-      margin: 0 auto 60px;
-      line-height: 1.8;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      max-width: 680px;
-      margin: 0 auto;
-    }
-
-    .feature-card {
-      background: var(--surface);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 14px;
-      padding: 28px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      transition: border-color 0.22s, transform 0.22s;
-    }
-    .feature-card:hover {
-      border-color: rgba(6,182,212,0.4);
-      transform: translateY(-4px);
-    }
-    .feature-icon { font-size: 32px; }
-    .feature-label { font-size: 14px; font-weight: 600; color: var(--text); }
-
-    /* ── CONTACT ── */
-    .contact-wrap {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 40px;
-      text-align: left;
-      max-width: 860px;
-      margin: 0 auto;
-    }
-
-    .contact-info {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      padding-top: 8px;
-    }
-
-    .contact-info-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-    }
-
-    .contact-info-icon { font-size: 22px; margin-top: 2px; }
-
-    .contact-info-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 4px;
-    }
-
-    .contact-info-value {
-      font-size: 14px;
-      color: var(--text);
-      text-decoration: none;
-    }
-
-    a.contact-info-value:hover { color: var(--secondary); }
-
-    .contact-form {
-      background: var(--surface);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 16px;
-      padding: 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-
-    .form-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: 0.3px;
-    }
-
-    .form-input {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      padding: 11px 14px;
-      font-size: 14px;
-      font-family: 'Inter', sans-serif;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .form-input::placeholder { color: rgba(160,160,176,0.5); }
-    .form-input:focus { border-color: var(--primary); }
-
-    .form-textarea { min-height: 120px; resize: vertical; }
-
-    .form-success {
-      display: none;
-      background: rgba(6,182,212,0.1);
-      border: 1px solid rgba(6,182,212,0.3);
-      border-radius: 8px;
-      padding: 12px 16px;
-      font-size: 14px;
-      color: var(--secondary);
-      text-align: center;
-    }
-    .form-success.visible { display: block; }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--surface);
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .footer-body {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 56px 40px 40px;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 48px;
-    }
-
-    .footer-col-brand img { display: block; margin-bottom: 14px; }
-
-    .footer-brand-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      max-width: 220px;
-    }
-
-    .footer-col-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 16px;
-    }
-
-    .footer-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .footer-nav a {
-      font-size: 14px;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .footer-nav a:hover { color: var(--text); }
-
-    .footer-bar {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 20px 40px;
-      max-width: 1100px;
-      margin: 0 auto;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    /* ── MODALS ── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      backdrop-filter: blur(4px);
-    }
-    .modal-overlay.active { display: flex; }
-
-    .modal {
-      background: #12121f;
-      border: 1px solid rgba(124,58,237,0.25);
-      border-radius: 20px;
-      max-width: 680px;
-      width: 100%;
-      max-height: 85vh;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      animation: modalIn 0.22s ease;
-    }
-
-    @keyframes modalIn {
-      from { opacity: 0; transform: translateY(12px) scale(0.98); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 16px;
-      right: 20px;
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 24px;
-      cursor: pointer;
-      line-height: 1;
-      transition: color 0.2s;
-      z-index: 1;
-    }
-    .modal-close:hover { color: var(--text); }
-
-    .modal-title {
-      font-size: 22px;
-      font-weight: 800;
-      padding: 28px 32px 4px;
-      letter-spacing: -0.3px;
-    }
-
-    .modal-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-      padding: 0 32px 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-    }
-
-    .modal-body {
-      overflow-y: auto;
-      padding: 24px 32px 32px;
-      font-size: 14px;
-      line-height: 1.75;
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .modal-body h3 {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text);
-      margin-top: 8px;
-    }
-
-    .modal-body p { margin: 0; }
-
-    .modal-body ul {
-      padding-left: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .modal-body a {
-      color: var(--secondary);
-      text-decoration: none;
-    }
-    .modal-body a:hover { text-decoration: underline; }
-
-    /* ── COOKIE BANNER ── */
-    .cookie-banner {
-      position: fixed;
-      bottom: -120px;
-      left: 0;
-      right: 0;
-      z-index: 150;
-      background: #12121f;
-      border-top: 1px solid rgba(124,58,237,0.25);
-      padding: 16px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      transition: bottom 0.4s cubic-bezier(0.34,1.56,0.64,1);
-      flex-wrap: wrap;
-    }
-    .cookie-banner.visible { bottom: 0; }
-
-    .cookie-text {
-      font-size: 14px;
-      color: var(--text-muted);
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .cookie-actions { display: flex; align-items: center; gap: 16px; }
-
-    .cookie-learn {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .cookie-learn:hover { color: var(--secondary); }
-
-    .cookie-accept {
-      font-size: 13px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      padding: 9px 22px;
-      border-radius: 8px;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      transition: box-shadow 0.18s, transform 0.18s;
-    }
-    .cookie-accept:hover {
-      box-shadow: 0 0 18px rgba(124,58,237,0.5);
-      transform: translateY(-1px);
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 768px) {
-      .contact-wrap { grid-template-columns: 1fr; }
-      .footer-body { grid-template-columns: 1fr 1fr; gap: 32px; padding: 40px 24px 32px; }
-      .footer-col-brand { grid-column: 1 / -1; }
-      .footer-bar { padding: 16px 24px; }
-    }
-
-    @media (max-width: 640px) {
-      header { padding: 0 20px; }
-      nav { display: none; }
-      .hamburger { display: flex; }
-      .section-inner { padding: 64px 20px; }
-      .hero { padding: 60px 20px; }
-      .footer-body { grid-template-columns: 1fr; }
-      .cookie-banner { padding: 16px 20px; }
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #080810; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+    canvas { display: block; border: 1px solid #1a1a3a; }
   </style>
 </head>
 <body>
-
-  <!-- HEADER -->
-  <header>
-    <div class="header-logo">
-      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIHJ4PSI0MCIgZmlsbD0iIzA4MDgxMCIvPgogIAogIDxyZWN0IHg9IjMyMCIgeT0iNDAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjM0MCIgeT0iNjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiIHJ4PSIxIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNTUiIHk9IjMwMCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgcng9IjEiIGZpbGw9IiMwNmI2ZDQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjMzMCIgeT0iMzEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNjAiIHk9IjcwIiB3aWR0aD0iNiIgaGVpZ2h0PSI2IiByeD0iMSIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC4yIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIxNzIiIHk9IjEwMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjIxNCIgeT0iMTAwIiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjU2IiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIyMTQiIHk9IjE0MiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMTg0IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzA2YjZkNCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMjY4IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjE0IiB5PSIyNjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIyNTYiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjI5NiIgeT0iMTA4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIzIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIxMDQiIHk9IjI3NiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMyIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC41Ii8+CiAgPHRleHQgeD0iMjAwIiB5PSIzNTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgSW1wYWN0LCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMyIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iNCI+Wk9SQkxJRlk8L3RleHQ+Cjwvc3ZnPgo=" height="50" alt="Zorblify">
-    </div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#games">Games</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
-    </button>
-  </header>
-
-  <div class="mobile-nav" id="mobileNav">
-    <a href="#home" onclick="closeMobileNav()">Home</a>
-    <a href="#games" onclick="closeMobileNav()">Games</a>
-    <a href="#about" onclick="closeMobileNav()">About</a>
-    <a href="#contact" onclick="closeMobileNav()">Contact</a>
-  </div>
-
-  <!-- HERO -->
-  <div id="home">
-    <section class="hero">
-      <div class="hero-particles" id="particles"></div>
-      <div class="hero-wordmark">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgODAwIDIwMCI+CiAgPHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSIyMDAiIHJ4PSIyMCIgZmlsbD0iIzA4MDgxMCIvPgogIDx0ZXh0IHg9IjEyMCIgeT0iMTc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIEltcGFjdCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxODAiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMDgiPlo8L3RleHQ+CiAgPHJlY3QgeD0iNjAiIHk9Ijk1IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iNjQwIiB5PSI5NSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0iIzA2YjZkNCIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIEltcGFjdCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI4MCIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2ZmZmZmZiIgbGV0dGVyLXNwYWNpbmc9IjIiPlpPUkJMSUZZPC90ZXh0PgogIDx0ZXh0IHg9IjQwMCIgeT0iMTU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1NTU1NTUiIGxldHRlci1zcGFjaW5nPSI4Ij5XRUIgR0FNRSBQTEFURk9STTwvdGV4dD4KPC9zdmc+Cg==" style="max-width:600px;width:100%" alt="Zorblify">
-      </div>
-      <p class="hero-subtitle">Free browser games. No download. No login.</p>
-      <div class="hero-actions">
-        <a href="#games" class="btn btn-primary">Browse Games</a>
-        <a href="#about" class="btn btn-outline">Learn More</a>
-      </div>
-    </section>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <!-- GAMES -->
-  <div id="games">
-    <div class="section-inner">
-      <h2 class="section-title">Featured <span>Games</span></h2>
-      <div class="cards-grid">
-        <div class="card">
-          <div class="card-icon">🎨</div>
-          <div class="card-title">Color Rush</div>
-          <div class="card-desc">Test your reflexes. Match colors. Survive.</div>
-          <div class="card-footer">
-            <span class="tag">Reflex</span>
-            <a href="/games/gravity-flip/index.html" class="btn-play">Play Now</a>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-icon">🧱</div>
-          <div class="card-title">Stack &amp; Fall</div>
-          <div class="card-desc">Stack blocks as high as you can. Don't wobble.</div>
-          <div class="card-footer">
-            <span class="tag">Arcade</span>
-            <button class="btn-play">Play Now</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-icon">🔤</div>
-          <div class="card-title">Word Maze</div>
-          <div class="card-desc">Find hidden words before time runs out.</div>
-          <div class="card-footer">
-            <span class="tag">Puzzle</span>
-            <button class="btn-play">Play Now</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <!-- ABOUT -->
-  <div id="about">
-    <div class="section-inner" style="text-align:center">
-      <h2 class="section-title">What is <span>Zorblify?</span></h2>
-      <p class="about-text">Zorblify is a free web game platform. Play instantly in your browser — no downloads, no accounts needed. New games added regularly.</p>
-      <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">♾️</div>
-          <div class="feature-label">Always Free</div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔓</div>
-          <div class="feature-label">No Login</div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">📅</div>
-          <div class="feature-label">New Games Regularly</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <!-- CONTACT -->
-  <div id="contact">
-    <div class="section-inner" style="text-align:center">
-      <h2 class="section-title">Get in <span>Touch</span></h2>
-      <p class="about-text" style="margin-bottom:40px">Have a question or feedback? We'd love to hear from you. We respond within 48 hours.</p>
-      <div class="contact-wrap">
-        <div class="contact-info">
-          <div class="contact-info-item">
-            <span class="contact-info-icon">✉️</span>
-            <div>
-              <div class="contact-info-label">Email</div>
-              <a href="mailto:contact@zorblify.com" class="contact-info-value">contact@zorblify.com</a>
-            </div>
-          </div>
-          <div class="contact-info-item">
-            <span class="contact-info-icon">⏱️</span>
-            <div>
-              <div class="contact-info-label">Response Time</div>
-              <div class="contact-info-value">Within 48 hours</div>
-            </div>
-          </div>
-        </div>
-        <form class="contact-form" id="contactForm" onsubmit="handleContactSubmit(event)">
-          <div class="form-group">
-            <label class="form-label" for="contactName">Name</label>
-            <input class="form-input" type="text" id="contactName" placeholder="Your name" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="contactEmail">Email</label>
-            <input class="form-input" type="email" id="contactEmail" placeholder="your@email.com" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="contactMessage">Message</label>
-            <textarea class="form-input form-textarea" id="contactMessage" placeholder="Your message..." required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Send Message</button>
-          <div class="form-success" id="formSuccess">Message sent! We'll get back to you within 48 hours.</div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-body">
-      <div class="footer-col footer-col-brand">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIHJ4PSI0MCIgZmlsbD0iIzA4MDgxMCIvPgogIDxyZWN0IHg9IjMyMCIgeT0iNDAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjM0MCIgeT0iNjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiIHJ4PSIxIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNTUiIHk9IjMwMCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgcng9IjEiIGZpbGw9IiMwNmI2ZDQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjMzMCIgeT0iMzEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNjAiIHk9IjcwIiB3aWR0aD0iNiIgaGVpZ2h0PSI2IiByeD0iMSIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC4yIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIxNzIiIHk9IjEwMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjIxNCIgeT0iMTAwIiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjU2IiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIyMTQiIHk9IjE0MiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMTg0IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzA2YjZkNCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMjY4IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjE0IiB5PSIyNjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIyNTYiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjI5NiIgeT0iMTA4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIzIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIxMDQiIHk9IjI3NiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMyIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC41Ii8+CiAgPHRleHQgeD0iMjAwIiB5PSIzNTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgSW1wYWN0LCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMyIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iNCI+Wk9SQkxJRlk8L3RleHQ+Cjwvc3ZnPgo=" height="40" alt="Zorblify">
-        <p class="footer-brand-desc">Free browser games, no download needed.</p>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Navigation</div>
-        <nav class="footer-nav">
-          <a href="#home">Home</a>
-          <a href="#games">Games</a>
-          <a href="#about">About</a>
-        </nav>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Legal</div>
-        <nav class="footer-nav">
-          <a href="#" onclick="openModal('privacyModal');return false">Privacy Policy</a>
-          <a href="#" onclick="openModal('tosModal');return false">Terms of Service</a>
-          <a href="#contact">Contact</a>
-          <a href="#about">About Us</a>
-        </nav>
-      </div>
-    </div>
-    <div class="footer-bar">
-      <span>© 2026 Zorblify. All rights reserved.</span>
-    </div>
-  </footer>
-
-  <!-- PRIVACY POLICY MODAL -->
-  <div class="modal-overlay" id="privacyModal" onclick="closeModalOnOverlay(event,'privacyModal')">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
-      <button class="modal-close" onclick="closeModal('privacyModal')" aria-label="Close">&times;</button>
-      <h2 class="modal-title" id="privacyTitle">Privacy Policy</h2>
-      <p class="modal-meta">Last updated: April 2026</p>
-      <div class="modal-body">
-        <h3>1. Information We Collect</h3>
-        <p>Zorblify does not require you to create an account or provide personal information to play games. We may collect limited technical data automatically when you visit, including your browser type, device type, pages visited, and general geographic region (country/region level).</p>
-        <h3>2. Cookies</h3>
-        <p>We use cookies and similar technologies to:</p>
-        <ul>
-          <li>Remember your preferences (such as cookie consent).</li>
-          <li>Analyze site traffic and usage patterns via analytics tools.</li>
-          <li>Serve relevant advertising through third-party ad networks (including Google AdSense).</li>
-        </ul>
-        <p>You can control cookie settings through your browser. Disabling cookies may affect the functionality of certain features.</p>
-        <h3>3. Third-Party Advertising</h3>
-        <p>Zorblify may display advertisements served by third-party advertising partners, including Google AdSense. These partners may use cookies, web beacons, and similar technologies to collect information about your visits to this and other websites in order to provide targeted advertisements. Google's use of advertising cookies enables it and its partners to serve ads based on your visit to our site and other sites. You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>.</p>
-        <h3>4. Analytics</h3>
-        <p>We may use analytics services such as Google Analytics to understand how visitors use the site. These services collect data such as pages visited, time on site, and referral source. This data is aggregated and anonymized.</p>
-        <h3>5. Data Sharing</h3>
-        <p>We do not sell your personal information. We may share data with service providers who assist us in operating the site, subject to confidentiality obligations. We may disclose information if required by law.</p>
-        <h3>6. Children's Privacy</h3>
-        <p>Zorblify is not directed at children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe a child has provided us with personal information, please contact us at <a href="mailto:contact@zorblify.com">contact@zorblify.com</a>.</p>
-        <h3>7. Your Rights</h3>
-        <p>Depending on your location, you may have rights regarding your personal data, including the right to access, correct, or delete data. To exercise these rights, contact us at <a href="mailto:contact@zorblify.com">contact@zorblify.com</a>.</p>
-        <h3>8. Changes to This Policy</h3>
-        <p>We may update this Privacy Policy from time to time. We will post any changes on this page with an updated date.</p>
-        <h3>9. Contact</h3>
-        <p>If you have questions about this Privacy Policy, contact us at <a href="mailto:contact@zorblify.com">contact@zorblify.com</a>.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- TERMS OF SERVICE MODAL -->
-  <div class="modal-overlay" id="tosModal" onclick="closeModalOnOverlay(event,'tosModal')">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tosTitle">
-      <button class="modal-close" onclick="closeModal('tosModal')" aria-label="Close">&times;</button>
-      <h2 class="modal-title" id="tosTitle">Terms of Service</h2>
-      <p class="modal-meta">Last updated: April 2026</p>
-      <div class="modal-body">
-        <h3>1. Acceptance of Terms</h3>
-        <p>By accessing or using Zorblify ("the Site"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the Site.</p>
-        <h3>2. Age Requirement</h3>
-        <p>You must be at least 13 years old to use Zorblify. By using the Site, you represent that you are 13 years of age or older. Users under 18 should review these terms with a parent or guardian.</p>
-        <h3>3. No Account Required</h3>
-        <p>Zorblify does not require you to create an account to access or play games. You may use the Site as a guest at any time. No personal information is required to enjoy the games.</p>
-        <h3>4. Content Ownership</h3>
-        <p>All content on Zorblify — including games, graphics, text, logos, and code — is owned by or licensed to Zorblify and is protected by intellectual property laws. You may not reproduce, distribute, or create derivative works from this content without express written permission.</p>
-        <h3>5. Acceptable Use</h3>
-        <p>When using Zorblify, you agree not to:</p>
-        <ul>
-          <li>Attempt to gain unauthorized access to any part of the Site or its systems.</li>
-          <li>Use automated tools to scrape, crawl, or download content.</li>
-          <li>Interfere with the normal operation of the Site.</li>
-          <li>Reverse engineer or attempt to extract the source code of any game.</li>
-          <li>Use the Site for any unlawful purpose.</li>
-        </ul>
-        <h3>6. Disclaimer of Warranties</h3>
-        <p>Zorblify is provided "as is" without warranties of any kind, express or implied. We do not guarantee that the Site will be error-free, uninterrupted, or free of harmful components.</p>
-        <h3>7. Limitation of Liability</h3>
-        <p>To the fullest extent permitted by law, Zorblify and its operators shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of the Site.</p>
-        <h3>8. Changes to Terms</h3>
-        <p>We reserve the right to modify these Terms at any time. Continued use of the Site after changes constitutes acceptance of the revised Terms.</p>
-        <h3>9. Contact</h3>
-        <p>For questions about these Terms, contact us at <a href="mailto:contact@zorblify.com">contact@zorblify.com</a>.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- COOKIE NOTICE -->
-  <div class="cookie-banner" id="cookieBanner">
-    <div class="cookie-text">
-      We use cookies to improve your experience and serve relevant ads.
-    </div>
-    <div class="cookie-actions">
-      <a href="#" class="cookie-learn" onclick="openModal('privacyModal');return false">Learn More</a>
-      <button class="cookie-accept" onclick="acceptCookies()">Accept</button>
-    </div>
-  </div>
-
-  <script>
-    // ── Hamburger ──
-    const hamburger = document.getElementById('hamburger');
-    const mobileNav = document.getElementById('mobileNav');
-
-    hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('open');
-      mobileNav.classList.toggle('open');
+<canvas id="game"></canvas>
+<script>
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 480;
+  canvas.height = 640;
+  let state = 'waiting';
+  let score = 0;
+  let bestScore = parseInt(localStorage.getItem('gf_best') || '0');
+  let flashTimer = 0;
+  const ball = { x: 120, y: canvas.height / 2, r: 14, vy: 0, gravity: 0.3, gravityDir: 1 };
+  const pipes = [];
+  const pipeWidth = 60;
+  const pipeGap = 230;
+  let pipeSpeed = 2;
+  let frameCount = 0;
+  let pipeInterval = 110;
+  function createPipe() {
+    const minTop = 80;
+    const maxTop = canvas.height - pipeGap - 80;
+    const topHeight = Math.random() * (maxTop - minTop) + minTop;
+    pipes.push({ x: canvas.width + pipeWidth, topHeight, passed: false });
+  }
+  function checkCollision() {
+    if (ball.y - ball.r <= 0 || ball.y + ball.r >= canvas.height) return true;
+    for (let p of pipes) {
+      const inX = ball.x + ball.r > p.x && ball.x - ball.r < p.x + pipeWidth;
+      const inTop = ball.y - ball.r < p.topHeight;
+      const inBot = ball.y + ball.r > p.topHeight + pipeGap;
+      if (inX && (inTop || inBot)) return true;
+    }
+    return false;
+  }
+  function flip() {
+    if (state === 'waiting') { state = 'playing'; return; }
+    if (state === 'dead') { resetGame(); return; }
+    ball.gravityDir *= -1;
+    ball.vy = 0;
+    flashTimer = 8;
+    playFlipSound();
+  }
+  function resetGame() {
+    ball.y = canvas.height / 2;
+    ball.vy = 0;
+    ball.gravityDir = 1;
+    pipes.length = 0;
+    score = 0;
+    pipeSpeed = 2;
+    frameCount = 0;
+    state = 'playing';
+  }
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function playFlipSound() {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+  }
+  function playDeadSound() {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+  }
+  function playScoreSound() {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.frequency.setValueAtTime(660, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  }
+  function drawBackground() {
+    ctx.fillStyle = '#080810';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (flashTimer > 0) {
+      const alpha = (flashTimer / 8) * 0.25;
+      ctx.fillStyle = ball.gravityDir === 1 ? `rgba(124,58,237,${alpha})` : `rgba(6,182,212,${alpha})`;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      flashTimer--;
+    }
+  }
+  function drawBall() {
+    ctx.shadowBlur = 24;
+    ctx.shadowColor = ball.gravityDir === 1 ? '#7c3aed' : '#06b6d4';
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+    ctx.fillStyle = ball.gravityDir === 1 ? '#7c3aed' : '#06b6d4';
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 13px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(ball.gravityDir === 1 ? '▼' : '▲', ball.x, ball.y + 5);
+  }
+  function drawPipes() {
+    pipes.forEach(p => {
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = '#06b6d4';
+      ctx.fillStyle = '#0e7490';
+      ctx.fillRect(p.x, 0, pipeWidth, p.topHeight);
+      ctx.fillRect(p.x, p.topHeight + pipeGap, pipeWidth, canvas.height);
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = '#06b6d4';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(p.x, 0, pipeWidth, p.topHeight);
+      ctx.strokeRect(p.x, p.topHeight + pipeGap, pipeWidth, canvas.height);
     });
-
-    function closeMobileNav() {
-      hamburger.classList.remove('open');
-      mobileNav.classList.remove('open');
+  }
+  function drawScore() {
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 44px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(score, canvas.width / 2, 58);
+    ctx.fillStyle = '#444466';
+    ctx.font = '15px Arial';
+    ctx.fillText('BEST: ' + bestScore, canvas.width / 2, 80);
+  }
+  function drawWaiting() {
+    ctx.fillStyle = 'rgba(8,8,16,0.75)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = '#7c3aed';
+    ctx.fillStyle = '#7c3aed';
+    ctx.font = 'bold 38px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('GRAVITY FLIP', canvas.width / 2, canvas.height / 2 - 70);
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#cccccc';
+    ctx.font = '18px Arial';
+    ctx.fillText('Tıkla veya Space ile başla', canvas.width / 2, canvas.height / 2 - 10);
+    ctx.fillStyle = '#06b6d4';
+    ctx.font = '15px Arial';
+    ctx.fillText('Her tıklamada yerçekimi tersine döner!', canvas.width / 2, canvas.height / 2 + 25);
+    const bounce = Math.sin(Date.now() / 300) * 8;
+    ctx.fillStyle = '#7c3aed';
+    ctx.font = '28px Arial';
+    ctx.fillText('▼', canvas.width / 2, canvas.height / 2 + 80 + bounce);
+  }
+  function drawDead() {
+    ctx.fillStyle = 'rgba(8,8,16,0.88)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = '#ef4444';
+    ctx.fillStyle = '#ef4444';
+    ctx.font = 'bold 42px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 80);
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 34px Arial';
+    ctx.fillText('Skor: ' + score, canvas.width / 2, canvas.height / 2 - 25);
+    if (score > 0 && score >= bestScore) {
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#fbbf24';
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = 'bold 22px Arial';
+      ctx.fillText('🏆 YENİ REKOR!', canvas.width / 2, canvas.height / 2 + 18);
+      ctx.shadowBlur = 0;
     }
-
-    // ── Particles ──
-    const container = document.getElementById('particles');
-    const colors = ['rgba(124,58,237,', 'rgba(6,182,212,'];
-
-    for (let i = 0; i < 30; i++) {
-      const dot = document.createElement('div');
-      dot.classList.add('dot');
-      const size = Math.random() * 4 + 2;
-      const colorBase = colors[Math.floor(Math.random() * colors.length)];
-      const alpha = (Math.random() * 0.35 + 0.12).toFixed(2);
-      const left = Math.random() * 100;
-      const delay = Math.random() * 18;
-      const duration = Math.random() * 14 + 12;
-      dot.style.cssText = `width:${size}px;height:${size}px;background:${colorBase}${alpha});left:${left}%;bottom:-8px;animation-delay:${delay}s;animation-duration:${duration}s;`;
-      container.appendChild(dot);
-    }
-
-    // ── Modals ──
-    function openModal(id) {
-      document.getElementById(id).classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
-      document.body.style.overflow = '';
-    }
-
-    function closeModalOnOverlay(e, id) {
-      if (e.target === e.currentTarget) closeModal(id);
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        document.querySelectorAll('.modal-overlay.active').forEach(m => {
-          m.classList.remove('active');
-          document.body.style.overflow = '';
-        });
+    ctx.fillStyle = '#7c3aed';
+    ctx.beginPath();
+    ctx.roundRect(canvas.width/2 - 110, canvas.height/2 + 55, 220, 50, 12);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 18px Arial';
+    ctx.fillText('Tekrar Oyna', canvas.width / 2, canvas.height / 2 + 86);
+  }
+  function gameLoop() {
+    drawBackground();
+    if (state === 'playing') {
+      ball.vy += ball.gravity * ball.gravityDir;
+      ball.vy = Math.max(-10, Math.min(10, ball.vy));
+      ball.y += ball.vy;
+      frameCount++;
+      if (frameCount % pipeInterval === 0) createPipe();
+      for (let i = pipes.length - 1; i >= 0; i--) {
+        pipes[i].x -= pipeSpeed;
+        if (!pipes[i].passed && pipes[i].x + pipeWidth < ball.x) {
+          pipes[i].passed = true;
+          score++;
+          playScoreSound();
+          if (score > bestScore) { bestScore = score; localStorage.setItem('gf_best', bestScore); }
+          if (score % 5 === 0) pipeSpeed += 0.2;
+        }
+        if (pipes[i].x + pipeWidth < 0) pipes.splice(i, 1);
       }
-    });
-
-    // ── Cookie banner ──
-    function acceptCookies() {
-      localStorage.setItem('zorblify_cookie_consent', '1');
-      document.getElementById('cookieBanner').classList.remove('visible');
+      if (checkCollision()) { state = 'dead'; playDeadSound(); }
+      drawPipes(); drawBall(); drawScore();
+    } else if (state === 'waiting') {
+      drawBall(); drawWaiting();
+    } else if (state === 'dead') {
+      drawPipes(); drawBall(); drawScore(); drawDead();
     }
-
-    if (!localStorage.getItem('zorblify_cookie_consent')) {
-      setTimeout(() => document.getElementById('cookieBanner').classList.add('visible'), 800);
-    }
-
-    // ── Contact form ──
-    function handleContactSubmit(e) {
-      e.preventDefault();
-      document.getElementById('formSuccess').classList.add('visible');
-      e.target.reset();
-    }
-  </script>
+    requestAnimationFrame(gameLoop);
+  }
+  document.addEventListener('click', flip);
+  document.addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); flip(); } });
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); flip(); });
+  gameLoop();
+</script>
 </body>
 </html>
