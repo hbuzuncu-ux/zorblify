@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gravity Flip — Zorblify</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      background: #080810; 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 100vh; 
+      overflow: hidden;
+    }
+    canvas { display: block; border: 1px solid #1a1a3a; }
+  </style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<script>
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = 480;
+  canvas.height = 640;
+
+  let state = 'waiting';
+  let score = 0;
+  let bestScore = parseInt(localStorage.getItem('gf_best') || '0');
+  let flashTimer = 0;
+
+  const ball = {
+    x: 120,
+    y: canvas.height / 2,
+    r: 14,
+    vy: 0,
+    gravity: 0.3,        // daha yavaş düşüş
+    gravityDir: 1
+  };
+
+  const pipes = [];
+  const pipeWidth = 60;
+  const pipeGap = 230;   // daha geniş boşluk
+  let pipeSpeed = 2;     // daha yavaş başlangıç
+  let frameCount = 0;
+  let pipeInterval = 110; // borular daha seyrek gelsin
+
+  function createPipe() {
+    const minTop = 80;
+    const maxTop = canvas.height - pipeGap - 80;
+    const topHeight = Math.random() * (maxTop - minTop) + minTop;
+    pipes.push({ x: canvas.width + pipeWidth, topHeight, passed: false });
+  }
+
+  function checkCollision() {
+    if (ball.y - ball.r <= 0 || ball.y + ball.r >= canvas.height) return true;
+    for (let p of pipes) {
+      const inX = ball.x + ball.r > p.x && ball.x - ball.r < p.x + pipeWidth;
+      const inTop = ball.y - ball.r < p.topHeight;
+      const inBot = ball.y + ball.r > p.topHeight + pipeGap;
+      if (inX && (inTop || inBot)) return true;
+    }
+    return false;
+  }
+
+  function flip() {
+    if (state === 'waiting') { state = 'playing'; return; }
+    if (state === 'dead') { resetGame(); return; }
+    ball.gravityDir *= -1;
+    ball.vy = 0;
+    flashTimer = 8;
+    playFlipSound();
+  }
+
+  function resetGame() {
+    ball.y = canvas.height / 2;
+    ball.vy = 0;
+    ball.gravityDir = 1;
+    pipes.length = 0;
+    score = 0;
+    pipeSpeed = 2;
+    frameCount = 0;
+    state = 'playing';
+  }
+
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  function playFlipSound() {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+  }
+
+  function playDeadSound() {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+  }
+
+  function playScoreSound() {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.frequency.setValueAtTime(660, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+  }
+
+  function drawBackground() {
+    ctx.fillStyle = '#080810';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    if (flashTimer > 0) {
+      const alpha = (flashTimer / 8) * 0.25;
+      ctx.fillStyle = ball.gravityDir === 1
+        ? `rgba(124,58,237,${alpha})`
+        : `rgba(6,182,212,${alpha})`;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      flashTimer--;
+    }
+  }
+
+  function drawBall() {
+    ctx.shadowBlur = 24;
+    ctx.shadowColor = ball.gravityDir === 1 ? '#7c3aed' : '#06b6d4';
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+    ctx.fillStyle = ball.gravityDir === 1 ? '#7c3aed' : '#06b6d4';
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 13px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(ball.gravityDir === 1 ? '▼' : '▲', ball.x, ball.y + 5);
+  }
+
+  function drawPipes() {
+    pipes.forEach(p => {
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = '#06b6d4';
+      ctx.fillStyle = '#0e7490';
+      // Üst boru
+      ctx.fillRect(p.x, 0, pipeWidth, p.topHeight);
+      // Alt boru
+      ctx.fillRect(p.x, p.topHeight + pipeGap, pipeWidth, canvas.height);
+      ctx.shadowBlur = 0;
+      // Parlak kenar
+      ctx.strokeStyle = '#06b6d4';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(p.x, 0, pipeWidth, p.topHeight);
+      ctx.strokeRect(p.x, p.topHeight + pipeGap, pipeWidth, canvas.height);
+      // Boşluk göstergesi — yeşil çizgi
+      ctx.strokeStyle = 'rgba(6,182,212,0.15)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+      ctx.moveTo(p.x + pipeWidth / 2, p.topHeight);
+      ctx.lineTo(p.x + pipeWidth / 2, p.topHeight + pipeGap);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    });
+  }
+
+  function drawScore() {
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 44px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(score, canvas.width / 2, 58);
+    ctx.fillStyle = '#444466';
+    ctx.font = '15px Arial';
+    ctx.fillText('BEST: ' + bestScore, canvas.width / 2, 80);
+  }
+
+  function drawWaiting() {
+    ctx.fillStyle = 'rgba(8,8,16,0.75)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = '#7c3aed';
+    ctx.fillStyle = '#7c3aed';
+    ctx.font = 'bold 38px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('GRAVITY FLIP', canvas.width / 2, canvas.height / 2 - 70);
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = '#cccccc';
+    ctx.font = '18px Arial';
+    ctx.fillText('Tıkla veya Space ile başla', canvas.width / 2, canvas.height / 2 - 10);
+
+    ctx.fillStyle = '#06b6d4';
+    ctx.font = '15px Arial';
+    ctx.fillText('Her tıklamada yerçekimi tersine döner!', canvas.width / 2, canvas.height / 2 + 25);
+
+    // Animasyonlu ok
+    const bounce = Math.sin(Date.now() / 300) * 8;
+    ctx.fillStyle = '#7c3aed';
+    ctx.font = '28px Arial';
+    ctx.fillText('▼', canvas.width / 2, canvas.height / 2 + 80 + bounce);
+  }
+
+  function drawDead() {
+    ctx.fillStyle = 'rgba(8,8,16,0.88)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = '#ef4444';
+    ctx.fillStyle = '#ef4444';
+    ctx.font = 'bold 42px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 80);
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 34px Arial';
+    ctx.fillText('Skor: ' + score, canvas.width / 2, canvas.height / 2 - 25);
+
+    if (score > 0 && score >= bestScore) {
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#fbbf24';
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = 'bold 22px Arial';
+      ctx.fillText('🏆 YENİ REKOR!', canvas.width / 2, canvas.height / 2 + 18);
+      ctx.shadowBlur = 0;
+    }
+
+    // Tekrar oyna butonu
+    ctx.fillStyle = '#7c3aed';
+    ctx.beginPath();
+    ctx.roundRect(canvas.width/2 - 110, canvas.height/2 + 55, 220, 50, 12);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 18px Arial';
+    ctx.fillText('Tekrar Oyna', canvas.width / 2, canvas.height / 2 + 86);
+  }
+
+  function gameLoop() {
+    drawBackground();
+
+    if (state === 'playing') {
+      ball.vy += ball.gravity * ball.gravityDir;
+      ball.vy = Math.max(-10, Math.min(10, ball.vy));
+      ball.y += ball.vy;
+
+      frameCount++;
+      if (frameCount % pipeInterval === 0) createPipe();
+
+      for (let i = pipes.length - 1; i >= 0; i--) {
+        pipes[i].x -= pipeSpeed;
+        if (!pipes[i].passed && pipes[i].x + pipeWidth < ball.x) {
+          pipes[i].passed = true;
+          score++;
+          playScoreSound();
+          if (score > bestScore) {
+            bestScore = score;
+            localStorage.setItem('gf_best', bestScore);
+          }
+          if (score % 5 === 0) pipeSpeed += 0.2; // yavaş hız artışı
+        }
+        if (pipes[i].x + pipeWidth < 0) pipes.splice(i, 1);
+      }
+
+      if (checkCollision()) {
+        state = 'dead';
+        playDeadSound();
+      }
+
+      drawPipes();
+      drawBall();
+      drawScore();
+
+    } else if (state === 'waiting') {
+      drawBall();
+      drawWaiting();
+
+    } else if (state === 'dead') {
+      drawPipes();
+      drawBall();
+      drawScore();
+      drawDead();
+    }
+
+    requestAnimationFrame(gameLoop);
+  }
+
+  document.addEventListener('click', flip);
+  document.addEventListener('keydown', e => {
+    if (e.code === 'Space') { e.preventDefault(); flip(); }
+  });
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); flip(); });
+
+  gameLoop();
+</script>
+</body>
+</html>
