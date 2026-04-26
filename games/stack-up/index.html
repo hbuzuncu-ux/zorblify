@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stack Up — Zorblify</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #080810; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- BACK BUTONU -->
+<div style="position:fixed;top:16px;left:16px;z-index:999;">
+  <a href="/" style="display:flex;align-items:center;gap:8px;background:rgba(124,58,237,0.85);color:#ffffff;text-decoration:none;padding:8px 16px;border-radius:8px;font-family:Arial,sans-serif;font-size:14px;font-weight:600;backdrop-filter:blur(8px);border:1px solid rgba(124,58,237,0.5);">← Zorblify</a>
+</div>
+
+<canvas id="game"></canvas>
+<script>
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+  canvas.width = 400;
+  canvas.height = 600;
+
+  const COLORS = ['#7c3aed','#06b6d4','#1D9E75','#f59e0b','#ef4444','#8b5cf6'];
+  const blockHeight = 20;
+
+  let state = 'waiting';
+  let score = 0;
+  let bestScore = parseInt(localStorage.getItem('su_best') || '0');
+  let level = 1;
+  let stackBaseY = canvas.height - 40;
+
+  let movingBlock = { x: 0, y: 40, width: 160, speed: 3, dir: 1, color: COLORS[0] };
+  let stack = [];
+
+  function initStack() {
+    stack = [];
+    stack.push({ x: canvas.width / 2 - 80, y: stackBaseY, width: 160, color: '#444466' });
+  }
+
+  function resetMovingBlock() {
+    const top = stack[stack.length - 1];
+    movingBlock = {
+      x: 0,
+      y: stackBaseY - (stack.length * blockHeight),
+      width: top.width,
+      speed: 2 + level * 0.4,
+      dir: 1,
+      color: COLORS[score % COLORS.length]
+    };
+  }
+
+  function initGame() {
+    score = 0;
+    level = 1;
+    initStack();
+    resetMovingBlock();
+    state = 'playing';
+  }
+
+  function dropBlock() {
+    if (state === 'waiting') { initGame(); return; }
+    if (state === 'dead') { initGame(); return; }
+
+    const top = stack[stack.length - 1];
+    const left = Math.max(movingBlock.x, top.x);
+    const right = Math.min(movingBlock.x + movingBlock.width, top.x + top.width);
+    const overlap = right - left;
+
+    if (overlap <= 0) {
+      state = 'dead';
+      playDeadSound();
+      if (score > bestScore) { bestScore = score; localStorage.setItem('su_best', bestScore); }
+      return;
+    }
+
+    const isPerfect = Math.abs(movingBlock.x - top.x) < 5;
+    if (isPerfect) { playPerfectSound(); } else { playDropSound(); }
+
+    stack.push({
+      x: isPerfect ? top.x : left,
+      y: stackBaseY - (stack.length * blockHeight),
+      width: isPerfect ? top.width : overlap,
+      color: movingBlock.color
+    });
+
+    score++;
+    level = Math.floor(score / 5) + 1;
+
+    if (stack.length > 18) {
+      stack.forEach(b => b.y += blockHeight);
+      stack.shift();
+    }
+
+    resetMovingBlock();
+  }
+
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  function playDropSound() {
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    o.frequency.setValueAtTime(300 + score * 10, audioCtx.currentTime);
+    g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+    o.start(); o.stop(audioCtx.currentTime + 0.15);
+  }
+
+  function playPerfectSound() {
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    o.frequency.setValueAtTime(880, audioCtx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.15);
+    g.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+    o.start(); o.stop(audioCtx.currentTime + 0.2);
+  }
+
+  function playDeadSound() {
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.connect(g); g.connect(audioCtx.destination);
+    o.frequency.setValueAtTime(400, audioCtx.currentTime);
+    o.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.4);
+    g.gain.setValueAtTime(0.4, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+    o.start(); o.stop(audioCtx.currentTime + 0.4);
+  }
+
+  function drawBackground() {
+    ctx.fillStyle = '#080810';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = 'rgba(124,58,237,0.05)';
+    ctx.lineWidth = 1;
+    for (let i = 0; i < canvas.width; i += 40) {
+      ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+    }
+  }
+
+  function drawStack() {
+    stack.forEach(b => {
+      ctx.shadowBlur = 8; ctx.shadowColor = b.color;
+      ctx.fillStyle = b.color;
+      ctx.fillRect(b.x, b.y, b.width, blockHeight - 2);
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = 'rgba(255,255,255,0.2)';
+      ctx.fillRect(b.x, b.y, b.width, 3);
+    });
+  }
+
+  function drawMovingBlock() {
+    const top = stack[stack.length - 1];
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(top.x, 0); ctx.lineTo(top.x, canvas.height); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(top.x + top.width, 0); ctx.lineTo(top.x + top.width, canvas.height); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.shadowBlur = 15; ctx.shadowColor = movingBlock.color;
+    ctx.fillStyle = movingBlock.color;
+    ctx.fillRect(movingBlock.x, movingBlock.y, movingBlock.width, blockHeight - 2);
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = 'rgba(255,255,255,0.25)';
+    ctx.fillRect(movingBlock.x, movingBlock.y, movingBlock.width, 3);
+  }
+
+  function drawHUD() {
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 40px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(score, canvas.width / 2, 38);
+    ctx.fillStyle = '#444466';
+    ctx.font = '14px Arial';
+    ctx.fillText('BEST: ' + bestScore, canvas.width / 2, 58);
+    ctx.fillStyle = '#7c3aed';
+    ctx.font = 'bold 13px Arial';
+    ctx.textAlign = 'right';
+    ctx.fillText('LVL ' + level, canvas.width - 12, 20);
+  }
+
+  function drawWaiting() {
+    ctx.fillStyle = 'rgba(8,8,16,0.85)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.shadowBlur = 20; ctx.shadowColor = '#7c3aed';
+    ctx.fillStyle = '#7c3aed';
+    ctx.font = 'bold 38px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('STACK UP', canvas.width / 2, canvas.height / 2 - 60);
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#cccccc';
+    ctx.font = '17px Arial';
+    ctx.fillText('Bloğu tam hizala, kuleyi yükselt!', canvas.width / 2, canvas.height / 2 - 10);
+    ctx.fillStyle = '#06b6d4';
+    ctx.font = '14px Arial';
+    ctx.fillText('Tıkla veya Space ile başla', canvas.width / 2, canvas.height / 2 + 25);
+    const bounce = Math.sin(Date.now() / 300) * 6;
+    ctx.fillStyle = '#7c3aed';
+    ctx.font = '26px Arial';
+    ctx.fillText('▼', canvas.width / 2, canvas.height / 2 + 75 + bounce);
+  }
+
+  function drawDead() {
+    ctx.fillStyle = 'rgba(8,8,16,0.88)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.shadowBlur = 20; ctx.shadowColor = '#ef4444';
+    ctx.fillStyle = '#ef4444';
+    ctx.font = 'bold 42px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText('GAME OVER', canvas.width / 2, canvas.height / 2 - 80);
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 32px Arial';
+    ctx.fillText('Skor: ' + score, canvas.width / 2, canvas.height / 2 - 28);
+    if (score > 0 && score >= bestScore) {
+      ctx.shadowBlur = 15; ctx.shadowColor = '#fbbf24';
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = 'bold 20px Arial';
+      ctx.fillText('🏆 YENİ REKOR!', canvas.width / 2, canvas.height / 2 + 15);
+      ctx.shadowBlur = 0;
+    }
+    ctx.fillStyle = '#7c3aed';
+    ctx.beginPath();
+    ctx.roundRect(canvas.width/2 - 100, canvas.height/2 + 50, 200, 48, 12);
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 17px Arial';
+    ctx.fillText('Tekrar Oyna', canvas.width / 2, canvas.height / 2 + 80);
+  }
+
+  function gameLoop() {
+    drawBackground();
+    if (state === 'playing') {
+      movingBlock.x += movingBlock.speed * movingBlock.dir;
+      if (movingBlock.x + movingBlock.width >= canvas.width || movingBlock.x <= 0) movingBlock.dir *= -1;
+      drawStack(); drawMovingBlock(); drawHUD();
+    } else if (state === 'waiting') {
+      drawStack(); drawWaiting();
+    } else if (state === 'dead') {
+      drawStack(); drawHUD(); drawDead();
+    }
+    requestAnimationFrame(gameLoop);
+  }
+
+  document.addEventListener('click', dropBlock);
+  document.addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); dropBlock(); } });
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); dropBlock(); });
+
+  initStack();
+  gameLoop();
+</script>
+</body>
+</html>
