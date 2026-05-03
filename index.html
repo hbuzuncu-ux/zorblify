@@ -5,28 +5,34 @@
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zorblify — Web Game Platform</title>
+  <meta name="description" content="Free browser games. No download. No login. Play Gravity Flip, Stack Up, Volt Grid and more on Zorblify.">
+  <meta property="og:title" content="Zorblify — Free Web Games">
+  <meta property="og:description" content="Free browser games. No download. No login.">
   <meta property="og:image" content="https://bolt.new/static/og_default.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #080810;
-      --surface: #0f0f1a;
+      --bg: #07070f;
+      --surface: #0d0d1c;
+      --surface2: #12122a;
       --primary: #7c3aed;
+      --primary-glow: rgba(124,58,237,0.35);
       --secondary: #06b6d4;
-      --text: #ffffff;
-      --text-muted: #a0a0b0;
+      --secondary-glow: rgba(6,182,212,0.3);
+      --text: #f0f0ff;
+      --text-muted: #8888aa;
+      --border: rgba(255,255,255,0.07);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'DM Sans', sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
@@ -38,12 +44,12 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(8,8,16,0.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(124,58,237,0.15);
-      padding: 0 32px;
-      height: 72px;
+      background: rgba(7,7,15,0.9);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(124,58,237,0.12);
+      padding: 0 40px;
+      height: 68px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -51,17 +57,28 @@
 
     .header-logo img { display: block; }
 
-    nav { display: flex; align-items: center; gap: 32px; }
-
+    nav { display: flex; align-items: center; gap: 36px; }
     nav a {
       color: var(--text-muted);
       text-decoration: none;
       font-size: 14px;
       font-weight: 600;
-      letter-spacing: 0.4px;
+      font-family: 'Syne', sans-serif;
+      letter-spacing: 0.5px;
       transition: color 0.2s;
+      position: relative;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: var(--secondary);
+      transform: scaleX(0);
+      transition: transform 0.2s;
     }
     nav a:hover { color: var(--text); }
+    nav a:hover::after { transform: scaleX(1); }
 
     .hamburger {
       display: none;
@@ -73,11 +90,8 @@
       border: none;
     }
     .hamburger span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: var(--text);
-      border-radius: 2px;
+      display: block; width: 22px; height: 2px;
+      background: var(--text); border-radius: 2px;
       transition: transform 0.3s, opacity 0.3s;
     }
     .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -88,19 +102,15 @@
       display: none;
       flex-direction: column;
       position: fixed;
-      top: 72px;
-      left: 0;
-      right: 0;
-      background: rgba(8,8,16,0.97);
+      top: 68px; left: 0; right: 0;
+      background: rgba(7,7,15,0.98);
       border-bottom: 1px solid rgba(124,58,237,0.2);
       z-index: 99;
     }
     .mobile-nav.open { display: flex; }
     .mobile-nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 600;
+      color: var(--text-muted); text-decoration: none;
+      font-size: 15px; font-weight: 600; font-family: 'Syne', sans-serif;
       padding: 16px 28px;
       border-bottom: 1px solid rgba(255,255,255,0.04);
       transition: color 0.2s, background 0.2s;
@@ -110,119 +120,167 @@
     /* ── HERO ── */
     .hero {
       position: relative;
-      min-height: 100vh;
+      min-height: 85vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 80px 24px;
+      padding: 60px 24px 40px;
       overflow: hidden;
+    }
+
+    /* Grid background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(124,58,237,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,58,237,0.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%);
+      pointer-events: none;
     }
 
     .hero-particles {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
+      position: absolute; inset: 0;
+      pointer-events: none; overflow: hidden;
     }
-
     .dot {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0;
+      position: absolute; border-radius: 50%; opacity: 0;
       animation: floatDot linear infinite;
     }
-
     @keyframes floatDot {
       0%   { transform: translateY(0) scale(1);    opacity: 0; }
       10%  { opacity: 1; }
-      85%  { opacity: 0.5; }
+      85%  { opacity: 0.4; }
       100% { transform: translateY(-105vh) scale(0.4); opacity: 0; }
     }
 
-    .hero-wordmark { position: relative; z-index: 1; margin-bottom: 28px; }
-    .hero-wordmark img { max-width: 600px; width: 100%; }
+    /* Glow orbs */
+    .hero-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); pointer-events: none; opacity: 0.25;
+    }
+    .hero-orb-1 {
+      width: 500px; height: 500px;
+      background: var(--primary);
+      top: -100px; left: -100px;
+    }
+    .hero-orb-2 {
+      width: 400px; height: 400px;
+      background: var(--secondary);
+      bottom: -80px; right: -80px;
+    }
+
+    .hero-badge {
+      position: relative; z-index: 1;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(124,58,237,0.12);
+      border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px; font-weight: 600; font-family: 'Syne', sans-serif;
+      color: #a78bfa; letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #a78bfa;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    .hero-wordmark { position: relative; z-index: 1; margin-bottom: 20px; }
+    .hero-wordmark img { max-width: 560px; width: 100%; }
 
     .hero-subtitle {
-      position: relative;
-      z-index: 1;
-      font-size: clamp(15px, 2.5vw, 18px);
+      position: relative; z-index: 1;
+      font-size: clamp(16px, 2.5vw, 20px);
       color: var(--text-muted);
-      margin-bottom: 40px;
+      margin-bottom: 36px;
       font-weight: 400;
+      max-width: 480px;
     }
 
     .hero-actions {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
+      position: relative; z-index: 1;
+      display: flex; gap: 14px;
+      flex-wrap: wrap; justify-content: center;
+      margin-bottom: 56px;
     }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 13px 32px;
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      cursor: pointer;
-      transition: transform 0.18s, box-shadow 0.18s;
-      text-decoration: none;
-      letter-spacing: 0.3px;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 13px 30px; border-radius: 10px;
+      font-size: 15px; font-weight: 600; font-family: 'Syne', sans-serif;
+      cursor: pointer; transition: transform 0.18s, box-shadow 0.18s;
+      text-decoration: none; letter-spacing: 0.3px;
     }
-
     .btn-primary {
-      background: var(--primary);
-      color: #fff;
+      background: var(--primary); color: #fff;
       border: 2px solid var(--primary);
     }
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 28px rgba(124,58,237,0.6);
+      box-shadow: 0 0 32px var(--primary-glow);
     }
-
     .btn-outline {
-      background: transparent;
-      color: var(--text);
-      border: 2px solid rgba(255,255,255,0.22);
+      background: transparent; color: var(--text);
+      border: 2px solid rgba(255,255,255,0.18);
     }
     .btn-outline:hover {
-      border-color: var(--secondary);
-      color: var(--secondary);
+      border-color: var(--secondary); color: var(--secondary);
       transform: translateY(-2px);
-      box-shadow: 0 0 22px rgba(6,182,212,0.28);
+      box-shadow: 0 0 24px var(--secondary-glow);
     }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      position: relative; z-index: 1;
+      display: flex; gap: 40px;
+      flex-wrap: wrap; justify-content: center;
+    }
+    .stat-item { text-align: center; }
+    .stat-value {
+      font-size: 28px; font-weight: 800; font-family: 'Syne', sans-serif;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; margin-top: 2px; }
 
     /* ── DIVIDER ── */
     .section-divider {
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(124,58,237,0.3), rgba(6,182,212,0.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(124,58,237,0.25), rgba(6,182,212,0.25), transparent);
     }
 
-    /* ── SECTION WRAPPER ── */
+    /* ── SECTIONS ── */
     .section-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 96px 40px;
+      max-width: 1100px; margin: 0 auto;
+      padding: 80px 40px;
+    }
+
+    .section-label {
+      font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
+      color: var(--secondary); letter-spacing: 2px; text-transform: uppercase;
+      text-align: center; margin-bottom: 12px;
     }
 
     .section-title {
-      font-size: clamp(24px, 4vw, 36px);
-      font-weight: 800;
-      text-align: center;
-      margin-bottom: 56px;
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 800; font-family: 'Syne', sans-serif;
+      text-align: center; margin-bottom: 48px;
       letter-spacing: -0.5px;
     }
     .section-title span {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
@@ -230,394 +288,239 @@
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
+      gap: 20px;
     }
 
     .card {
       background: var(--surface);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 16px;
-      padding: 32px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 28px 24px;
+      display: flex; flex-direction: column; gap: 12px;
       transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
+      position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(124,58,237,0.04), transparent);
+      opacity: 0; transition: opacity 0.3s;
     }
     .card:hover {
       transform: translateY(-6px);
-      border-color: var(--primary);
-      box-shadow: 0 8px 40px rgba(124,58,237,0.2);
+      border-color: rgba(124,58,237,0.4);
+      box-shadow: 0 12px 48px rgba(124,58,237,0.18);
     }
+    .card:hover::before { opacity: 1; }
 
-    .card-icon { font-size: 36px; line-height: 1; margin-bottom: 4px; }
-    .card-title { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; }
-    .card-desc { font-size: 14px; color: var(--text-muted); line-height: 1.65; flex: 1; }
-
+    .card-icon {
+      font-size: 40px; line-height: 1;
+      margin-bottom: 4px;
+    }
+    .card-title {
+      font-size: 22px; font-weight: 800; font-family: 'Syne', sans-serif;
+      letter-spacing: -0.3px;
+    }
+    .card-desc {
+      font-size: 14px; color: var(--text-muted);
+      line-height: 1.65; flex: 1;
+    }
     .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 8px;
+      display: flex; align-items: center;
+      justify-content: space-between; margin-top: 8px;
     }
-
     .tag {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 10px;
-      border-radius: 6px;
-      background: rgba(6,182,212,0.12);
-      color: var(--secondary);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
+      font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
+      padding: 4px 10px; border-radius: 6px;
+      background: rgba(6,182,212,0.1); color: var(--secondary);
+      letter-spacing: 0.5px; text-transform: uppercase;
     }
-
     .btn-play {
-      font-size: 13px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      padding: 8px 20px;
-      border-radius: 8px;
-      background: rgba(124,58,237,0.15);
-      color: #c084fc;
-      border: 1px solid rgba(124,58,237,0.35);
-      cursor: pointer;
+      font-size: 13px; font-weight: 700; font-family: 'Syne', sans-serif;
+      padding: 8px 20px; border-radius: 8px;
+      background: rgba(124,58,237,0.12); color: #c084fc;
+      border: 1px solid rgba(124,58,237,0.3);
+      cursor: pointer; text-decoration: none;
       transition: background 0.18s, box-shadow 0.18s, transform 0.18s, color 0.18s;
     }
     .btn-play:hover {
-      background: var(--primary);
-      color: #fff;
-      box-shadow: 0 0 18px rgba(124,58,237,0.45);
+      background: var(--primary); color: #fff;
+      box-shadow: 0 0 20px var(--primary-glow);
       transform: translateY(-1px);
     }
 
     /* ── ABOUT ── */
     .about-text {
       font-size: clamp(15px, 2vw, 17px);
-      color: var(--text-muted);
-      max-width: 640px;
-      margin: 0 auto 60px;
-      line-height: 1.8;
+      color: var(--text-muted); max-width: 600px;
+      margin: 0 auto 56px; line-height: 1.85;
     }
-
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      max-width: 680px;
-      margin: 0 auto;
+      gap: 16px; max-width: 640px; margin: 0 auto;
     }
-
     .feature-card {
       background: var(--surface);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 14px;
-      padding: 28px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px 20px;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 12px;
       transition: border-color 0.22s, transform 0.22s;
     }
     .feature-card:hover {
-      border-color: rgba(6,182,212,0.4);
+      border-color: rgba(6,182,212,0.35);
       transform: translateY(-4px);
     }
     .feature-icon { font-size: 32px; }
-    .feature-label { font-size: 14px; font-weight: 600; color: var(--text); }
+    .feature-label { font-size: 14px; font-weight: 700; font-family: 'Syne', sans-serif; }
 
     /* ── CONTACT ── */
     .contact-wrap {
       display: grid;
       grid-template-columns: 1fr 2fr;
-      gap: 40px;
-      text-align: left;
-      max-width: 860px;
-      margin: 0 auto;
+      gap: 40px; text-align: left;
+      max-width: 860px; margin: 0 auto;
     }
-
-    .contact-info {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-      padding-top: 8px;
-    }
-
-    .contact-info-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-    }
-
+    .contact-info { display: flex; flex-direction: column; gap: 24px; padding-top: 8px; }
+    .contact-info-item { display: flex; align-items: flex-start; gap: 14px; }
     .contact-info-icon { font-size: 22px; margin-top: 2px; }
-
     .contact-info-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin-bottom: 4px;
+      font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
+      color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 0.8px; margin-bottom: 4px;
     }
-
-    .contact-info-value {
-      font-size: 14px;
-      color: var(--text);
-      text-decoration: none;
-    }
-
+    .contact-info-value { font-size: 14px; color: var(--text); text-decoration: none; }
     a.contact-info-value:hover { color: var(--secondary); }
 
     .contact-form {
-      background: var(--surface);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 16px;
-      padding: 32px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 20px; padding: 32px;
+      display: flex; flex-direction: column; gap: 20px;
     }
-
     .form-group { display: flex; flex-direction: column; gap: 6px; }
-
     .form-label {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: 0.3px;
+      font-size: 12px; font-weight: 700; font-family: 'Syne', sans-serif;
+      color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase;
     }
-
     .form-input {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      padding: 11px 14px;
-      font-size: 14px;
-      font-family: 'Inter', sans-serif;
-      color: var(--text);
-      outline: none;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px; padding: 12px 14px;
+      font-size: 14px; font-family: 'DM Sans', sans-serif;
+      color: var(--text); outline: none;
       transition: border-color 0.2s;
     }
-
-    .form-input::placeholder { color: rgba(160,160,176,0.5); }
+    .form-input::placeholder { color: rgba(136,136,170,0.5); }
     .form-input:focus { border-color: var(--primary); }
-
     .form-textarea { min-height: 120px; resize: vertical; }
-
     .form-success {
       display: none;
-      background: rgba(6,182,212,0.1);
-      border: 1px solid rgba(6,182,212,0.3);
-      border-radius: 8px;
-      padding: 12px 16px;
-      font-size: 14px;
-      color: var(--secondary);
-      text-align: center;
+      background: rgba(6,182,212,0.08);
+      border: 1px solid rgba(6,182,212,0.25);
+      border-radius: 10px; padding: 12px 16px;
+      font-size: 14px; color: var(--secondary); text-align: center;
     }
     .form-success.visible { display: block; }
 
     /* ── FOOTER ── */
     footer {
       background: var(--surface);
-      border-top: 1px solid rgba(255,255,255,0.06);
+      border-top: 1px solid var(--border);
     }
-
     .footer-body {
-      max-width: 1100px;
-      margin: 0 auto;
+      max-width: 1100px; margin: 0 auto;
       padding: 56px 40px 40px;
       display: grid;
       grid-template-columns: 2fr 1fr 1fr;
       gap: 48px;
     }
-
     .footer-col-brand img { display: block; margin-bottom: 14px; }
-
-    .footer-brand-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      max-width: 220px;
-    }
-
+    .footer-brand-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; max-width: 220px; }
     .footer-col-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 16px;
+      font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
+      color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 1px; margin-bottom: 16px;
     }
-
-    .footer-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .footer-nav a {
-      font-size: 14px;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
+    .footer-nav { display: flex; flex-direction: column; gap: 10px; }
+    .footer-nav a { font-size: 14px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
     .footer-nav a:hover { color: var(--text); }
-
     .footer-bar {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 20px 40px;
-      max-width: 1100px;
-      margin: 0 auto;
-      font-size: 13px;
-      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      padding: 20px 40px; max-width: 1100px; margin: 0 auto;
+      font-size: 13px; color: var(--text-muted);
     }
 
     /* ── MODALS ── */
     .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.75);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      backdrop-filter: blur(4px);
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.8); z-index: 200;
+      align-items: center; justify-content: center;
+      padding: 24px; backdrop-filter: blur(6px);
     }
     .modal-overlay.active { display: flex; }
-
     .modal {
-      background: #12121f;
-      border: 1px solid rgba(124,58,237,0.25);
-      border-radius: 20px;
-      max-width: 680px;
-      width: 100%;
-      max-height: 85vh;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      animation: modalIn 0.22s ease;
+      background: #0e0e1e;
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: 24px; max-width: 680px; width: 100%;
+      max-height: 85vh; display: flex; flex-direction: column;
+      position: relative; animation: modalIn 0.22s ease;
     }
-
     @keyframes modalIn {
       from { opacity: 0; transform: translateY(12px) scale(0.98); }
       to   { opacity: 1; transform: translateY(0) scale(1); }
     }
-
     .modal-close {
-      position: absolute;
-      top: 16px;
-      right: 20px;
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 24px;
-      cursor: pointer;
-      line-height: 1;
-      transition: color 0.2s;
-      z-index: 1;
+      position: absolute; top: 16px; right: 20px;
+      background: none; border: none; color: var(--text-muted);
+      font-size: 24px; cursor: pointer; line-height: 1;
+      transition: color 0.2s; z-index: 1;
     }
     .modal-close:hover { color: var(--text); }
-
     .modal-title {
-      font-size: 22px;
-      font-weight: 800;
-      padding: 28px 32px 4px;
-      letter-spacing: -0.3px;
+      font-size: 22px; font-weight: 800; font-family: 'Syne', sans-serif;
+      padding: 28px 32px 4px; letter-spacing: -0.3px;
     }
-
     .modal-meta {
-      font-size: 12px;
-      color: var(--text-muted);
+      font-size: 12px; color: var(--text-muted);
       padding: 0 32px 20px;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+      border-bottom: 1px solid var(--border);
     }
-
     .modal-body {
-      overflow-y: auto;
-      padding: 24px 32px 32px;
-      font-size: 14px;
-      line-height: 1.75;
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+      overflow-y: auto; padding: 24px 32px 32px;
+      font-size: 14px; line-height: 1.75; color: var(--text-muted);
+      display: flex; flex-direction: column; gap: 16px;
     }
-
-    .modal-body h3 {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--text);
-      margin-top: 8px;
-    }
-
+    .modal-body h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-top: 8px; }
     .modal-body p { margin: 0; }
-
-    .modal-body ul {
-      padding-left: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .modal-body a {
-      color: var(--secondary);
-      text-decoration: none;
-    }
+    .modal-body ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+    .modal-body a { color: var(--secondary); text-decoration: none; }
     .modal-body a:hover { text-decoration: underline; }
 
-    /* ── COOKIE BANNER ── */
+    /* ── COOKIE ── */
     .cookie-banner {
-      position: fixed;
-      bottom: -120px;
-      left: 0;
-      right: 0;
-      z-index: 150;
-      background: #12121f;
-      border-top: 1px solid rgba(124,58,237,0.25);
+      position: fixed; bottom: -120px; left: 0; right: 0;
+      z-index: 150; background: #0e0e1e;
+      border-top: 1px solid rgba(124,58,237,0.2);
       padding: 16px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      transition: bottom 0.4s cubic-bezier(0.34,1.56,0.64,1);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; transition: bottom 0.4s cubic-bezier(0.34,1.56,0.64,1);
       flex-wrap: wrap;
     }
     .cookie-banner.visible { bottom: 0; }
-
-    .cookie-text {
-      font-size: 14px;
-      color: var(--text-muted);
-      flex: 1;
-      min-width: 200px;
-    }
-
+    .cookie-text { font-size: 14px; color: var(--text-muted); flex: 1; min-width: 200px; }
     .cookie-actions { display: flex; align-items: center; gap: 16px; }
-
     .cookie-learn {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.2s;
+      font-size: 13px; font-weight: 600; color: var(--text-muted);
+      text-decoration: none; transition: color 0.2s;
     }
     .cookie-learn:hover { color: var(--secondary); }
-
     .cookie-accept {
-      font-size: 13px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      padding: 9px 22px;
-      border-radius: 8px;
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      transition: box-shadow 0.18s, transform 0.18s;
+      font-size: 13px; font-weight: 700; font-family: 'Syne', sans-serif;
+      padding: 9px 22px; border-radius: 8px;
+      background: var(--primary); color: #fff; border: none;
+      cursor: pointer; transition: box-shadow 0.18s, transform 0.18s;
     }
-    .cookie-accept:hover {
-      box-shadow: 0 0 18px rgba(124,58,237,0.5);
-      transform: translateY(-1px);
-    }
+    .cookie-accept:hover { box-shadow: 0 0 20px var(--primary-glow); transform: translateY(-1px); }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
@@ -625,14 +528,14 @@
       .footer-body { grid-template-columns: 1fr 1fr; gap: 32px; padding: 40px 24px 32px; }
       .footer-col-brand { grid-column: 1 / -1; }
       .footer-bar { padding: 16px 24px; }
+      .stats-bar { gap: 24px; }
     }
-
     @media (max-width: 640px) {
       header { padding: 0 20px; }
       nav { display: none; }
       .hamburger { display: flex; }
-      .section-inner { padding: 64px 20px; }
-      .hero { padding: 60px 20px; }
+      .section-inner { padding: 60px 20px; }
+      .hero { padding: 48px 20px 36px; min-height: 70vh; }
       .footer-body { grid-template-columns: 1fr; }
       .cookie-banner { padding: 16px 20px; }
     }
@@ -643,7 +546,7 @@
   <!-- HEADER -->
   <header>
     <div class="header-logo">
-      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIHJ4PSI0MCIgZmlsbD0iIzA4MDgxMCIvPgogIAogIDxyZWN0IHg9IjMyMCIgeT0iNDAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjM0MCIgeT0iNjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiIHJ4PSIxIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNTUiIHk9IjMwMCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgcng9IjEiIGZpbGw9IiMwNmI2ZDQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjMzMCIgeT0iMzEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNjAiIHk9IjcwIiB3aWR0aD0iNiIgaGVpZ2h0PSI2IiByeD0iMSIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC4yIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIxNzIiIHk9IjEwMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjIxNCIgeT0iMTAwIiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjU2IiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIyMTQiIHk9IjE0MiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMTg0IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzA2YjZkNCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMjY4IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjE0IiB5PSIyNjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIyNTYiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjI5NiIgeT0iMTA4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIzIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIxMDQiIHk9IjI3NiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMyIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC41Ii8+CiAgPHRleHQgeD0iMjAwIiB5PSIzNTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgSW1wYWN0LCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMyIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iNCI+Wk9SQkxJRlk8L3RleHQ+Cjwvc3ZnPgo=" height="50" alt="Zorblify">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIHJ4PSI0MCIgZmlsbD0iIzA4MDgxMCIvPgogIDxyZWN0IHg9IjMyMCIgeT0iNDAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjM0MCIgeT0iNjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiIHJ4PSIxIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNTUiIHk9IjMwMCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgcng9IjEiIGZpbGw9IiMwNmI2ZDQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjMzMCIgeT0iMzEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNjAiIHk9IjcwIiB3aWR0aD0iNiIgaGVpZ2h0PSI2IiByeD0iMSIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC4yIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIxNzIiIHk9IjEwMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjIxNCIgeT0iMTAwIiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjU2IiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIyMTQiIHk9IjE0MiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMTg0IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzA2YjZkNCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMjY4IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjE0IiB5PSIyNjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIyNTYiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjI5NiIgeT0iMTA4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIzIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIxMDQiIHk9IjI3NiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMyIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC41Ii8+CiAgPHRleHQgeD0iMjAwIiB5PSIzNTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgSW1wYWN0LCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMyIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iNCI+Wk9SQkxJRlk8L3RleHQ+Cjwvc3ZnPgo=" height="48" alt="Zorblify">
     </div>
     <nav>
       <a href="#home">Home</a>
@@ -666,14 +569,39 @@
   <!-- HERO -->
   <div id="home">
     <section class="hero">
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
       <div class="hero-particles" id="particles"></div>
-      <div class="hero-wordmark">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgODAwIDIwMCI+CiAgPHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSIyMDAiIHJ4PSIyMCIgZmlsbD0iIzA4MDgxMCIvPgogIDx0ZXh0IHg9IjEyMCIgeT0iMTc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIEltcGFjdCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxODAiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMDgiPlo8L3RleHQ+CiAgPHJlY3QgeD0iNjAiIHk9Ijk1IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iNjQwIiB5PSI5NSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0iIzA2YjZkNCIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIEltcGFjdCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI4MCIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2ZmZmZmZiIgbGV0dGVyLXNwYWNpbmc9IjIiPlpPUkJMSUZZPC90ZXh0PgogIDx0ZXh0IHg9IjQwMCIgeT0iMTU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1NTU1NTUiIGxldHRlci1zcGFjaW5nPSI4Ij5XRUIgR0FNRSBQTEFURk9STTwvdGV4dD4KPC9zdmc+Cg==" style="max-width:600px;width:100%" alt="Zorblify">
+
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        3 Games Available Now
       </div>
-      <p class="hero-subtitle">Free browser games. No download. No login.</p>
+
+      <div class="hero-wordmark">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgODAwIDIwMCI+CiAgPHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSIyMDAiIHJ4PSIyMCIgZmlsbD0iIzA4MDgxMCIvPgogIDx0ZXh0IHg9IjEyMCIgeT0iMTc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIEltcGFjdCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxODAiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMDgiPlo8L3RleHQ+CiAgPHJlY3QgeD0iNjAiIHk9Ijk1IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iNjQwIiB5PSI5NSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0iIzA2YjZkNCIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIEltcGFjdCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI4MCIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2ZmZmZmZiIgbGV0dGVyLXNwYWNpbmc9IjIiPlpPUkJMSUZZPC90ZXh0PgogIDx0ZXh0IHg9IjQwMCIgeT0iMTU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1NTU1NTUiIGxldHRlci1zcGFjaW5nPSI4Ij5XRUIgR0FNRSBQTEFURk9STTwvdGV4dD4KPC9zdmc+Cg==" style="max-width:560px;width:100%" alt="Zorblify">
+      </div>
+
+      <p class="hero-subtitle">Free browser games. No download. No login. Just play.</p>
+
       <div class="hero-actions">
         <a href="#games" class="btn btn-primary">Browse Games</a>
         <a href="#about" class="btn btn-outline">Learn More</a>
+      </div>
+
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-value">3</div>
+          <div class="stat-label">Games</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Downloads</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">Free</div>
+          <div class="stat-label">Always</div>
+        </div>
       </div>
     </section>
   </div>
@@ -683,12 +611,13 @@
   <!-- GAMES -->
   <div id="games">
     <div class="section-inner">
+      <div class="section-label">Play Now</div>
       <h2 class="section-title">Featured <span>Games</span></h2>
       <div class="cards-grid">
         <div class="card">
-          <div class="card-icon">🎨</div>
+          <div class="card-icon">🌀</div>
           <div class="card-title">Gravity Flip</div>
-          <div class="card-desc">Flip gravity, dodge pipes, survive!</div>
+          <div class="card-desc">Tap to flip gravity. Dodge the pipes. How long can you survive?</div>
           <div class="card-footer">
             <span class="tag">Arcade</span>
             <a href="/games/gravity-flip/index.html" class="btn-play">Play Now</a>
@@ -697,7 +626,7 @@
         <div class="card">
           <div class="card-icon">🏗️</div>
           <div class="card-title">Stack Up</div>
-          <div class="card-desc">Bloğu tam hizala, kuleyi göklere yükselt!</div>
+          <div class="card-desc">Drop the block at the right moment. Stack them perfectly and build the tallest tower!</div>
           <div class="card-footer">
             <span class="tag">Arcade</span>
             <a href="/games/stack-up/index.html" class="btn-play">Play Now</a>
@@ -706,7 +635,7 @@
         <div class="card">
           <div class="card-icon">⚡</div>
           <div class="card-title">Volt Grid</div>
-          <div class="card-desc">Enerjiyi zincirle, ızgarayı temizle! Stratejik bulmaca oyunu.</div>
+          <div class="card-desc">Chain the energy, clear the grid. A strategic puzzle game with satisfying chain reactions.</div>
           <div class="card-footer">
             <span class="tag">Puzzle</span>
             <a href="/games/volt-grid/index.html" class="btn-play">Play Now</a>
@@ -721,6 +650,7 @@
   <!-- ABOUT -->
   <div id="about">
     <div class="section-inner" style="text-align:center">
+      <div class="section-label">About Us</div>
       <h2 class="section-title">What is <span>Zorblify?</span></h2>
       <p class="about-text">Zorblify is a free web game platform. Play instantly in your browser — no downloads, no accounts needed. New games added regularly.</p>
       <div class="features-grid">
@@ -745,6 +675,7 @@
   <!-- CONTACT -->
   <div id="contact">
     <div class="section-inner" style="text-align:center">
+      <div class="section-label">Say Hello</div>
       <h2 class="section-title">Get in <span>Touch</span></h2>
       <p class="about-text" style="margin-bottom:40px">Have a question or feedback? We'd love to hear from you. We respond within 48 hours.</p>
       <div class="contact-wrap">
@@ -822,29 +753,17 @@
       <p class="modal-meta">Last updated: April 2026</p>
       <div class="modal-body">
         <h3>1. Information We Collect</h3>
-        <p>Zorblify does not require you to create an account or provide personal information to play games. We may collect limited technical data automatically when you visit, including your browser type, device type, pages visited, and general geographic region (country/region level).</p>
+        <p>Zorblify does not require you to create an account or provide personal information to play games. We may collect limited technical data automatically when you visit, including your browser type, device type, pages visited, and general geographic region.</p>
         <h3>2. Cookies</h3>
-        <p>We use cookies and similar technologies to:</p>
-        <ul>
-          <li>Remember your preferences (such as cookie consent).</li>
-          <li>Analyze site traffic and usage patterns via analytics tools.</li>
-          <li>Serve relevant advertising through third-party ad networks (including Google AdSense).</li>
-        </ul>
-        <p>You can control cookie settings through your browser. Disabling cookies may affect the functionality of certain features.</p>
+        <p>We use cookies and similar technologies to remember your preferences, analyze site traffic, and serve relevant advertising through third-party ad networks including Google AdSense.</p>
         <h3>3. Third-Party Advertising</h3>
-        <p>Zorblify may display advertisements served by third-party advertising partners, including Google AdSense. These partners may use cookies, web beacons, and similar technologies to collect information about your visits to this and other websites in order to provide targeted advertisements. Google's use of advertising cookies enables it and its partners to serve ads based on your visit to our site and other sites. You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>.</p>
+        <p>Zorblify may display advertisements served by third-party advertising partners, including Google AdSense. You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>.</p>
         <h3>4. Analytics</h3>
-        <p>We may use analytics services such as Google Analytics to understand how visitors use the site. These services collect data such as pages visited, time on site, and referral source. This data is aggregated and anonymized.</p>
-        <h3>5. Data Sharing</h3>
-        <p>We do not sell your personal information. We may share data with service providers who assist us in operating the site, subject to confidentiality obligations. We may disclose information if required by law.</p>
-        <h3>6. Children's Privacy</h3>
-        <p>Zorblify is not directed at children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe a child has provided us with personal information, please contact us at <a href="mailto:contact@zorblify.com">contact@zorblify.com</a>.</p>
-        <h3>7. Your Rights</h3>
-        <p>Depending on your location, you may have rights regarding your personal data, including the right to access, correct, or delete data. To exercise these rights, contact us at <a href="mailto:contact@zorblify.com">contact@zorblify.com</a>.</p>
-        <h3>8. Changes to This Policy</h3>
-        <p>We may update this Privacy Policy from time to time. We will post any changes on this page with an updated date.</p>
-        <h3>9. Contact</h3>
-        <p>If you have questions about this Privacy Policy, contact us at <a href="mailto:contact@zorblify.com">contact@zorblify.com</a>.</p>
+        <p>We may use analytics services to understand how visitors use the site. Data is aggregated and anonymized.</p>
+        <h3>5. Children's Privacy</h3>
+        <p>Zorblify is not directed at children under 13. Contact us at <a href="mailto:contact@zorblify.com">contact@zorblify.com</a> if you have concerns.</p>
+        <h3>6. Contact</h3>
+        <p>Questions? Contact us at <a href="mailto:contact@zorblify.com">contact@zorblify.com</a>.</p>
       </div>
     </div>
   </div>
@@ -856,40 +775,29 @@
       <h2 class="modal-title" id="tosTitle">Terms of Service</h2>
       <p class="modal-meta">Last updated: April 2026</p>
       <div class="modal-body">
-        <h3>1. Acceptance of Terms</h3>
-        <p>By accessing or using Zorblify ("the Site"), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use the Site.</p>
+        <h3>1. Acceptance</h3>
+        <p>By using Zorblify, you agree to these Terms of Service.</p>
         <h3>2. Age Requirement</h3>
-        <p>You must be at least 13 years old to use Zorblify. By using the Site, you represent that you are 13 years of age or older. Users under 18 should review these terms with a parent or guardian.</p>
+        <p>You must be at least 13 years old to use Zorblify.</p>
         <h3>3. No Account Required</h3>
-        <p>Zorblify does not require you to create an account to access or play games. You may use the Site as a guest at any time. No personal information is required to enjoy the games.</p>
+        <p>No personal information is required to enjoy the games.</p>
         <h3>4. Content Ownership</h3>
-        <p>All content on Zorblify — including games, graphics, text, logos, and code — is owned by or licensed to Zorblify and is protected by intellectual property laws. You may not reproduce, distribute, or create derivative works from this content without express written permission.</p>
+        <p>All content on Zorblify is owned by or licensed to Zorblify and protected by intellectual property laws.</p>
         <h3>5. Acceptable Use</h3>
-        <p>When using Zorblify, you agree not to:</p>
         <ul>
-          <li>Attempt to gain unauthorized access to any part of the Site or its systems.</li>
-          <li>Use automated tools to scrape, crawl, or download content.</li>
-          <li>Interfere with the normal operation of the Site.</li>
-          <li>Reverse engineer or attempt to extract the source code of any game.</li>
-          <li>Use the Site for any unlawful purpose.</li>
+          <li>Do not attempt unauthorized access to any part of the site.</li>
+          <li>Do not use automated tools to scrape or download content.</li>
+          <li>Do not use the site for any unlawful purpose.</li>
         </ul>
-        <h3>6. Disclaimer of Warranties</h3>
-        <p>Zorblify is provided "as is" without warranties of any kind, express or implied. We do not guarantee that the Site will be error-free, uninterrupted, or free of harmful components.</p>
-        <h3>7. Limitation of Liability</h3>
-        <p>To the fullest extent permitted by law, Zorblify and its operators shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of the Site.</p>
-        <h3>8. Changes to Terms</h3>
-        <p>We reserve the right to modify these Terms at any time. Continued use of the Site after changes constitutes acceptance of the revised Terms.</p>
-        <h3>9. Contact</h3>
-        <p>For questions about these Terms, contact us at <a href="mailto:contact@zorblify.com">contact@zorblify.com</a>.</p>
+        <h3>6. Contact</h3>
+        <p>Questions? Contact us at <a href="mailto:contact@zorblify.com">contact@zorblify.com</a>.</p>
       </div>
     </div>
   </div>
 
   <!-- COOKIE NOTICE -->
   <div class="cookie-banner" id="cookieBanner">
-    <div class="cookie-text">
-      We use cookies to improve your experience and serve relevant ads.
-    </div>
+    <div class="cookie-text">We use cookies to improve your experience and serve relevant ads.</div>
     <div class="cookie-actions">
       <a href="#" class="cookie-learn" onclick="openModal('privacyModal');return false">Learn More</a>
       <button class="cookie-accept" onclick="acceptCookies()">Accept</button>
@@ -897,52 +805,40 @@
   </div>
 
   <script>
-    // ── Hamburger ──
     const hamburger = document.getElementById('hamburger');
     const mobileNav = document.getElementById('mobileNav');
-
     hamburger.addEventListener('click', () => {
       hamburger.classList.toggle('open');
       mobileNav.classList.toggle('open');
     });
-
     function closeMobileNav() {
       hamburger.classList.remove('open');
       mobileNav.classList.remove('open');
     }
 
-    // ── Particles ──
     const container = document.getElementById('particles');
     const colors = ['rgba(124,58,237,', 'rgba(6,182,212,'];
-
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 25; i++) {
       const dot = document.createElement('div');
       dot.classList.add('dot');
       const size = Math.random() * 4 + 2;
       const colorBase = colors[Math.floor(Math.random() * colors.length)];
-      const alpha = (Math.random() * 0.35 + 0.12).toFixed(2);
-      const left = Math.random() * 100;
-      const delay = Math.random() * 18;
-      const duration = Math.random() * 14 + 12;
-      dot.style.cssText = `width:${size}px;height:${size}px;background:${colorBase}${alpha});left:${left}%;bottom:-8px;animation-delay:${delay}s;animation-duration:${duration}s;`;
+      const alpha = (Math.random() * 0.3 + 0.1).toFixed(2);
+      dot.style.cssText = `width:${size}px;height:${size}px;background:${colorBase}${alpha});left:${Math.random()*100}%;bottom:-8px;animation-delay:${Math.random()*18}s;animation-duration:${Math.random()*14+12}s;`;
       container.appendChild(dot);
     }
 
-    // ── Modals ──
     function openModal(id) {
       document.getElementById(id).classList.add('active');
       document.body.style.overflow = 'hidden';
     }
-
     function closeModal(id) {
       document.getElementById(id).classList.remove('active');
       document.body.style.overflow = '';
     }
-
     function closeModalOnOverlay(e, id) {
       if (e.target === e.currentTarget) closeModal(id);
     }
-
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal-overlay.active').forEach(m => {
@@ -952,17 +848,14 @@
       }
     });
 
-    // ── Cookie banner ──
     function acceptCookies() {
       localStorage.setItem('zorblify_cookie_consent', '1');
       document.getElementById('cookieBanner').classList.remove('visible');
     }
-
     if (!localStorage.getItem('zorblify_cookie_consent')) {
       setTimeout(() => document.getElementById('cookieBanner').classList.add('visible'), 800);
     }
 
-    // ── Contact form ──
     function handleContactSubmit(e) {
       e.preventDefault();
       document.getElementById('formSuccess').classList.add('visible');
