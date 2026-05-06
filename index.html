@@ -39,7 +39,6 @@
       overflow-x: hidden;
     }
 
-    /* ── HEADER ── */
     header {
       position: sticky;
       top: 0;
@@ -117,7 +116,6 @@
     }
     .mobile-nav a:hover { color: var(--text); background: rgba(124,58,237,0.08); }
 
-    /* ── HERO ── */
     .hero {
       position: relative;
       min-height: 85vh;
@@ -130,7 +128,6 @@
       overflow: hidden;
     }
 
-    /* Grid background */
     .hero::before {
       content: '';
       position: absolute;
@@ -158,21 +155,12 @@
       100% { transform: translateY(-105vh) scale(0.4); opacity: 0; }
     }
 
-    /* Glow orbs */
     .hero-orb {
       position: absolute; border-radius: 50%;
       filter: blur(80px); pointer-events: none; opacity: 0.25;
     }
-    .hero-orb-1 {
-      width: 500px; height: 500px;
-      background: var(--primary);
-      top: -100px; left: -100px;
-    }
-    .hero-orb-2 {
-      width: 400px; height: 400px;
-      background: var(--secondary);
-      bottom: -80px; right: -80px;
-    }
+    .hero-orb-1 { width: 500px; height: 500px; background: var(--primary); top: -100px; left: -100px; }
+    .hero-orb-2 { width: 400px; height: 400px; background: var(--secondary); bottom: -80px; right: -80px; }
 
     .hero-badge {
       position: relative; z-index: 1;
@@ -221,25 +209,11 @@
       cursor: pointer; transition: transform 0.18s, box-shadow 0.18s;
       text-decoration: none; letter-spacing: 0.3px;
     }
-    .btn-primary {
-      background: var(--primary); color: #fff;
-      border: 2px solid var(--primary);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 32px var(--primary-glow);
-    }
-    .btn-outline {
-      background: transparent; color: var(--text);
-      border: 2px solid rgba(255,255,255,0.18);
-    }
-    .btn-outline:hover {
-      border-color: var(--secondary); color: var(--secondary);
-      transform: translateY(-2px);
-      box-shadow: 0 0 24px var(--secondary-glow);
-    }
+    .btn-primary { background: var(--primary); color: #fff; border: 2px solid var(--primary); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 32px var(--primary-glow); }
+    .btn-outline { background: transparent; color: var(--text); border: 2px solid rgba(255,255,255,0.18); }
+    .btn-outline:hover { border-color: var(--secondary); color: var(--secondary); transform: translateY(-2px); box-shadow: 0 0 24px var(--secondary-glow); }
 
-    /* ── STATS BAR ── */
     .stats-bar {
       position: relative; z-index: 1;
       display: flex; gap: 40px;
@@ -254,17 +228,12 @@
     }
     .stat-label { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; margin-top: 2px; }
 
-    /* ── DIVIDER ── */
     .section-divider {
       height: 1px;
       background: linear-gradient(90deg, transparent, rgba(124,58,237,0.25), rgba(6,182,212,0.25), transparent);
     }
 
-    /* ── SECTIONS ── */
-    .section-inner {
-      max-width: 1100px; margin: 0 auto;
-      padding: 80px 40px;
-    }
+    .section-inner { max-width: 1100px; margin: 0 auto; padding: 80px 40px; }
 
     .section-label {
       font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
@@ -284,63 +253,48 @@
       background-clip: text;
     }
 
-    /* ── GAME CARDS ── */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 20px;
     }
 
+    /* ── DÜZELTİLDİ: overflow:hidden kaldırıldı ── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 20px; padding: 28px 24px;
       display: flex; flex-direction: column; gap: 12px;
       transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
-      position: relative; overflow: hidden;
-    }
-    .card::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(124,58,237,0.04), transparent);
-      opacity: 0; transition: opacity 0.3s;
+      position: relative;
     }
     .card:hover {
       transform: translateY(-6px);
       border-color: rgba(124,58,237,0.4);
       box-shadow: 0 12px 48px rgba(124,58,237,0.18);
     }
-    .card:hover::before { opacity: 1; }
 
-    .card-icon {
-      font-size: 40px; line-height: 1;
-      margin-bottom: 4px;
-    }
-    .card-title {
-      font-size: 22px; font-weight: 800; font-family: 'Syne', sans-serif;
-      letter-spacing: -0.3px;
-    }
-    .card-desc {
-      font-size: 14px; color: var(--text-muted);
-      line-height: 1.65; flex: 1;
-    }
-    .card-footer {
-      display: flex; align-items: center;
-      justify-content: space-between; margin-top: 8px;
-    }
+    .card-icon { font-size: 40px; line-height: 1; margin-bottom: 4px; }
+    .card-title { font-size: 22px; font-weight: 800; font-family: 'Syne', sans-serif; letter-spacing: -0.3px; }
+    .card-desc { font-size: 14px; color: var(--text-muted); line-height: 1.65; flex: 1; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+
     .tag {
       font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
       padding: 4px 10px; border-radius: 6px;
       background: rgba(6,182,212,0.1); color: var(--secondary);
       letter-spacing: 0.5px; text-transform: uppercase;
     }
+
     .btn-play {
       font-size: 13px; font-weight: 700; font-family: 'Syne', sans-serif;
       padding: 8px 20px; border-radius: 8px;
       background: rgba(124,58,237,0.12); color: #c084fc;
       border: 1px solid rgba(124,58,237,0.3);
       cursor: pointer; text-decoration: none;
+      display: inline-block;
       transition: background 0.18s, box-shadow 0.18s, transform 0.18s, color 0.18s;
+      position: relative; z-index: 2;
     }
     .btn-play:hover {
       background: var(--primary); color: #fff;
@@ -348,7 +302,6 @@
       transform: translateY(-1px);
     }
 
-    /* ── ABOUT ── */
     .about-text {
       font-size: clamp(15px, 2vw, 17px);
       color: var(--text-muted); max-width: 600px;
@@ -367,14 +320,10 @@
       align-items: center; gap: 12px;
       transition: border-color 0.22s, transform 0.22s;
     }
-    .feature-card:hover {
-      border-color: rgba(6,182,212,0.35);
-      transform: translateY(-4px);
-    }
+    .feature-card:hover { border-color: rgba(6,182,212,0.35); transform: translateY(-4px); }
     .feature-icon { font-size: 32px; }
     .feature-label { font-size: 14px; font-weight: 700; font-family: 'Syne', sans-serif; }
 
-    /* ── CONTACT ── */
     .contact-wrap {
       display: grid;
       grid-template-columns: 1fr 2fr;
@@ -422,11 +371,7 @@
     }
     .form-success.visible { display: block; }
 
-    /* ── FOOTER ── */
-    footer {
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-    }
+    footer { background: var(--surface); border-top: 1px solid var(--border); }
     .footer-body {
       max-width: 1100px; margin: 0 auto;
       padding: 56px 40px 40px;
@@ -450,7 +395,6 @@
       font-size: 13px; color: var(--text-muted);
     }
 
-    /* ── MODALS ── */
     .modal-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0,0,0,0.8); z-index: 200;
@@ -496,7 +440,6 @@
     .modal-body a { color: var(--secondary); text-decoration: none; }
     .modal-body a:hover { text-decoration: underline; }
 
-    /* ── COOKIE ── */
     .cookie-banner {
       position: fixed; bottom: -120px; left: 0; right: 0;
       z-index: 150; background: #0e0e1e;
@@ -509,10 +452,7 @@
     .cookie-banner.visible { bottom: 0; }
     .cookie-text { font-size: 14px; color: var(--text-muted); flex: 1; min-width: 200px; }
     .cookie-actions { display: flex; align-items: center; gap: 16px; }
-    .cookie-learn {
-      font-size: 13px; font-weight: 600; color: var(--text-muted);
-      text-decoration: none; transition: color 0.2s;
-    }
+    .cookie-learn { font-size: 13px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
     .cookie-learn:hover { color: var(--secondary); }
     .cookie-accept {
       font-size: 13px; font-weight: 700; font-family: 'Syne', sans-serif;
@@ -522,7 +462,6 @@
     }
     .cookie-accept:hover { box-shadow: 0 0 20px var(--primary-glow); transform: translateY(-1px); }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .contact-wrap { grid-template-columns: 1fr; }
       .footer-body { grid-template-columns: 1fr 1fr; gap: 32px; padding: 40px 24px 32px; }
@@ -543,7 +482,6 @@
 </head>
 <body>
 
-  <!-- HEADER -->
   <header>
     <div class="header-logo">
       <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIHJ4PSI0MCIgZmlsbD0iIzA4MDgxMCIvPgogIDxyZWN0IHg9IjMyMCIgeT0iNDAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjM0MCIgeT0iNjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiIHJ4PSIxIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNTUiIHk9IjMwMCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgcng9IjEiIGZpbGw9IiMwNmI2ZDQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjMzMCIgeT0iMzEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNjAiIHk9IjcwIiB3aWR0aD0iNiIgaGVpZ2h0PSI2IiByeD0iMSIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC4yIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIxNzIiIHk9IjEwMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjIxNCIgeT0iMTAwIiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjU2IiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIyMTQiIHk9IjE0MiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMTg0IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzA2YjZkNCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMjY4IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjE0IiB5PSIyNjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIyNTYiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjI5NiIgeT0iMTA4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIzIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIxMDQiIHk9IjI3NiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMyIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC41Ii8+CiAgPHRleHQgeD0iMjAwIiB5PSIzNTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgSW1wYWN0LCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMyIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iNCI+Wk9SQkxJRlk8L3RleHQ+Cjwvc3ZnPgo=" height="48" alt="Zorblify">
@@ -566,49 +504,33 @@
     <a href="#contact" onclick="closeMobileNav()">Contact</a>
   </div>
 
-  <!-- HERO -->
   <div id="home">
     <section class="hero">
       <div class="hero-orb hero-orb-1"></div>
       <div class="hero-orb hero-orb-2"></div>
       <div class="hero-particles" id="particles"></div>
-
       <div class="hero-badge">
         <div class="hero-badge-dot"></div>
         3 Games Available Now
       </div>
-
       <div class="hero-wordmark">
         <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgODAwIDIwMCI+CiAgPHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSIyMDAiIHJ4PSIyMCIgZmlsbD0iIzA4MDgxMCIvPgogIDx0ZXh0IHg9IjEyMCIgeT0iMTc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIEltcGFjdCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxODAiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMDgiPlo8L3RleHQ+CiAgPHJlY3QgeD0iNjAiIHk9Ijk1IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iNjQwIiB5PSI5NSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0iIzA2YjZkNCIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIEltcGFjdCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI4MCIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2ZmZmZmZiIgbGV0dGVyLXNwYWNpbmc9IjIiPlpPUkJMSUZZPC90ZXh0PgogIDx0ZXh0IHg9IjQwMCIgeT0iMTU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1NTU1NTUiIGxldHRlci1zcGFjaW5nPSI4Ij5XRUIgR0FNRSBQTEFURk9STTwvdGV4dD4KPC9zdmc+Cg==" style="max-width:560px;width:100%" alt="Zorblify">
       </div>
-
       <p class="hero-subtitle">Free browser games. No download. No login. Just play.</p>
-
       <div class="hero-actions">
         <a href="#games" class="btn btn-primary">Browse Games</a>
         <a href="#about" class="btn btn-outline">Learn More</a>
       </div>
-
       <div class="stats-bar">
-        <div class="stat-item">
-          <div class="stat-value">3</div>
-          <div class="stat-label">Games</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">0</div>
-          <div class="stat-label">Downloads</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-value">Free</div>
-          <div class="stat-label">Always</div>
-        </div>
+        <div class="stat-item"><div class="stat-value">3</div><div class="stat-label">Games</div></div>
+        <div class="stat-item"><div class="stat-value">0</div><div class="stat-label">Downloads</div></div>
+        <div class="stat-item"><div class="stat-value">Free</div><div class="stat-label">Always</div></div>
       </div>
     </section>
   </div>
 
   <div class="section-divider"></div>
 
-  <!-- GAMES -->
   <div id="games">
     <div class="section-inner">
       <div class="section-label">Play Now</div>
@@ -647,32 +569,21 @@
 
   <div class="section-divider"></div>
 
-  <!-- ABOUT -->
   <div id="about">
     <div class="section-inner" style="text-align:center">
       <div class="section-label">About Us</div>
       <h2 class="section-title">What is <span>Zorblify?</span></h2>
       <p class="about-text">Zorblify is a free web game platform. Play instantly in your browser — no downloads, no accounts needed. New games added regularly.</p>
       <div class="features-grid">
-        <div class="feature-card">
-          <div class="feature-icon">♾️</div>
-          <div class="feature-label">Always Free</div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🔓</div>
-          <div class="feature-label">No Login</div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">📅</div>
-          <div class="feature-label">New Games Regularly</div>
-        </div>
+        <div class="feature-card"><div class="feature-icon">♾️</div><div class="feature-label">Always Free</div></div>
+        <div class="feature-card"><div class="feature-icon">🔓</div><div class="feature-label">No Login</div></div>
+        <div class="feature-card"><div class="feature-icon">📅</div><div class="feature-label">New Games Regularly</div></div>
       </div>
     </div>
   </div>
 
   <div class="section-divider"></div>
 
-  <!-- CONTACT -->
   <div id="contact">
     <div class="section-inner" style="text-align:center">
       <div class="section-label">Say Hello</div>
@@ -715,7 +626,6 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-body">
       <div class="footer-col footer-col-brand">
@@ -745,7 +655,6 @@
     </div>
   </footer>
 
-  <!-- PRIVACY POLICY MODAL -->
   <div class="modal-overlay" id="privacyModal" onclick="closeModalOnOverlay(event,'privacyModal')">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
       <button class="modal-close" onclick="closeModal('privacyModal')" aria-label="Close">&times;</button>
@@ -768,7 +677,6 @@
     </div>
   </div>
 
-  <!-- TERMS OF SERVICE MODAL -->
   <div class="modal-overlay" id="tosModal" onclick="closeModalOnOverlay(event,'tosModal')">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tosTitle">
       <button class="modal-close" onclick="closeModal('tosModal')" aria-label="Close">&times;</button>
@@ -795,7 +703,6 @@
     </div>
   </div>
 
-  <!-- COOKIE NOTICE -->
   <div class="cookie-banner" id="cookieBanner">
     <div class="cookie-text">We use cookies to improve your experience and serve relevant ads.</div>
     <div class="cookie-actions">
