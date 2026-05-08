@@ -6,74 +6,25 @@
   <title>Volt Grid — Zorblify</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: #080810;
-      font-family: Arial, sans-serif;
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .back-btn {
-      position: fixed; top: 16px; left: 16px; z-index: 999;
-      background: rgba(124,58,237,0.85); color: #fff;
-      text-decoration: none; padding: 8px 16px; border-radius: 8px;
-      font-size: 14px; font-weight: 600;
-      border: 1px solid rgba(124,58,237,0.5);
-    }
-
+    body { background: #080810; font-family: Arial, sans-serif; color: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .back-btn { position: fixed; top: 16px; left: 16px; z-index: 999; background: rgba(124,58,237,0.85); color: #fff; text-decoration: none; padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; border: 1px solid rgba(124,58,237,0.5); }
     .screen { display: none; flex-direction: column; align-items: center; width: 100%; max-width: 460px; padding: 20px 16px; }
     .screen.active { display: flex; }
-
     .title { font-size: 30px; font-weight: 900; color: #7c3aed; text-shadow: 0 0 20px rgba(124,58,237,0.7); letter-spacing: 2px; margin-bottom: 4px; }
     .subtitle { font-size: 13px; color: #555; margin-bottom: 20px; }
     .btn-primary { background: #7c3aed; color: #fff; border: none; padding: 11px 24px; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all .15s; margin: 4px; }
     .btn-primary:hover { background: #6d28d9; transform: translateY(-1px); }
     .btn-secondary { background: transparent; color: #888; border: 1px solid #333; padding: 9px 18px; border-radius: 10px; font-size: 13px; cursor: pointer; transition: all .15s; margin: 4px; }
     .btn-secondary:hover { border-color: #7c3aed; color: #fff; }
-
-    /* GİRİŞ */
-    .name-input {
-      width: 100%; max-width: 280px; padding: 12px 16px;
-      background: #0f0f1a; border: 1.5px solid #7c3aed;
-      border-radius: 10px; color: #fff; font-size: 16px;
-      text-align: center; outline: none; margin-bottom: 8px;
-    }
+    .name-input { width: 100%; max-width: 280px; padding: 12px 16px; background: #0f0f1a; border: 1.5px solid #7c3aed; border-radius: 10px; color: #fff; font-size: 16px; text-align: center; outline: none; margin-bottom: 8px; }
     .name-input::placeholder { color: #444; }
     .name-error { font-size: 12px; color: #ef4444; margin-bottom: 10px; height: 16px; }
-
-    /* NASIL OYNANIR KUTUSU */
-    .how-to-box {
-      width: 100%; max-width: 340px;
-      background: rgba(124,58,237,0.08);
-      border: 1px solid rgba(124,58,237,0.25);
-      border-radius: 14px; padding: 16px 18px;
-      margin-bottom: 18px;
-    }
-    .how-to-title {
-      font-size: 13px; font-weight: 700; color: #7c3aed;
-      letter-spacing: 1px; margin-bottom: 12px;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .how-to-step {
-      display: flex; align-items: flex-start; gap: 10px;
-      margin-bottom: 10px; font-size: 13px; color: #aaa; line-height: 1.5;
-    }
+    .how-to-box { width: 100%; max-width: 340px; background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.25); border-radius: 14px; padding: 16px 18px; margin-bottom: 18px; }
+    .how-to-title { font-size: 13px; font-weight: 700; color: #7c3aed; letter-spacing: 1px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .how-to-step { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 13px; color: #aaa; line-height: 1.5; }
     .how-to-step:last-child { margin-bottom: 0; }
-    .step-icon {
-      width: 26px; height: 26px; border-radius: 50%;
-      background: rgba(124,58,237,0.2); border: 1px solid rgba(124,58,237,0.4);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; flex-shrink: 0; margin-top: 1px;
-    }
-    .how-to-tip {
-      margin-top: 12px; padding-top: 10px;
-      border-top: 1px solid rgba(124,58,237,0.15);
-      font-size: 12px; color: #06b6d4; line-height: 1.5;
-    }
-
-    /* SEVİYE SEÇİM */
+    .step-icon { width: 26px; height: 26px; border-radius: 50%; background: rgba(124,58,237,0.2); border: 1px solid rgba(124,58,237,0.4); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+    .how-to-tip { margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(124,58,237,0.15); font-size: 12px; color: #06b6d4; line-height: 1.5; }
     .level-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; width: 100%; max-width: 300px; margin-bottom: 16px; }
     .level-btn { aspect-ratio: 1; border-radius: 10px; border: none; cursor: pointer; font-size: 12px; font-weight: 700; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; transition: transform .15s; }
     .level-btn:hover:not(.locked) { transform: scale(1.08); }
@@ -81,8 +32,6 @@
     .level-btn.completed { background: #0f1f0f; color: #4ade80; border: 1.5px solid #1D9E75; }
     .level-btn.locked { background: #0d0d0d; color: #2a2a2a; border: 1.5px solid #1a1a1a; cursor: not-allowed; }
     .level-stars { font-size: 8px; }
-
-    /* HUD */
     .hud { display: flex; justify-content: space-around; width: 100%; max-width: 340px; margin-bottom: 10px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid #1a1a2e; }
     .hud-item { text-align: center; }
     .hud-label { font-size: 10px; color: #444; letter-spacing: 1px; text-transform: uppercase; }
@@ -90,46 +39,23 @@
     .hud-value.purple { color: #7c3aed; }
     .hud-value.cyan { color: #06b6d4; }
     .hud-value.green { color: #4ade80; }
-
-    /* IZGARA */
     .grid-wrap { display: grid; gap: 7px; padding: 14px; background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px solid rgba(124,58,237,0.15); margin-bottom: 14px; }
-    .cell {
-      width: 54px; height: 54px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; font-weight: 900; cursor: pointer;
-      transition: transform .1s; border: 2px solid transparent;
-      user-select: none;
-    }
+    .cell { width: 54px; height: 54px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; cursor: pointer; transition: transform .1s; border: 2px solid transparent; user-select: none; }
     .cell:hover:not(.empty) { transform: scale(1.07); }
     .cell.empty { background: #0a0a14; border-color: #131320; cursor: default; }
     .e1 { background: #130a2e; border-color: #4c1d95; color: #c4b5fd; box-shadow: inset 0 0 8px rgba(124,58,237,0.3); }
     .e2 { background: #0a1428; border-color: #1e3a8a; color: #93c5fd; box-shadow: inset 0 0 8px rgba(59,130,246,0.3); }
     .e3 { background: #0a2010; border-color: #14532d; color: #86efac; box-shadow: inset 0 0 8px rgba(34,197,94,0.3); }
     .e4 { background: #201400; border-color: #78350f; color: #fcd34d; box-shadow: inset 0 0 8px rgba(234,179,8,0.3); }
-
-    @keyframes pop {
-      0%   { transform: scale(1); }
-      35%  { transform: scale(1.4); filter: brightness(2.5); }
-      70%  { transform: scale(0.9); }
-      100% { transform: scale(1); }
-    }
-    @keyframes receive {
-      0%   { transform: scale(1); }
-      50%  { transform: scale(1.18); filter: brightness(1.8); }
-      100% { transform: scale(1); }
-    }
-    .popping   { animation: pop .35s ease forwards; }
+    @keyframes pop { 0% { transform: scale(1); } 35% { transform: scale(1.4); filter: brightness(2.5); } 70% { transform: scale(0.9); } 100% { transform: scale(1); } }
+    @keyframes receive { 0% { transform: scale(1); } 50% { transform: scale(1.18); filter: brightness(1.8); } 100% { transform: scale(1); } }
+    .popping { animation: pop .35s ease forwards; }
     .receiving { animation: receive .25s ease forwards; }
-
     .game-msg { font-size: 13px; color: #06b6d4; height: 18px; margin-bottom: 6px; font-weight: 600; letter-spacing: 1px; }
-
-    /* TAMAMLAMA */
-    .complete-icon  { font-size: 52px; margin-bottom: 6px; }
+    .complete-icon { font-size: 52px; margin-bottom: 6px; }
     .complete-title { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
-    .stars-row      { font-size: 34px; letter-spacing: 6px; margin: 8px 0; }
-    .complete-info  { font-size: 13px; color: #666; margin-bottom: 20px; text-align: center; line-height: 1.9; }
-
-    /* SCOREBOARD */
+    .stars-row { font-size: 34px; letter-spacing: 6px; margin: 8px 0; }
+    .complete-info { font-size: 13px; color: #666; margin-bottom: 20px; text-align: center; line-height: 1.9; }
     .scoreboard { width: 100%; max-width: 360px; }
     .sb-tabs { display: flex; gap: 4px; margin-bottom: 10px; }
     .sb-tab { flex: 1; padding: 7px; background: #0f0f1a; border: 1px solid #222; border-radius: 8px; color: #666; font-size: 12px; cursor: pointer; text-align: center; transition: all .15s; }
@@ -138,186 +64,112 @@
     .sb-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; margin-bottom: 4px; font-size: 13px; }
     .sb-row:nth-child(odd) { background: rgba(255,255,255,0.02); }
     .sb-row.me { background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3); }
-    .sb-rank  { width: 24px; text-align: center; font-weight: 700; color: #555; font-size: 12px; flex-shrink: 0; }
-    .sb-name  { flex: 1; color: #ccc; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .sb-rank { width: 24px; text-align: center; font-weight: 700; color: #555; font-size: 12px; flex-shrink: 0; }
+    .sb-name { flex: 1; color: #ccc; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .sb-stars { color: #fbbf24; font-size: 11px; white-space: nowrap; }
-    .sb-empty   { text-align: center; color: #333; font-size: 13px; padding: 24px; }
+    .sb-empty { text-align: center; color: #333; font-size: 13px; padding: 24px; }
     .sb-loading { text-align: center; color: #444; font-size: 13px; padding: 24px; }
-
-    /* TOAST */
-    .toast {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-      background: #1a1040; border: 1px solid #7c3aed; color: #a78bfa;
-      padding: 10px 20px; border-radius: 10px; font-size: 13px;
-      z-index: 9999; opacity: 0; transition: opacity .3s;
-      pointer-events: none; white-space: nowrap;
-    }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1040; border: 1px solid #7c3aed; color: #a78bfa; padding: 10px 20px; border-radius: 10px; font-size: 13px; z-index: 9999; opacity: 0; transition: opacity .3s; pointer-events: none; white-space: nowrap; }
     .toast.show { opacity: 1; }
   </style>
 </head>
 <body>
-
 <a href="/" class="back-btn">← Zorblify</a>
 <div class="toast" id="toast"></div>
 
-<!-- GİRİŞ EKRANI -->
 <div class="screen active" id="nameScreen">
   <div class="title">⚡ VOLT GRID</div>
-  <div class="subtitle">Enerjiyi zincirle · Izgarayı temizle</div>
-
-  <!-- NASIL OYNANIR -->
+  <div class="subtitle">Chain the energy · Clear the grid</div>
   <div class="how-to-box">
-    <div class="how-to-title">⚡ Nasıl Oynanır?</div>
-    <div class="how-to-step">
-      <div class="step-icon">1</div>
-      <div>Izgaradaki <strong style="color:#c4b5fd">enerjili hücrelere</strong> tıkla. Her hücrenin içindeki <strong style="color:#fcd34d">sayı</strong> enerji seviyesini gösterir.</div>
-    </div>
-    <div class="how-to-step">
-      <div class="step-icon">2</div>
-      <div>Tıkladığın hücre <strong style="color:#c4b5fd">boşalır</strong> ve enerjiyi 4 komşusuna (<strong style="color:#86efac">yukarı, aşağı, sol, sağ</strong>) dağıtır.</div>
-    </div>
-    <div class="how-to-step">
-      <div class="step-icon">3</div>
-      <div>Komşu hücre <strong style="color:#fcd34d">4 enerjiye</strong> ulaşırsa o da <strong style="color:#f87171">zincirleme patlar!</strong> Domino etkisi yaratmaya çalış.</div>
-    </div>
-    <div class="how-to-step">
-      <div class="step-icon">4</div>
-      <div>Tüm ızgara boşalınca seviye biter. <strong style="color:#fbbf24">Az hamlede</strong> bitirirsen daha fazla yıldız kazanırsın!</div>
-    </div>
-    <div class="how-to-tip">
-      💡 <strong>İpucu:</strong> Önce hangi hücrenin zincirleme en çok patlamayı tetikleyeceğini hesapla. Doğru sıra her şeyi değiştirir!
-    </div>
+    <div class="how-to-title">⚡ How to Play</div>
+    <div class="how-to-step"><div class="step-icon">1</div><div>Tap the <strong style="color:#c4b5fd">energized cells</strong> on the grid. The <strong style="color:#fcd34d">number</strong> inside shows the energy level.</div></div>
+    <div class="how-to-step"><div class="step-icon">2</div><div>The cell you tap <strong style="color:#c4b5fd">discharges</strong> and distributes its energy to 4 neighbors (<strong style="color:#86efac">up, down, left, right</strong>).</div></div>
+    <div class="how-to-step"><div class="step-icon">3</div><div>If a neighbor reaches <strong style="color:#fcd34d">4 energy</strong>, it <strong style="color:#f87171">chain-explodes too!</strong> Try to create a domino effect.</div></div>
+    <div class="how-to-step"><div class="step-icon">4</div><div>The level ends when the grid is cleared. Finish in <strong style="color:#fbbf24">fewer moves</strong> to earn more stars!</div></div>
+    <div class="how-to-tip">💡 <strong>Tip:</strong> Figure out which cell will trigger the most chain reactions. The right order changes everything!</div>
   </div>
-
-  <input class="name-input" id="nameInput" type="text" maxlength="16"
-    placeholder="Kullanıcı adını gir..." autocomplete="off"
-    onkeydown="if(event.key==='Enter') saveName()">
+  <input class="name-input" id="nameInput" type="text" maxlength="16" placeholder="Enter your username..." autocomplete="off" onkeydown="if(event.key==='Enter') saveName()">
   <div class="name-error" id="nameError"></div>
-  <button class="btn-primary" onclick="saveName()">Başla →</button>
-  <div style="margin-top:12px">
-    <button class="btn-secondary" onclick="showScoreboard()">🏆 Skor Tablosu</button>
-  </div>
+  <button class="btn-primary" onclick="saveName()">Start →</button>
+  <div style="margin-top:12px"><button class="btn-secondary" onclick="showScoreboard()">🏆 Leaderboard</button></div>
 </div>
 
-<!-- MENÜ EKRANI -->
 <div class="screen" id="menuScreen">
   <div class="title">⚡ VOLT GRID</div>
-  <div class="subtitle" id="menuWelcome">Hoş geldin!</div>
+  <div class="subtitle" id="menuWelcome">Welcome!</div>
   <div class="level-grid" id="levelGrid"></div>
-  <div style="font-size:11px;color:#333;text-align:center;margin-bottom:14px">
-    ★★★ = par hamlede &nbsp;|&nbsp; ★★ = par+2 &nbsp;|&nbsp; ★ = tamamlandı
-  </div>
+  <div style="font-size:11px;color:#333;text-align:center;margin-bottom:14px">★★★ = par moves &nbsp;|&nbsp; ★★ = par+2 &nbsp;|&nbsp; ★ = completed</div>
   <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
-    <button class="btn-secondary" onclick="showScoreboard()">🏆 Skor Tablosu</button>
-    <button class="btn-secondary" onclick="showHowTo()">❓ Nasıl Oynanır</button>
-    <button class="btn-secondary" onclick="changeName()">✏️ İsim Değiştir</button>
+    <button class="btn-secondary" onclick="showScoreboard()">🏆 Leaderboard</button>
+    <button class="btn-secondary" onclick="showHowTo()">❓ How to Play</button>
+    <button class="btn-secondary" onclick="changeName()">✏️ Change Name</button>
   </div>
 </div>
 
-<!-- NASIL OYNANIR EKRANI (menüden erişim) -->
 <div class="screen" id="howToScreen">
-  <div class="title" style="font-size:22px;margin-bottom:4px">❓ Nasıl Oynanır?</div>
-  <div class="subtitle">Volt Grid rehberi</div>
+  <div class="title" style="font-size:22px;margin-bottom:4px">❓ How to Play</div>
+  <div class="subtitle">Volt Grid guide</div>
   <div class="how-to-box" style="margin-bottom:20px">
-    <div class="how-to-step">
-      <div class="step-icon">1</div>
-      <div>Izgaradaki <strong style="color:#c4b5fd">enerjili hücrelere</strong> tıkla. Her hücrenin içindeki <strong style="color:#fcd34d">sayı</strong> enerji seviyesini gösterir.</div>
-    </div>
-    <div class="how-to-step">
-      <div class="step-icon">2</div>
-      <div>Tıkladığın hücre <strong style="color:#c4b5fd">boşalır</strong> ve enerjiyi 4 komşusuna (<strong style="color:#86efac">yukarı, aşağı, sol, sağ</strong>) dağıtır.</div>
-    </div>
-    <div class="how-to-step">
-      <div class="step-icon">3</div>
-      <div>Komşu hücre <strong style="color:#fcd34d">4 enerjiye</strong> ulaşırsa o da <strong style="color:#f87171">zincirleme patlar!</strong> Domino etkisi yaratmaya çalış.</div>
-    </div>
-    <div class="how-to-step">
-      <div class="step-icon">4</div>
-      <div>Tüm ızgara boşalınca seviye biter. <strong style="color:#fbbf24">Az hamlede</strong> bitirirsen daha fazla yıldız kazanırsın!</div>
-    </div>
-    <div class="how-to-step">
-      <div class="step-icon">★</div>
-      <div><strong style="color:#fbbf24">★★★</strong> = Tam par hamlede &nbsp; <strong style="color:#fbbf24">★★</strong> = Par+2 hamlede &nbsp; <strong style="color:#fbbf24">★</strong> = Tamamlandı</div>
-    </div>
-    <div class="how-to-tip">
-      💡 <strong>Strateji ipucu:</strong> Köşe ve kenar hücrelerinin komşusu az olduğu için patlamaya daha az katkı sağlar. Orta bölgedeki yüksek enerjili hücreleri önce tetikle!
-    </div>
+    <div class="how-to-step"><div class="step-icon">1</div><div>Tap the <strong style="color:#c4b5fd">energized cells</strong> on the grid. The <strong style="color:#fcd34d">number</strong> inside shows the energy level.</div></div>
+    <div class="how-to-step"><div class="step-icon">2</div><div>The cell you tap <strong style="color:#c4b5fd">discharges</strong> and distributes its energy to 4 neighbors (<strong style="color:#86efac">up, down, left, right</strong>).</div></div>
+    <div class="how-to-step"><div class="step-icon">3</div><div>If a neighbor reaches <strong style="color:#fcd34d">4 energy</strong>, it <strong style="color:#f87171">chain-explodes too!</strong> Try to create a domino effect.</div></div>
+    <div class="how-to-step"><div class="step-icon">4</div><div>The level ends when the grid is cleared. Finish in <strong style="color:#fbbf24">fewer moves</strong> to earn more stars!</div></div>
+    <div class="how-to-step"><div class="step-icon">★</div><div><strong style="color:#fbbf24">★★★</strong> = Par moves &nbsp; <strong style="color:#fbbf24">★★</strong> = Par+2 moves &nbsp; <strong style="color:#fbbf24">★</strong> = Completed</div></div>
+    <div class="how-to-tip">💡 <strong>Strategy tip:</strong> Corner and edge cells have fewer neighbors. Trigger high-energy cells in the center first!</div>
   </div>
-  <button class="btn-secondary" onclick="showMenu()">← Menüye Dön</button>
+  <button class="btn-secondary" onclick="showMenu()">← Back to Menu</button>
 </div>
 
-<!-- OYUN EKRANI -->
 <div class="screen" id="gameScreen">
   <div class="hud">
-    <div class="hud-item">
-      <div class="hud-label">Seviye</div>
-      <div class="hud-value purple" id="hudLevel">1</div>
-    </div>
-    <div class="hud-item">
-      <div class="hud-label">Hamle</div>
-      <div class="hud-value" id="hudMoves">0</div>
-    </div>
-    <div class="hud-item">
-      <div class="hud-label">Par</div>
-      <div class="hud-value cyan" id="hudPar">-</div>
-    </div>
-    <div class="hud-item">
-      <div class="hud-label">En İyi</div>
-      <div class="hud-value green" id="hudBest">-</div>
-    </div>
+    <div class="hud-item"><div class="hud-label">Level</div><div class="hud-value purple" id="hudLevel">1</div></div>
+    <div class="hud-item"><div class="hud-label">Moves</div><div class="hud-value" id="hudMoves">0</div></div>
+    <div class="hud-item"><div class="hud-label">Par</div><div class="hud-value cyan" id="hudPar">-</div></div>
+    <div class="hud-item"><div class="hud-label">Best</div><div class="hud-value green" id="hudBest">-</div></div>
   </div>
   <div class="game-msg" id="gameMsg"></div>
   <div class="grid-wrap" id="gridWrap"></div>
   <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
-    <button class="btn-secondary" onclick="restartLevel()">↺ Yeniden</button>
+    <button class="btn-secondary" onclick="restartLevel()">↺ Restart</button>
     <button class="btn-secondary" onclick="showHowToInGame()">❓</button>
-    <button class="btn-secondary" onclick="showMenu()">☰ Menü</button>
+    <button class="btn-secondary" onclick="showMenu()">☰ Menu</button>
   </div>
 </div>
 
-<!-- TAMAMLAMA EKRANI -->
 <div class="screen" id="completeScreen">
   <div class="complete-icon" id="completeIcon">🏆</div>
-  <div class="complete-title" id="completeTitle">Tamamlandı!</div>
+  <div class="complete-title" id="completeTitle">Completed!</div>
   <div class="stars-row" id="completeStars">★★★</div>
   <div class="complete-info" id="completeInfo"></div>
   <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:16px">
-    <button class="btn-primary" id="nextLevelBtn" onclick="nextLevel()">Sonraki →</button>
-    <button class="btn-secondary" onclick="restartLevel()">↺ Tekrar</button>
-    <button class="btn-secondary" onclick="showMenu()">☰ Menü</button>
+    <button class="btn-primary" id="nextLevelBtn" onclick="nextLevel()">Next →</button>
+    <button class="btn-secondary" onclick="restartLevel()">↺ Again</button>
+    <button class="btn-secondary" onclick="showMenu()">☰ Menu</button>
   </div>
 </div>
 
-<!-- SCOREBOARD EKRANI -->
 <div class="screen" id="scoreScreen">
-  <div class="title" style="font-size:22px;margin-bottom:4px">🏆 Skor Tablosu</div>
-  <div class="subtitle">Tüm zamanların en iyileri</div>
+  <div class="title" style="font-size:22px;margin-bottom:4px">🏆 Leaderboard</div>
+  <div class="subtitle">All-time best scores</div>
   <div class="scoreboard">
     <div class="sb-tabs">
-      <div class="sb-tab active" onclick="switchTab('stars',this)">⭐ Toplam Yıldız</div>
-      <div class="sb-tab" onclick="switchTab('levels',this)">📋 Tamamlanan</div>
+      <div class="sb-tab active" onclick="switchTab('stars',this)">⭐ Total Stars</div>
+      <div class="sb-tab" onclick="switchTab('levels',this)">📋 Completed</div>
     </div>
-    <div class="sb-list" id="sbList"><div class="sb-loading">⚡ Yükleniyor...</div></div>
+    <div class="sb-list" id="sbList"><div class="sb-loading">⚡ Loading...</div></div>
   </div>
-  <div style="margin-top:14px">
-    <button class="btn-secondary" onclick="showMenu()">← Geri</button>
-  </div>
+  <div style="margin-top:14px"><button class="btn-secondary" onclick="showMenu()">← Back</button></div>
 </div>
 
 <script>
 const SUPABASE_URL = 'https://lscqqfeqpbfmcccifrwj.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_HPGXHwa51dk_1nmAqoeoXA_6zCzOVzM';
-const GAME_ID      = 'volt-grid';
-const rateLimit    = {};
+const GAME_ID = 'volt-grid';
+const rateLimit = {};
 
 async function sbFetch(path, options = {}) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Content-Type': 'application/json',
-      'Prefer': options.prefer || '',
-    },
+  const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': options.prefer || '' },
     ...options,
   });
   if (!res.ok) throw new Error(await res.text());
@@ -325,129 +177,87 @@ async function sbFetch(path, options = {}) {
 }
 
 async function saveScoreToSupabase(levelNumber, stars, moves) {
-  const now = Date.now();
-  const key = playerName + levelNumber;
+  const now = Date.now(), key = playerName + levelNumber;
   if (rateLimit[key] && now - rateLimit[key] < 3000) return;
   rateLimit[key] = now;
   try {
-    await sbFetch('scores', {
-      method: 'POST',
-      prefer: 'return=minimal',
-      body: JSON.stringify({ player_name: playerName, game_id: GAME_ID, level_number: levelNumber, stars, moves }),
-    });
-    showToast('⭐ Skor kaydedildi!');
-  } catch(e) { console.warn('Skor kaydedilemedi:', e); }
+    await sbFetch('scores', { method: 'POST', prefer: 'return=minimal', body: JSON.stringify({ player_name: playerName, game_id: GAME_ID, level_number: levelNumber, stars, moves }) });
+    showToast('\u2b50 Score saved!');
+  } catch(e) { console.warn('Could not save score:', e); }
 }
 
 async function fetchLeaderboard(sortBy = 'stars') {
   try {
     const col = sortBy === 'stars' ? 'total_stars' : 'levels_completed';
-    return await sbFetch(`leaderboard?game_id=eq.${GAME_ID}&order=${col}.desc&limit=10`) || [];
-  } catch(e) { console.warn('Scoreboard yüklenemedi:', e); return []; }
+    return await sbFetch('leaderboard?game_id=eq.' + GAME_ID + '&order=' + col + '.desc&limit=10') || [];
+  } catch(e) { console.warn('Could not load leaderboard:', e); return []; }
 }
 
-// SEVİYELER
 const LEVELS = [
-  { size: 3, par: 1, grid: [0,0,0, 0,4,0, 0,0,0] },
-  { size: 3, par: 2, grid: [0,4,0, 0,0,0, 0,4,0] },
-  { size: 3, par: 4, grid: [4,0,4, 0,0,0, 4,0,4] },
-  { size: 4, par: 2, grid: [0,0,0,0, 0,3,3,0, 0,3,3,0, 0,0,0,0] },
-  { size: 4, par: 3, grid: [4,0,0,4, 0,2,2,0, 0,2,2,0, 4,0,0,4] },
-  { size: 4, par: 3, grid: [0,4,0,4, 4,0,4,0, 0,4,0,4, 4,0,4,0] },
-  { size: 4, par: 4, grid: [3,1,1,3, 1,3,3,1, 1,3,3,1, 3,1,1,3] },
-  { size: 4, par: 4, grid: [4,0,4,0, 0,4,0,4, 4,0,4,0, 0,4,0,4] },
-  { size: 5, par: 3, grid: [0,0,4,0,0, 0,0,0,0,0, 4,0,0,0,4, 0,0,0,0,0, 0,0,4,0,0] },
-  { size: 5, par: 4, grid: [4,0,0,0,4, 0,3,0,3,0, 0,0,4,0,0, 0,3,0,3,0, 4,0,0,0,4] },
-  { size: 5, par: 5, grid: [2,2,2,2,2, 2,0,0,0,2, 2,0,4,0,2, 2,0,0,0,2, 2,2,2,2,2] },
-  { size: 5, par: 7, grid: [3,2,3,2,3, 2,3,2,3,2, 3,2,3,2,3, 2,3,2,3,2, 3,2,3,2,3] },
+  { size: 3, par: 1, grid: [0,0,0,0,4,0,0,0,0] },
+  { size: 3, par: 2, grid: [0,4,0,0,0,0,0,4,0] },
+  { size: 3, par: 4, grid: [4,0,4,0,0,0,4,0,4] },
+  { size: 4, par: 2, grid: [0,0,0,0,0,3,3,0,0,3,3,0,0,0,0,0] },
+  { size: 4, par: 3, grid: [4,0,0,4,0,2,2,0,0,2,2,0,4,0,0,4] },
+  { size: 4, par: 3, grid: [0,4,0,4,4,0,4,0,0,4,0,4,4,0,4,0] },
+  { size: 4, par: 4, grid: [3,1,1,3,1,3,3,1,1,3,3,1,3,1,1,3] },
+  { size: 4, par: 4, grid: [4,0,4,0,0,4,0,4,4,0,4,0,0,4,0,4] },
+  { size: 5, par: 3, grid: [0,0,4,0,0,0,0,0,0,0,4,0,0,0,4,0,0,0,0,0,0,0,4,0,0] },
+  { size: 5, par: 4, grid: [4,0,0,0,4,0,3,0,3,0,0,0,4,0,0,0,3,0,3,0,4,0,0,0,4] },
+  { size: 5, par: 5, grid: [2,2,2,2,2,2,0,0,0,2,2,0,4,0,2,2,0,0,0,2,2,2,2,2,2] },
+  { size: 5, par: 7, grid: [3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3] },
 ];
 
 const EXPLODE_AT = 4;
-let playerName   = localStorage.getItem('vg_name') || '';
-let progress     = JSON.parse(localStorage.getItem('vg_progress') || '{}');
+let playerName = localStorage.getItem('vg_name') || '';
+let progress = JSON.parse(localStorage.getItem('vg_progress') || '{}');
 let currentLevel = 0, moves = 0, grid = [], size = 0;
-let isAnimating  = false, currentTab = 'stars';
-let savedScreen  = 'menuScreen'; // oyun içi ❓ için
+let isAnimating = false, currentTab = 'stars';
 
-// İSİM
 function saveName() {
   const raw = document.getElementById('nameInput').value.trim();
   const err = document.getElementById('nameError');
-  if (raw.length < 2) { err.textContent = 'En az 2 karakter gir'; return; }
-  if (raw.length > 16) { err.textContent = 'En fazla 16 karakter'; return; }
-  if (!/^[a-zA-Z0-9_ğüşıöçĞÜŞİÖÇ ]+$/.test(raw)) { err.textContent = 'Sadece harf, rakam ve _ kullan'; return; }
+  if (raw.length < 2) { err.textContent = 'At least 2 characters required'; return; }
+  if (raw.length > 16) { err.textContent = 'Maximum 16 characters'; return; }
+  if (!/^[a-zA-Z0-9_ ]+$/.test(raw)) { err.textContent = 'Only letters, numbers and _ allowed'; return; }
   err.textContent = '';
   playerName = raw;
   localStorage.setItem('vg_name', raw);
   showMenu();
 }
-function changeName() {
-  document.getElementById('nameInput').value = playerName;
-  document.getElementById('nameError').textContent = '';
-  showScreen('nameScreen');
-}
-
-// HOW TO
+function changeName() { document.getElementById('nameInput').value = playerName; document.getElementById('nameError').textContent = ''; showScreen('nameScreen'); }
 function showHowTo() { showScreen('howToScreen'); }
-function showHowToInGame() {
-  savedScreen = 'gameScreen';
-  showScreen('howToScreen');
-  document.querySelector('#howToScreen .btn-secondary').onclick = () => showScreen('gameScreen');
-}
-
-// MENÜ
-function showMenu() {
-  document.getElementById('menuWelcome').textContent = 'Hoş geldin, ' + playerName + '!';
-  renderLevelGrid();
-  showScreen('menuScreen');
-}
-
+function showHowToInGame() { showScreen('howToScreen'); document.querySelector('#howToScreen .btn-secondary').onclick = () => showScreen('gameScreen'); }
+function showMenu() { document.getElementById('menuWelcome').textContent = 'Welcome, ' + playerName + '!'; renderLevelGrid(); showScreen('menuScreen'); }
 function renderLevelGrid() {
   const lg = document.getElementById('levelGrid');
   lg.innerHTML = '';
   LEVELS.forEach((_, i) => {
     const btn = document.createElement('button');
-    const stars    = progress[i];
-    const unlocked = i === 0 || progress[i-1] !== undefined;
-    if (!unlocked) {
-      btn.className = 'level-btn locked';
-      btn.innerHTML = '<span style="font-size:14px">🔒</span>';
-    } else if (stars !== undefined) {
-      btn.className = 'level-btn completed';
-      btn.innerHTML = `<span>${i+1}</span><span class="level-stars">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</span>`;
-    } else {
-      btn.className = 'level-btn unlocked';
-      btn.innerHTML = `<span>${i+1}</span>`;
-    }
+    const stars = progress[i], unlocked = i === 0 || progress[i-1] !== undefined;
+    if (!unlocked) { btn.className = 'level-btn locked'; btn.innerHTML = '<span style="font-size:14px">\u{1F512}</span>'; }
+    else if (stars !== undefined) { btn.className = 'level-btn completed'; btn.innerHTML = '<span>' + (i+1) + '</span><span class="level-stars">' + '\u2605'.repeat(stars) + '\u2606'.repeat(3-stars) + '</span>'; }
+    else { btn.className = 'level-btn unlocked'; btn.innerHTML = '<span>' + (i+1) + '</span>'; }
     if (unlocked) btn.onclick = () => startLevel(i);
     lg.appendChild(btn);
   });
 }
-
-// SEVİYE
 function startLevel(idx) {
   currentLevel = idx; moves = 0; isAnimating = false;
-  const lvl = LEVELS[idx];
-  size = lvl.size; grid = [...lvl.grid];
+  const lvl = LEVELS[idx]; size = lvl.size; grid = [...lvl.grid];
   document.getElementById('hudLevel').textContent = idx + 1;
   document.getElementById('hudMoves').textContent = '0';
-  document.getElementById('hudPar').textContent   = lvl.par;
+  document.getElementById('hudPar').textContent = lvl.par;
   const best = progress[idx];
-  document.getElementById('hudBest').textContent  = best !== undefined ? '★'.repeat(best)+'☆'.repeat(3-best) : '—';
-  document.getElementById('gameMsg').textContent  = '';
-  renderGrid();
-  showScreen('gameScreen');
+  document.getElementById('hudBest').textContent = best !== undefined ? '\u2605'.repeat(best) + '\u2606'.repeat(3-best) : '\u2014';
+  document.getElementById('gameMsg').textContent = '';
+  renderGrid(); showScreen('gameScreen');
 }
 function restartLevel() { startLevel(currentLevel); }
-function nextLevel() {
-  if (currentLevel + 1 < LEVELS.length) startLevel(currentLevel + 1);
-  else showMenu();
-}
-
-// IZGARA
+function nextLevel() { if (currentLevel + 1 < LEVELS.length) startLevel(currentLevel + 1); else showMenu(); }
 function renderGrid() {
   const wrap = document.getElementById('gridWrap');
-  wrap.style.gridTemplateColumns = `repeat(${size}, 54px)`;
+  wrap.style.gridTemplateColumns = 'repeat(' + size + ', 54px)';
   wrap.innerHTML = '';
   grid.forEach((val, i) => {
     const cell = document.createElement('div');
@@ -457,27 +267,13 @@ function renderGrid() {
     wrap.appendChild(cell);
   });
 }
-function applyCell(cell, val) {
-  cell.className = 'cell ' + (val === 0 ? 'empty' : 'e' + Math.min(val, 4));
-  cell.textContent = val > 0 ? val : '';
-}
-function refreshCell(idx) {
-  const cell = document.getElementById('cell_' + idx);
-  if (!cell) return;
-  applyCell(cell, grid[idx]);
-  cell.onclick = grid[idx] > 0 ? () => handleClick(idx) : null;
-}
-
-// TIKLAMA
+function applyCell(cell, val) { cell.className = 'cell ' + (val === 0 ? 'empty' : 'e' + Math.min(val, 4)); cell.textContent = val > 0 ? val : ''; }
+function refreshCell(idx) { const cell = document.getElementById('cell_' + idx); if (!cell) return; applyCell(cell, grid[idx]); cell.onclick = grid[idx] > 0 ? () => handleClick(idx) : null; }
 function handleClick(idx) {
   if (isAnimating || grid[idx] <= 0) return;
-  moves++;
-  document.getElementById('hudMoves').textContent = moves;
-  isAnimating = true;
-  explode(idx, () => { isAnimating = false; checkWin(); });
+  moves++; document.getElementById('hudMoves').textContent = moves;
+  isAnimating = true; explode(idx, () => { isAnimating = false; checkWin(); });
 }
-
-// PATLAMA
 function explode(startIdx, onDone) {
   const queue = [startIdx], processed = new Set();
   function step() {
@@ -509,83 +305,53 @@ function explode(startIdx, onDone) {
 }
 function getNeighbors(idx) {
   const row = Math.floor(idx / size), col = idx % size, res = [];
-  if (row > 0)        res.push(idx - size);
+  if (row > 0) res.push(idx - size);
   if (row < size - 1) res.push(idx + size);
-  if (col > 0)        res.push(idx - 1);
+  if (col > 0) res.push(idx - 1);
   if (col < size - 1) res.push(idx + 1);
   return res;
 }
-
-// KAZANMA
 async function checkWin() {
   if (grid.some(v => v > 0)) return;
   const par = LEVELS[currentLevel].par;
   let stars = 1;
   if (moves <= par) stars = 3;
   else if (moves <= par + 2) stars = 2;
-  if (progress[currentLevel] === undefined || stars > progress[currentLevel]) {
-    progress[currentLevel] = stars;
-    localStorage.setItem('vg_progress', JSON.stringify(progress));
-  }
+  if (progress[currentLevel] === undefined || stars > progress[currentLevel]) { progress[currentLevel] = stars; localStorage.setItem('vg_progress', JSON.stringify(progress)); }
   saveScoreToSupabase(currentLevel + 1, stars, moves);
   setTimeout(() => {
-    const icons  = ['','✅','✨','🏆'];
-    const titles = ['','Tamamlandı!','Harika!','Mükemmel!'];
-    document.getElementById('completeIcon').textContent  = icons[stars];
+    const icons = ['','\u2705','\u2728','\U0001f3c6'];
+    const titles = ['','Completed!','Great!','Perfect!'];
+    document.getElementById('completeIcon').textContent = icons[stars];
     document.getElementById('completeTitle').textContent = titles[stars];
-    document.getElementById('completeStars').textContent = '★'.repeat(stars)+'☆'.repeat(3-stars);
-    document.getElementById('completeInfo').innerHTML    =
-      `Seviye ${currentLevel+1} · <b>${moves}</b> hamlede bitirdin<br>Par: ${par} hamle${moves<=par?' &nbsp;🎯 Parfait!':''}`;
+    document.getElementById('completeStars').textContent = '\u2605'.repeat(stars) + '\u2606'.repeat(3-stars);
+    document.getElementById('completeInfo').innerHTML = 'Level ' + (currentLevel+1) + ' &middot; Completed in <b>' + moves + '</b> moves<br>Par: ' + par + ' moves' + (moves<=par?' &nbsp;\U0001f3af Perfect!':'');
     document.getElementById('nextLevelBtn').style.display = currentLevel+1 < LEVELS.length ? '' : 'none';
     showScreen('completeScreen');
   }, 500);
 }
-
-// SCOREBOARD
 async function showScoreboard() { showScreen('scoreScreen'); await renderScoreboard(currentTab); }
-async function switchTab(tab, el) {
-  currentTab = tab;
-  document.querySelectorAll('.sb-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  await renderScoreboard(tab);
-}
+async function switchTab(tab, el) { currentTab = tab; document.querySelectorAll('.sb-tab').forEach(t => t.classList.remove('active')); el.classList.add('active'); await renderScoreboard(tab); }
 async function renderScoreboard(tab) {
   const list = document.getElementById('sbList');
-  list.innerHTML = '<div class="sb-loading">⚡ Yükleniyor...</div>';
+  list.innerHTML = '<div class="sb-loading">\u26a1 Loading...</div>';
   const data = await fetchLeaderboard(tab);
-  if (!data.length) { list.innerHTML = '<div class="sb-empty">Henüz kayıt yok.<br>İlk sen ol! 🎮</div>'; return; }
+  if (!data.length) { list.innerHTML = '<div class="sb-empty">No records yet.<br>Be the first! \U0001f3ae</div>'; return; }
   list.innerHTML = '';
   data.forEach((entry, i) => {
     const isMe = entry.player_name === playerName;
-    const row  = document.createElement('div');
+    const row = document.createElement('div');
     row.className = 'sb-row' + (isMe ? ' me' : '');
-    const medals = ['🥇','🥈','🥉'];
-    row.innerHTML = `
-      <div class="sb-rank">${medals[i] || (i+1)}</div>
-      <div class="sb-name">${escapeHtml(entry.player_name)}${isMe?'<span style="color:#7c3aed;font-size:11px"> (sen)</span>':''}</div>
-      <div class="sb-stars">${tab==='stars'?'★ '+entry.total_stars:'📋 '+entry.levels_completed}</div>`;
+    const medals = ['\U0001f947','\U0001f948','\U0001f949'];
+    row.innerHTML = '<div class="sb-rank">' + (medals[i] || (i+1)) + '</div><div class="sb-name">' + escapeHtml(entry.player_name) + (isMe?'<span style="color:#7c3aed;font-size:11px"> (you)</span>':'') + '</div><div class="sb-stars">' + (tab==='stars'?'\u2605 '+entry.total_stars:'\U0001f4cb '+entry.levels_completed) + '</div>';
     list.appendChild(row);
   });
 }
-
-// YARDIMCI
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 let toastT;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  clearTimeout(toastT);
-  toastT = setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-// BAŞLAT
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2500); }
 if (playerName) { document.getElementById('nameInput').value = playerName; showMenu(); }
-</script>
+<\/script>
 </body>
 </html>
