@@ -2,13 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/favicon-192.png">
+  <meta name="theme-color" content="#7c3aed">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zorblify — Web Game Platform</title>
-  <meta name="description" content="Free browser games. No download. No login. Play Gravity Flip, Stack Up, Volt Grid and more on Zorblify.">
+  <meta name="description" content="Free browser games. No download. No login. Play Gravity Flip, Stack Up, Volt Grid, Castle Defense and more on Zorblify.">
   <meta property="og:title" content="Zorblify — Free Web Games">
   <meta property="og:description" content="Free browser games. No download. No login.">
-  <meta property="og:image" content="https://bolt.new/static/og_default.png">
+  <meta property="og:image" content="https://zorblify.com/favicon-512.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,69 +30,49 @@
       --text: #f0f0ff;
       --text-muted: #8888aa;
       --border: rgba(255,255,255,0.07);
+      --sidebar-w: 220px;
     }
 
-    html { scroll-behavior: smooth; }
+    html, body { height: 100%; }
 
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
-      overflow-x: hidden;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
+    /* ── TOP HEADER ── */
     header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(7,7,15,0.9);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(124,58,237,0.12);
-      padding: 0 40px;
-      height: 68px;
+      height: 52px;
+      background: rgba(7,7,15,0.97);
+      border-bottom: 1px solid rgba(124,58,237,0.15);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 0 20px;
+      flex-shrink: 0;
+      z-index: 100;
     }
-
     .header-logo img { display: block; }
-
-    nav { display: flex; align-items: center; gap: 36px; }
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: 'Syne', sans-serif;
-      letter-spacing: 0.5px;
-      transition: color 0.2s;
-      position: relative;
+    .header-right {
+      display: flex; align-items: center; gap: 8px;
     }
-    nav a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; left: 0; right: 0;
-      height: 1px;
-      background: var(--secondary);
-      transform: scaleX(0);
-      transition: transform 0.2s;
+    .header-badge {
+      font-size: 11px; font-family: 'Syne', sans-serif;
+      color: var(--text-muted); background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 4px 12px; letter-spacing: 0.5px;
     }
-    nav a:hover { color: var(--text); }
-    nav a:hover::after { transform: scaleX(1); }
-
     .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
-      background: none;
-      border: none;
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; background: none; border: none;
     }
     .hamburger span {
-      display: block; width: 22px; height: 2px;
+      display: block; width: 20px; height: 2px;
       background: var(--text); border-radius: 2px;
       transition: transform 0.3s, opacity 0.3s;
     }
@@ -97,304 +80,279 @@
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    .mobile-nav {
-      display: none;
-      flex-direction: column;
-      position: fixed;
-      top: 68px; left: 0; right: 0;
-      background: rgba(7,7,15,0.98);
-      border-bottom: 1px solid rgba(124,58,237,0.2);
-      z-index: 99;
-    }
-    .mobile-nav.open { display: flex; }
-    .mobile-nav a {
-      color: var(--text-muted); text-decoration: none;
-      font-size: 15px; font-weight: 600; font-family: 'Syne', sans-serif;
-      padding: 16px 28px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      transition: color 0.2s, background 0.2s;
-    }
-    .mobile-nav a:hover { color: var(--text); background: rgba(124,58,237,0.08); }
-
-    .hero {
-      position: relative;
-      min-height: 85vh;
+    /* ── LAYOUT ── */
+    .layout {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 60px 24px 40px;
+      flex: 1;
       overflow: hidden;
     }
 
-    .hero::before {
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      background: rgba(7,7,15,0.98);
+      border-right: 1px solid rgba(124,58,237,0.1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 16px 0;
+    }
+    .sb-section { padding: 0 10px; margin-bottom: 6px; }
+    .sb-label {
+      font-size: 9px; font-family: 'Syne', sans-serif;
+      color: var(--text-muted); letter-spacing: 1.5px;
+      text-transform: uppercase; padding: 4px 10px 6px;
+    }
+    .sb-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px; border-radius: 8px; cursor: pointer;
+      font-size: 13px; color: var(--text-muted);
+      transition: background 0.15s, color 0.15s;
+      font-family: 'DM Sans', sans-serif;
+      text-decoration: none;
+    }
+    .sb-item:hover { background: rgba(124,58,237,0.08); color: var(--text); }
+    .sb-item.active {
+      background: rgba(124,58,237,0.15);
+      color: var(--text);
+      font-weight: 600;
+    }
+    .sb-item.active .sb-dot { background: var(--primary); box-shadow: 0 0 6px rgba(124,58,237,0.6); }
+    .sb-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.15); flex-shrink: 0;
+      transition: background 0.15s;
+    }
+    .sb-count {
+      margin-left: auto; font-size: 10px; color: var(--text-muted);
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 20px; padding: 1px 7px;
+    }
+    .sb-divider { height: 1px; background: var(--border); margin: 10px 10px; }
+    .sb-nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px; border-radius: 8px; cursor: pointer;
+      font-size: 13px; color: var(--text-muted);
+      transition: background 0.15s, color 0.15s;
+    }
+    .sb-nav-item:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+    .sb-nav-item.active { color: var(--text); font-weight: 600; }
+    .sb-nav-icon { font-size: 15px; opacity: 0.7; }
+
+    /* ── MOBILE SIDEBAR OVERLAY ── */
+    .sb-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+      z-index: 90; backdrop-filter: blur(4px);
+    }
+    .sb-overlay.open { display: block; }
+    .sidebar.mobile-open { transform: translateX(0) !important; }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      flex: 1; overflow-y: auto; display: flex; flex-direction: column;
+    }
+
+    /* ── TAB BAR ── */
+    .tabbar {
+      height: 44px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 20px;
+      gap: 4px; flex-shrink: 0;
+      background: rgba(7,7,15,0.9);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .tab {
+      font-size: 13px; font-family: 'Syne', sans-serif; font-weight: 600;
+      padding: 5px 14px; border-radius: 7px; cursor: pointer;
+      color: var(--text-muted); transition: all 0.15s; border: none;
+      background: transparent; letter-spacing: 0.3px;
+    }
+    .tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .tab.active {
+      color: var(--text); background: rgba(124,58,237,0.15);
+      border: 1px solid rgba(124,58,237,0.25);
+    }
+
+    /* ── PANELS ── */
+    .panel { display: none; flex: 1; }
+    .panel.active { display: flex; flex-direction: column; }
+
+    /* ── HOME PANEL ── */
+    .home-content { padding: 24px; flex: 1; }
+
+    .hero-strip {
+      background: var(--surface);
+      border: 1px solid rgba(124,58,237,0.15);
+      border-radius: 16px; padding: 20px 24px;
+      margin-bottom: 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .hero-strip::before {
       content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(124,58,237,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(124,58,237,0.06) 1px, transparent 1px);
-      background-size: 60px 60px;
-      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 40%, transparent 100%);
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 0% 50%, rgba(124,58,237,0.08), transparent 60%);
       pointer-events: none;
     }
-
-    .hero-particles {
-      position: absolute; inset: 0;
-      pointer-events: none; overflow: hidden;
+    .hero-text-block { position: relative; z-index: 1; }
+    .hero-title {
+      font-size: clamp(18px, 2.5vw, 26px); font-weight: 800;
+      font-family: 'Syne', sans-serif; letter-spacing: -0.5px;
+      margin-bottom: 6px;
     }
-    .dot {
-      position: absolute; border-radius: 50%; opacity: 0;
-      animation: floatDot linear infinite;
-    }
-    @keyframes floatDot {
-      0%   { transform: translateY(0) scale(1);    opacity: 0; }
-      10%  { opacity: 1; }
-      85%  { opacity: 0.4; }
-      100% { transform: translateY(-105vh) scale(0.4); opacity: 0; }
-    }
-
-    .hero-orb {
-      position: absolute; border-radius: 50%;
-      filter: blur(80px); pointer-events: none; opacity: 0.25;
-    }
-    .hero-orb-1 { width: 500px; height: 500px; background: var(--primary); top: -100px; left: -100px; }
-    .hero-orb-2 { width: 400px; height: 400px; background: var(--secondary); bottom: -80px; right: -80px; }
-
-    .hero-badge {
-      position: relative; z-index: 1;
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(124,58,237,0.12);
-      border: 1px solid rgba(124,58,237,0.3);
-      border-radius: 100px;
-      padding: 6px 16px;
-      font-size: 12px; font-weight: 600; font-family: 'Syne', sans-serif;
-      color: #a78bfa; letter-spacing: 1px; text-transform: uppercase;
-      margin-bottom: 24px;
-    }
-    .hero-badge-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: #a78bfa;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
-    }
-
-    .hero-wordmark { position: relative; z-index: 1; margin-bottom: 20px; }
-    .hero-wordmark img { max-width: 560px; width: 100%; }
-
-    .hero-subtitle {
-      position: relative; z-index: 1;
-      font-size: clamp(16px, 2.5vw, 20px);
-      color: var(--text-muted);
-      margin-bottom: 36px;
-      font-weight: 400;
-      max-width: 480px;
-    }
-
-    .hero-actions {
-      position: relative; z-index: 1;
-      display: flex; gap: 14px;
-      flex-wrap: wrap; justify-content: center;
-      margin-bottom: 56px;
-    }
-
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      padding: 13px 30px; border-radius: 10px;
-      font-size: 15px; font-weight: 600; font-family: 'Syne', sans-serif;
-      cursor: pointer; transition: transform 0.18s, box-shadow 0.18s;
-      text-decoration: none; letter-spacing: 0.3px;
-    }
-    .btn-primary { background: var(--primary); color: #fff; border: 2px solid var(--primary); }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 32px var(--primary-glow); }
-    .btn-outline { background: transparent; color: var(--text); border: 2px solid rgba(255,255,255,0.18); }
-    .btn-outline:hover { border-color: var(--secondary); color: var(--secondary); transform: translateY(-2px); box-shadow: 0 0 24px var(--secondary-glow); }
-
-    .stats-bar {
-      position: relative; z-index: 1;
-      display: flex; gap: 40px;
-      flex-wrap: wrap; justify-content: center;
-    }
-    .stat-item { text-align: center; }
-    .stat-value {
-      font-size: 28px; font-weight: 800; font-family: 'Syne', sans-serif;
+    .hero-title span {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .stat-label { font-size: 12px; color: var(--text-muted); letter-spacing: 0.5px; margin-top: 2px; }
-
-    .section-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(124,58,237,0.25), rgba(6,182,212,0.25), transparent);
-    }
-
-    .section-inner { max-width: 1100px; margin: 0 auto; padding: 80px 40px; }
-
-    .section-label {
-      font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
-      color: var(--secondary); letter-spacing: 2px; text-transform: uppercase;
-      text-align: center; margin-bottom: 12px;
-    }
-
-    .section-title {
-      font-size: clamp(26px, 4vw, 38px);
-      font-weight: 800; font-family: 'Syne', sans-serif;
-      text-align: center; margin-bottom: 48px;
-      letter-spacing: -0.5px;
-    }
-    .section-title span {
+    .hero-sub { font-size: 14px; color: var(--text-muted); }
+    .hero-stats { display: flex; gap: 24px; position: relative; z-index: 1; }
+    .hero-stat { text-align: center; }
+    .hero-stat-val {
+      font-size: 24px; font-weight: 800; font-family: 'Syne', sans-serif;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
+    .hero-stat-lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
+    /* ── SECTION HEADER ── */
+    .section-hdr {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .section-hdr-title {
+      font-size: 15px; font-weight: 700; font-family: 'Syne', sans-serif;
+    }
+    .section-hdr-count {
+      font-size: 12px; color: var(--text-muted);
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2px 10px;
+    }
+
+    /* ── GAME CARDS ── */
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
     }
-
-    /* ── DÜZELTİLDİ: overflow:hidden kaldırıldı ── */
-    .card {
+    .game-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 20px; padding: 28px 24px;
-      display: flex; flex-direction: column; gap: 12px;
-      transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
+      border-radius: 16px; padding: 20px;
+      display: flex; flex-direction: column; gap: 10px;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
       position: relative;
     }
-    .card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(124,58,237,0.4);
-      box-shadow: 0 12px 48px rgba(124,58,237,0.18);
+    .game-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(124,58,237,0.35);
+      box-shadow: 0 8px 32px rgba(124,58,237,0.12);
     }
-
-    .card-icon { font-size: 40px; line-height: 1; margin-bottom: 4px; }
-    .card-title { font-size: 22px; font-weight: 800; font-family: 'Syne', sans-serif; letter-spacing: -0.3px; }
-    .card-desc { font-size: 14px; color: var(--text-muted); line-height: 1.65; flex: 1; }
-    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
-
+    .game-card.hidden { display: none; }
+    .card-top { display: flex; align-items: center; gap: 12px; }
+    .card-icon-wrap {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: rgba(124,58,237,0.1);
+      border: 1px solid rgba(124,58,237,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+    }
+    .card-title { font-size: 15px; font-weight: 700; font-family: 'Syne', sans-serif; }
+    .card-cat { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; flex: 1; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
     .tag {
-      font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
-      padding: 4px 10px; border-radius: 6px;
+      font-size: 10px; font-weight: 700; font-family: 'Syne', sans-serif;
+      padding: 3px 10px; border-radius: 6px;
       background: rgba(6,182,212,0.1); color: var(--secondary);
       letter-spacing: 0.5px; text-transform: uppercase;
     }
-
+    .tag.strategy { background: rgba(251,191,36,0.1); color: #fbbf24; }
+    .tag.puzzle { background: rgba(167,139,250,0.1); color: #a78bfa; }
     .btn-play {
-      font-size: 13px; font-weight: 700; font-family: 'Syne', sans-serif;
-      padding: 8px 20px; border-radius: 8px;
+      font-size: 12px; font-weight: 700; font-family: 'Syne', sans-serif;
+      padding: 7px 18px; border-radius: 8px;
       background: rgba(124,58,237,0.12); color: #c084fc;
       border: 1px solid rgba(124,58,237,0.3);
-      cursor: pointer; text-decoration: none;
-      display: inline-block;
-      transition: background 0.18s, box-shadow 0.18s, transform 0.18s, color 0.18s;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: background 0.15s, color 0.15s, transform 0.15s;
       position: relative; z-index: 2;
     }
     .btn-play:hover {
       background: var(--primary); color: #fff;
-      box-shadow: 0 0 20px var(--primary-glow);
+      box-shadow: 0 0 16px var(--primary-glow);
       transform: translateY(-1px);
     }
 
-    .about-text {
-      font-size: clamp(15px, 2vw, 17px);
-      color: var(--text-muted); max-width: 600px;
-      margin: 0 auto 56px; line-height: 1.85;
+    /* ── ABOUT PANEL ── */
+    .about-content { padding: 32px 24px; flex: 1; max-width: 680px; }
+    .panel-title {
+      font-size: 22px; font-weight: 800; font-family: 'Syne', sans-serif;
+      margin-bottom: 8px;
     }
+    .panel-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; font-style: italic; }
+    .about-text { font-size: 15px; color: var(--text-muted); line-height: 1.85; margin-bottom: 28px; }
     .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px; max-width: 640px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
     }
     .feature-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px; padding: 28px 20px;
-      display: flex; flex-direction: column;
-      align-items: center; gap: 12px;
-      transition: border-color 0.22s, transform 0.22s;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px 16px;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      transition: border-color 0.2s, transform 0.2s;
     }
-    .feature-card:hover { border-color: rgba(6,182,212,0.35); transform: translateY(-4px); }
-    .feature-icon { font-size: 32px; }
-    .feature-label { font-size: 14px; font-weight: 700; font-family: 'Syne', sans-serif; }
+    .feature-card:hover { border-color: rgba(6,182,212,0.3); transform: translateY(-3px); }
+    .feature-icon { font-size: 28px; }
+    .feature-label { font-size: 13px; font-weight: 700; font-family: 'Syne', sans-serif; }
 
-    .contact-wrap {
-      display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 40px; text-align: left;
-      max-width: 860px; margin: 0 auto;
+    /* ── CONTACT PANEL ── */
+    .contact-content { padding: 32px 24px; flex: 1; max-width: 680px; }
+    .contact-info-row { display: flex; gap: 10px; margin-bottom: 24px; }
+    .contact-info-card {
+      flex: 1; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 16px;
     }
-    .contact-info { display: flex; flex-direction: column; gap: 24px; padding-top: 8px; }
-    .contact-info-item { display: flex; align-items: flex-start; gap: 14px; }
-    .contact-info-icon { font-size: 22px; margin-top: 2px; }
-    .contact-info-label {
-      font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
-      color: var(--text-muted); text-transform: uppercase;
-      letter-spacing: 0.8px; margin-bottom: 4px;
+    .ci-label {
+      font-size: 10px; font-family: 'Syne', sans-serif; color: var(--text-muted);
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;
     }
-    .contact-info-value { font-size: 14px; color: var(--text); text-decoration: none; }
-    a.contact-info-value:hover { color: var(--secondary); }
-
+    .ci-value { font-size: 13px; color: var(--text); }
     .contact-form {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: 20px; padding: 32px;
-      display: flex; flex-direction: column; gap: 20px;
+      border-radius: 16px; padding: 24px;
+      display: flex; flex-direction: column; gap: 16px;
     }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
     .form-label {
-      font-size: 12px; font-weight: 700; font-family: 'Syne', sans-serif;
+      font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
       color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase;
     }
     .form-input {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 10px; padding: 12px 14px;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 10px; padding: 11px 14px;
       font-size: 14px; font-family: 'DM Sans', sans-serif;
-      color: var(--text); outline: none;
-      transition: border-color 0.2s;
+      color: var(--text); outline: none; transition: border-color 0.2s;
     }
-    .form-input::placeholder { color: rgba(136,136,170,0.5); }
+    .form-input::placeholder { color: rgba(136,136,170,0.4); }
     .form-input:focus { border-color: var(--primary); }
-    .form-textarea { min-height: 120px; resize: vertical; }
+    .form-textarea { min-height: 110px; resize: vertical; }
+    .btn-submit {
+      background: var(--primary); color: #fff; border: none;
+      padding: 12px; border-radius: 10px;
+      font-size: 14px; font-weight: 700; font-family: 'Syne', sans-serif;
+      cursor: pointer; transition: box-shadow 0.15s, transform 0.15s;
+    }
+    .btn-submit:hover { box-shadow: 0 0 24px var(--primary-glow); transform: translateY(-1px); }
     .form-success {
-      display: none;
-      background: rgba(6,182,212,0.08);
-      border: 1px solid rgba(6,182,212,0.25);
-      border-radius: 10px; padding: 12px 16px;
-      font-size: 14px; color: var(--secondary); text-align: center;
+      display: none; background: rgba(6,182,212,0.08);
+      border: 1px solid rgba(6,182,212,0.25); border-radius: 10px;
+      padding: 12px 16px; font-size: 14px; color: var(--secondary); text-align: center;
     }
     .form-success.visible { display: block; }
 
-    footer { background: var(--surface); border-top: 1px solid var(--border); }
-    .footer-body {
-      max-width: 1100px; margin: 0 auto;
-      padding: 56px 40px 40px;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      gap: 48px;
-    }
-    .footer-col-brand img { display: block; margin-bottom: 14px; }
-    .footer-brand-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; max-width: 220px; }
-    .footer-col-title {
-      font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
-      color: var(--text-muted); text-transform: uppercase;
-      letter-spacing: 1px; margin-bottom: 16px;
-    }
-    .footer-nav { display: flex; flex-direction: column; gap: 10px; }
-    .footer-nav a { font-size: 14px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
-    .footer-nav a:hover { color: var(--text); }
-    .footer-bar {
-      border-top: 1px solid var(--border);
-      padding: 20px 40px; max-width: 1100px; margin: 0 auto;
-      font-size: 13px; color: var(--text-muted);
-    }
-
+    /* ── MODALS ── */
     .modal-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0,0,0,0.8); z-index: 200;
@@ -403,8 +361,7 @@
     }
     .modal-overlay.active { display: flex; }
     .modal {
-      background: #0e0e1e;
-      border: 1px solid rgba(124,58,237,0.2);
+      background: #0e0e1e; border: 1px solid rgba(124,58,237,0.2);
       border-radius: 24px; max-width: 680px; width: 100%;
       max-height: 85vh; display: flex; flex-direction: column;
       position: relative; animation: modalIn 0.22s ease;
@@ -416,266 +373,334 @@
     .modal-close {
       position: absolute; top: 16px; right: 20px;
       background: none; border: none; color: var(--text-muted);
-      font-size: 24px; cursor: pointer; line-height: 1;
-      transition: color 0.2s; z-index: 1;
+      font-size: 24px; cursor: pointer; z-index: 1;
     }
     .modal-close:hover { color: var(--text); }
     .modal-title {
-      font-size: 22px; font-weight: 800; font-family: 'Syne', sans-serif;
-      padding: 28px 32px 4px; letter-spacing: -0.3px;
+      font-size: 20px; font-weight: 800; font-family: 'Syne', sans-serif;
+      padding: 28px 32px 4px;
     }
-    .modal-meta {
-      font-size: 12px; color: var(--text-muted);
-      padding: 0 32px 20px;
-      border-bottom: 1px solid var(--border);
-    }
+    .modal-meta { font-size: 12px; color: var(--text-muted); padding: 0 32px 20px; border-bottom: 1px solid var(--border); }
     .modal-body {
       overflow-y: auto; padding: 24px 32px 32px;
       font-size: 14px; line-height: 1.75; color: var(--text-muted);
-      display: flex; flex-direction: column; gap: 16px;
+      display: flex; flex-direction: column; gap: 14px;
     }
-    .modal-body h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-top: 8px; }
+    .modal-body h3 { font-size: 13px; font-weight: 700; color: var(--text); margin-top: 6px; }
     .modal-body p { margin: 0; }
     .modal-body ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
     .modal-body a { color: var(--secondary); text-decoration: none; }
     .modal-body a:hover { text-decoration: underline; }
 
+    /* ── COOKIE ── */
     .cookie-banner {
-      position: fixed; bottom: -120px; left: 0; right: 0;
-      z-index: 150; background: #0e0e1e;
-      border-top: 1px solid rgba(124,58,237,0.2);
-      padding: 16px 32px;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 16px; transition: bottom 0.4s cubic-bezier(0.34,1.56,0.64,1);
-      flex-wrap: wrap;
+      position: fixed; bottom: -120px; left: 0; right: 0; z-index: 150;
+      background: #0e0e1e; border-top: 1px solid rgba(124,58,237,0.2);
+      padding: 14px 24px; display: flex; align-items: center;
+      justify-content: space-between; gap: 14px;
+      transition: bottom 0.4s cubic-bezier(0.34,1.56,0.64,1); flex-wrap: wrap;
     }
     .cookie-banner.visible { bottom: 0; }
-    .cookie-text { font-size: 14px; color: var(--text-muted); flex: 1; min-width: 200px; }
-    .cookie-actions { display: flex; align-items: center; gap: 16px; }
-    .cookie-learn { font-size: 13px; font-weight: 600; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .cookie-text { font-size: 13px; color: var(--text-muted); flex: 1; min-width: 200px; }
+    .cookie-actions { display: flex; align-items: center; gap: 14px; }
+    .cookie-learn { font-size: 12px; font-weight: 600; color: var(--text-muted); text-decoration: none; }
     .cookie-learn:hover { color: var(--secondary); }
     .cookie-accept {
-      font-size: 13px; font-weight: 700; font-family: 'Syne', sans-serif;
-      padding: 9px 22px; border-radius: 8px;
-      background: var(--primary); color: #fff; border: none;
-      cursor: pointer; transition: box-shadow 0.18s, transform 0.18s;
+      font-size: 12px; font-weight: 700; font-family: 'Syne', sans-serif;
+      padding: 8px 20px; border-radius: 8px;
+      background: var(--primary); color: #fff; border: none; cursor: pointer;
     }
-    .cookie-accept:hover { box-shadow: 0 0 20px var(--primary-glow); transform: translateY(-1px); }
 
-    @media (max-width: 768px) {
-      .contact-wrap { grid-template-columns: 1fr; }
-      .footer-body { grid-template-columns: 1fr 1fr; gap: 32px; padding: 40px 24px 32px; }
-      .footer-col-brand { grid-column: 1 / -1; }
-      .footer-bar { padding: 16px 24px; }
-      .stats-bar { gap: 24px; }
+    /* ── FOOTER ── */
+    .footer-bar {
+      border-top: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 12px; color: var(--text-muted); flex-shrink: 0;
+      flex-wrap: wrap; gap: 8px;
     }
-    @media (max-width: 640px) {
-      header { padding: 0 20px; }
-      nav { display: none; }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a {
+      color: var(--text-muted); text-decoration: none; font-size: 12px;
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: var(--text); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed; left: 0; top: 52px; bottom: 0;
+        z-index: 95; transform: translateX(-100%);
+        transition: transform 0.3s;
+      }
       .hamburger { display: flex; }
-      .section-inner { padding: 60px 20px; }
-      .hero { padding: 48px 20px 36px; min-height: 70vh; }
-      .footer-body { grid-template-columns: 1fr; }
-      .cookie-banner { padding: 16px 20px; }
+      .header-badge { display: none; }
+      .hero-stats { display: none; }
+      .home-content, .about-content, .contact-content { padding: 16px; }
+    }
+    @media (min-width: 769px) {
+      .hamburger { display: none; }
     }
   </style>
 </head>
 <body>
 
+  <!-- HEADER -->
   <header>
     <div class="header-logo">
-      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIHJ4PSI0MCIgZmlsbD0iIzA4MDgxMCIvPgogIDxyZWN0IHg9IjMyMCIgeT0iNDAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjM0MCIgeT0iNjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiIHJ4PSIxIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNTUiIHk9IjMwMCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgcng9IjEiIGZpbGw9IiMwNmI2ZDQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjMzMCIgeT0iMzEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNjAiIHk9IjcwIiB3aWR0aD0iNiIgaGVpZ2h0PSI2IiByeD0iMSIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC4yIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIxNzIiIHk9IjEwMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjIxNCIgeT0iMTAwIiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjU2IiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIyMTQiIHk9IjE0MiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMTg0IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzA2YjZkNCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMjY4IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjE0IiB5PSIyNjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIyNTYiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjI5NiIgeT0iMTA4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIzIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIxMDQiIHk9IjI3NiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMyIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC41Ii8+CiAgPHRleHQgeD0iMjAwIiB5PSIzNTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgSW1wYWN0LCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMyIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iNCI+Wk9SQkxJRlk8L3RleHQ+Cjwvc3ZnPgo=" height="48" alt="Zorblify">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIHJ4PSI0MCIgZmlsbD0iIzA4MDgxMCIvPgogIDxyZWN0IHg9IjMyMCIgeT0iNDAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjM0MCIgeT0iNjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiIHJ4PSIxIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNTUiIHk9IjMwMCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgcng9IjEiIGZpbGw9IiMwNmI2ZDQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjMzMCIgeT0iMzEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNjAiIHk9IjcwIiB3aWR0aD0iNiIgaGVpZ2h0PSI2IiByeD0iMSIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC4yIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIxNzIiIHk9IjEwMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjIxNCIgeT0iMTAwIiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjU2IiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIyMTQiIHk9IjE0MiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMTg0IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzA2YjZkNCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMjY4IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjE0IiB5PSIyNjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIyNTYiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjI5NiIgeT0iMTA4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIzIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIxMDQiIHk9IjI3NiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMyIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC41Ii8+CiAgPHRleHQgeD0iMjAwIiB5PSIzNTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgSW1wYWN0LCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMyIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iNCI+Wk9SQkxJRlk8L3RleHQ+Cjwvc3ZnPgo=" height="36" alt="Zorblify">
     </div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#games">Games</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="header-right">
+      <div class="header-badge">Free · No Login · No Download</div>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </header>
 
-  <div class="mobile-nav" id="mobileNav">
-    <a href="#home" onclick="closeMobileNav()">Home</a>
-    <a href="#games" onclick="closeMobileNav()">Games</a>
-    <a href="#about" onclick="closeMobileNav()">About</a>
-    <a href="#contact" onclick="closeMobileNav()">Contact</a>
-  </div>
+  <div class="layout">
 
-  <div id="home">
-    <section class="hero">
-      <div class="hero-orb hero-orb-1"></div>
-      <div class="hero-orb hero-orb-2"></div>
-      <div class="hero-particles" id="particles"></div>
-      <div class="hero-badge">
-        <div class="hero-badge-dot"></div>
-        4 Games Available Now
-      </div>
-      <div class="hero-wordmark">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgODAwIDIwMCI+CiAgPHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSIyMDAiIHJ4PSIyMCIgZmlsbD0iIzA4MDgxMCIvPgogIDx0ZXh0IHg9IjEyMCIgeT0iMTc1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIEltcGFjdCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxODAiIGZvbnQtd2VpZ2h0PSI5MDAiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMDgiPlo8L3RleHQ+CiAgPHJlY3QgeD0iNjAiIHk9Ijk1IiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iNjQwIiB5PSI5NSIgd2lkdGg9IjEwMCIgaGVpZ2h0PSI0IiByeD0iMiIgZmlsbD0iIzA2YjZkNCIvPgogIDx0ZXh0IHg9IjQwMCIgeT0iMTIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2ssIEltcGFjdCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI4MCIgZm9udC13ZWlnaHQ9IjkwMCIgZmlsbD0iI2ZmZmZmZiIgbGV0dGVyLXNwYWNpbmc9IjIiPlpPUkJMSUZZPC90ZXh0PgogIDx0ZXh0IHg9IjQwMCIgeT0iMTU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1NTU1NTUiIGxldHRlci1zcGFjaW5nPSI4Ij5XRUIgR0FNRSBQTEFURk9STTwvdGV4dD4KPC9zdmc+Cg==" style="max-width:560px;width:100%" alt="Zorblify">
-      </div>
-      <p class="hero-subtitle">Free browser games. No download. No login. Just play.</p>
-      <div class="hero-actions">
-        <a href="#games" class="btn btn-primary">Browse Games</a>
-        <a href="#about" class="btn btn-outline">Learn More</a>
-      </div>
-      <div class="stats-bar">
-        <div class="stat-item"><div class="stat-value">4</div><div class="stat-label">Games</div></div>
-        <div class="stat-item"><div class="stat-value">0</div><div class="stat-label">Downloads</div></div>
-        <div class="stat-item"><div class="stat-value">Free</div><div class="stat-label">Always</div></div>
-      </div>
-    </section>
-  </div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
 
-  <div class="section-divider"></div>
-
-  <div id="games">
-    <div class="section-inner">
-      <div class="section-label">Play Now</div>
-      <h2 class="section-title">Featured <span>Games</span></h2>
-      <div class="cards-grid">
-        <div class="card">
-          <div class="card-icon">🌀</div>
-          <div class="card-title">Gravity Flip</div>
-          <div class="card-desc">Tap to flip gravity. Dodge the pipes. How long can you survive?</div>
-          <div class="card-footer">
-            <span class="tag">Arcade</span>
-            <a href="/games/gravity-flip/index.html" class="btn-play">Play Now</a>
-          </div>
+      <div class="sb-section">
+        <div class="sb-label">Games</div>
+        <div class="sb-item active" data-filter="all" onclick="filterGames('all',this)">
+          <div class="sb-dot"></div>All Games
+          <span class="sb-count">4</span>
         </div>
-        <div class="card">
-          <div class="card-icon">🏗️</div>
-          <div class="card-title">Stack Up</div>
-          <div class="card-desc">Drop the block at the right moment. Stack them perfectly and build the tallest tower!</div>
-          <div class="card-footer">
-            <span class="tag">Arcade</span>
-            <a href="/games/stack-up/index.html" class="btn-play">Play Now</a>
-          </div>
+        <div class="sb-item" data-filter="arcade" onclick="filterGames('arcade',this)">
+          <div class="sb-dot"></div>Arcade
+          <span class="sb-count">2</span>
         </div>
-        <div class="card">
-          <div class="card-icon">⚡</div>
-          <div class="card-title">Volt Grid</div>
-          <div class="card-desc">Chain the energy, clear the grid. A strategic puzzle game with satisfying chain reactions.</div>
-          <div class="card-footer">
-            <span class="tag">Puzzle</span>
-            <a href="/games/volt-grid/index.html" class="btn-play">Play Now</a>
-          </div>
+        <div class="sb-item" data-filter="puzzle" onclick="filterGames('puzzle',this)">
+          <div class="sb-dot"></div>Puzzle
+          <span class="sb-count">1</span>
         </div>
-        <div class="card">
-          <div class="card-icon">⚔️</div>
-          <div class="card-title">Castle Defense</div>
-          <div class="card-desc">Build towers, cast spells, survive 30 campaign levels or endless waves. Protect the kingdom!</div>
-          <div class="card-footer">
-            <span class="tag">Strategy</span>
-            <a href="/games/castle-defense/index.html" class="btn-play">Play Now</a>
-          </div>
+        <div class="sb-item" data-filter="strategy" onclick="filterGames('strategy',this)">
+          <div class="sb-dot"></div>Strategy
+          <span class="sb-count">1</span>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="section-divider"></div>
+      <div class="sb-divider"></div>
 
-  <div id="about">
-    <div class="section-inner" style="text-align:center">
-      <div class="section-label">About Us</div>
-      <h2 class="section-title">What is <span>Zorblify?</span></h2>
-      <p class="about-text">Zorblify is a free web game platform. Play instantly in your browser — no downloads, no accounts needed. New games added regularly.</p>
-      <div class="features-grid">
-        <div class="feature-card"><div class="feature-icon">♾️</div><div class="feature-label">Always Free</div></div>
-        <div class="feature-card"><div class="feature-icon">🔓</div><div class="feature-label">No Login</div></div>
-        <div class="feature-card"><div class="feature-icon">📅</div><div class="feature-label">New Games Regularly</div></div>
+      <div class="sb-section">
+        <div class="sb-label">Pages</div>
+        <div class="sb-nav-item active" id="sb-home" onclick="switchTab('home')">
+          <span class="sb-nav-icon">🏠</span>Home
+        </div>
+        <div class="sb-nav-item" id="sb-about" onclick="switchTab('about')">
+          <span class="sb-nav-icon">ℹ️</span>About
+        </div>
+        <div class="sb-nav-item" id="sb-contact" onclick="switchTab('contact')">
+          <span class="sb-nav-icon">✉️</span>Contact
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="section-divider"></div>
+    </aside>
 
-  <div id="contact">
-    <div class="section-inner" style="text-align:center">
-      <div class="section-label">Say Hello</div>
-      <h2 class="section-title">Get in <span>Touch</span></h2>
-      <p class="about-text" style="margin-bottom:40px">Have a question or feedback? We'd love to hear from you. We respond within 48 hours.</p>
-      <div class="contact-wrap">
-        <div class="contact-info">
-          <div class="contact-info-item">
-            <span class="contact-info-icon">✉️</span>
-            <div>
-              <div class="contact-info-label">Email</div>
-              <a href="mailto:contact@zorblify.com" class="contact-info-value">contact@zorblify.com</a>
+    <div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+      <!-- TAB BAR -->
+      <div class="tabbar">
+        <button class="tab active" id="tab-home" onclick="switchTab('home')">Home</button>
+        <button class="tab" id="tab-about" onclick="switchTab('about')">About</button>
+        <button class="tab" id="tab-contact" onclick="switchTab('contact')">Contact</button>
+      </div>
+
+      <!-- HOME PANEL -->
+      <div class="panel active" id="panel-home">
+        <div class="home-content">
+
+          <div class="hero-strip">
+            <div class="hero-text-block">
+              <div class="hero-title">Free <span>Browser Games</span></div>
+              <div class="hero-sub">No download. No login. Just play.</div>
+            </div>
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <div class="hero-stat-val" id="heroGameCount">4</div>
+                <div class="hero-stat-lbl">Games</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-val">Free</div>
+                <div class="hero-stat-lbl">Always</div>
+              </div>
             </div>
           </div>
-          <div class="contact-info-item">
-            <span class="contact-info-icon">⏱️</span>
-            <div>
-              <div class="contact-info-label">Response Time</div>
-              <div class="contact-info-value">Within 48 hours</div>
+
+          <div class="section-hdr">
+            <div class="section-hdr-title" id="sectionTitle">All Games</div>
+            <div class="section-hdr-count" id="sectionCount">4 games</div>
+          </div>
+
+          <div class="cards-grid" id="cardsGrid">
+
+            <div class="game-card" data-cat="arcade">
+              <div class="card-top">
+                <div class="card-icon-wrap">🌀</div>
+                <div>
+                  <div class="card-title">Gravity Flip</div>
+                  <div class="card-cat">Arcade</div>
+                </div>
+              </div>
+              <div class="card-desc">Tap to flip gravity. Dodge the pipes. How long can you survive?</div>
+              <div class="card-footer">
+                <span class="tag">Arcade</span>
+                <a href="/games/gravity-flip/index.html" class="btn-play">Play Now</a>
+              </div>
+            </div>
+
+            <div class="game-card" data-cat="arcade">
+              <div class="card-top">
+                <div class="card-icon-wrap">🏗️</div>
+                <div>
+                  <div class="card-title">Stack Up</div>
+                  <div class="card-cat">Arcade</div>
+                </div>
+              </div>
+              <div class="card-desc">Drop the block at the right moment. Stack them perfectly and build the tallest tower!</div>
+              <div class="card-footer">
+                <span class="tag">Arcade</span>
+                <a href="/games/stack-up/index.html" class="btn-play">Play Now</a>
+              </div>
+            </div>
+
+            <div class="game-card" data-cat="puzzle">
+              <div class="card-top">
+                <div class="card-icon-wrap">⚡</div>
+                <div>
+                  <div class="card-title">Volt Grid</div>
+                  <div class="card-cat">Puzzle</div>
+                </div>
+              </div>
+              <div class="card-desc">Chain the energy, clear the grid. A strategic puzzle game with satisfying chain reactions.</div>
+              <div class="card-footer">
+                <span class="tag puzzle">Puzzle</span>
+                <a href="/games/volt-grid/index.html" class="btn-play">Play Now</a>
+              </div>
+            </div>
+
+            <div class="game-card" data-cat="strategy">
+              <div class="card-top">
+                <div class="card-icon-wrap">⚔️</div>
+                <div>
+                  <div class="card-title">Castle Defense</div>
+                  <div class="card-cat">Strategy</div>
+                </div>
+              </div>
+              <div class="card-desc">Build towers, cast spells, survive 30 campaign levels or endless waves. Protect the kingdom!</div>
+              <div class="card-footer">
+                <span class="tag strategy">Strategy</span>
+                <a href="/games/castle-defense/index.html" class="btn-play">Play Now</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="footer-bar">
+          <span>© 2026 Zorblify. All rights reserved.</span>
+          <div class="footer-links">
+            <a href="#" onclick="openModal('privacyModal');return false">Privacy Policy</a>
+            <a href="#" onclick="openModal('tosModal');return false">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABOUT PANEL -->
+      <div class="panel" id="panel-about">
+        <div class="about-content">
+          <div class="panel-title">What is Zorblify?</div>
+          <div class="panel-sub">Free web game platform — no downloads, no accounts.</div>
+          <div class="about-text">
+            Zorblify is a growing collection of browser-based games. Play instantly in your browser — no downloads, no accounts needed. New games are added regularly, each one more polished than the last.
+          </div>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">♾️</div>
+              <div class="feature-label">Always Free</div>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">🔓</div>
+              <div class="feature-label">No Login</div>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">📅</div>
+              <div class="feature-label">New Games Regularly</div>
             </div>
           </div>
         </div>
-        <form class="contact-form" id="contactForm" onsubmit="handleContactSubmit(event)">
-          <div class="form-group">
-            <label class="form-label" for="contactName">Name</label>
-            <input class="form-input" type="text" id="contactName" placeholder="Your name" required />
+        <div class="footer-bar">
+          <span>© 2026 Zorblify. All rights reserved.</span>
+          <div class="footer-links">
+            <a href="#" onclick="openModal('privacyModal');return false">Privacy Policy</a>
+            <a href="#" onclick="openModal('tosModal');return false">Terms of Service</a>
           </div>
-          <div class="form-group">
-            <label class="form-label" for="contactEmail">Email</label>
-            <input class="form-input" type="email" id="contactEmail" placeholder="your@email.com" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="contactMessage">Message</label>
-            <textarea class="form-input form-textarea" id="contactMessage" placeholder="Your message..." required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center">Send Message</button>
-          <div class="form-success" id="formSuccess">Message sent! We'll get back to you within 48 hours.</div>
-        </form>
+        </div>
       </div>
+
+      <!-- CONTACT PANEL -->
+      <div class="panel" id="panel-contact">
+        <div class="contact-content">
+          <div class="panel-title">Get in Touch</div>
+          <div class="panel-sub">Have a question or feedback? We respond within 48 hours.</div>
+          <div class="contact-info-row">
+            <div class="contact-info-card">
+              <div class="ci-label">Email</div>
+              <div class="ci-value">contact@zorblify.com</div>
+            </div>
+            <div class="contact-info-card">
+              <div class="ci-label">Response Time</div>
+              <div class="ci-value">Within 48 hours</div>
+            </div>
+          </div>
+          <div class="contact-form">
+            <div class="form-group">
+              <label class="form-label" for="contactName">Name</label>
+              <input class="form-input" type="text" id="contactName" placeholder="Your name" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contactEmail">Email</label>
+              <input class="form-input" type="email" id="contactEmail" placeholder="your@email.com" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contactMessage">Message</label>
+              <textarea class="form-input form-textarea" id="contactMessage" placeholder="Your message..." required></textarea>
+            </div>
+            <button class="btn-submit" onclick="handleContact()">Send Message</button>
+            <div class="form-success" id="formSuccess">Message sent! We'll get back to you within 48 hours.</div>
+          </div>
+        </div>
+        <div class="footer-bar">
+          <span>© 2026 Zorblify. All rights reserved.</span>
+          <div class="footer-links">
+            <a href="#" onclick="openModal('privacyModal');return false">Privacy Policy</a>
+            <a href="#" onclick="openModal('tosModal');return false">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <footer>
-    <div class="footer-body">
-      <div class="footer-col footer-col-brand">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIHJ4PSI0MCIgZmlsbD0iIzA4MDgxMCIvPgogIDxyZWN0IHg9IjMyMCIgeT0iNDAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjM0MCIgeT0iNjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiIHJ4PSIxIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNTUiIHk9IjMwMCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgcng9IjEiIGZpbGw9IiMwNmI2ZDQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjMzMCIgeT0iMzEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNjAiIHk9IjcwIiB3aWR0aD0iNiIgaGVpZ2h0PSI2IiByeD0iMSIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC4yIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIxNzIiIHk9IjEwMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjIxNCIgeT0iMTAwIiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjU2IiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIyMTQiIHk9IjE0MiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMTg0IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzA2YjZkNCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMjY4IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjE0IiB5PSIyNjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIyNTYiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjI5NiIgeT0iMTA4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIzIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIxMDQiIHk9IjI3NiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMyIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC41Ii8+CiAgPHRleHQgeD0iMjAwIiB5PSIzNTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgSW1wYWN0LCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMyIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iNCI+Wk9SQkxJRlk8L3RleHQ+Cjwvc3ZnPgo=" height="40" alt="Zorblify">
-        <p class="footer-brand-desc">Free browser games, no download needed.</p>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Navigation</div>
-        <nav class="footer-nav">
-          <a href="#home">Home</a>
-          <a href="#games">Games</a>
-          <a href="#about">About</a>
-        </nav>
-      </div>
-      <div class="footer-col">
-        <div class="footer-col-title">Legal</div>
-        <nav class="footer-nav">
-          <a href="#" onclick="openModal('privacyModal');return false">Privacy Policy</a>
-          <a href="#" onclick="openModal('tosModal');return false">Terms of Service</a>
-          <a href="#contact">Contact</a>
-          <a href="#about">About Us</a>
-        </nav>
-      </div>
-    </div>
-    <div class="footer-bar">
-      <span>© 2026 Zorblify. All rights reserved.</span>
-    </div>
-  </footer>
-
+  <!-- PRIVACY MODAL -->
   <div class="modal-overlay" id="privacyModal" onclick="closeModalOnOverlay(event,'privacyModal')">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
-      <button class="modal-close" onclick="closeModal('privacyModal')" aria-label="Close">&times;</button>
-      <h2 class="modal-title" id="privacyTitle">Privacy Policy</h2>
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('privacyModal')">&times;</button>
+      <h2 class="modal-title">Privacy Policy</h2>
       <p class="modal-meta">Last updated: April 2026</p>
       <div class="modal-body">
         <h3>1. Information We Collect</h3>
-        <p>Zorblify does not require you to create an account or provide personal information to play games. We may collect limited technical data automatically when you visit, including your browser type, device type, pages visited, and general geographic region.</p>
+        <p>Zorblify does not require you to create an account or provide personal information to play games. We may collect limited technical data automatically when you visit.</p>
         <h3>2. Cookies</h3>
         <p>We use cookies and similar technologies to remember your preferences, analyze site traffic, and serve relevant advertising through third-party ad networks including Google AdSense.</p>
         <h3>3. Third-Party Advertising</h3>
-        <p>Zorblify may display advertisements served by third-party advertising partners, including Google AdSense. You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>.</p>
+        <p>Zorblify may display advertisements served by third-party advertising partners, including Google AdSense. You may opt out at <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>.</p>
         <h3>4. Analytics</h3>
         <p>We may use analytics services to understand how visitors use the site. Data is aggregated and anonymized.</p>
         <h3>5. Children's Privacy</h3>
@@ -686,10 +711,11 @@
     </div>
   </div>
 
+  <!-- TOS MODAL -->
   <div class="modal-overlay" id="tosModal" onclick="closeModalOnOverlay(event,'tosModal')">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tosTitle">
-      <button class="modal-close" onclick="closeModal('tosModal')" aria-label="Close">&times;</button>
-      <h2 class="modal-title" id="tosTitle">Terms of Service</h2>
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('tosModal')">&times;</button>
+      <h2 class="modal-title">Terms of Service</h2>
       <p class="modal-meta">Last updated: April 2026</p>
       <div class="modal-body">
         <h3>1. Acceptance</h3>
@@ -712,6 +738,7 @@
     </div>
   </div>
 
+  <!-- COOKIE BANNER -->
   <div class="cookie-banner" id="cookieBanner">
     <div class="cookie-text">We use cookies to improve your experience and serve relevant ads.</div>
     <div class="cookie-actions">
@@ -721,29 +748,53 @@
   </div>
 
   <script>
+    // ── TAB SWITCHING ──
+    function switchTab(tab) {
+      ['home','about','contact'].forEach(t => {
+        document.getElementById('panel-'+t).classList.remove('active');
+        document.getElementById('tab-'+t).classList.remove('active');
+        document.getElementById('sb-'+t).classList.remove('active');
+      });
+      document.getElementById('panel-'+tab).classList.add('active');
+      document.getElementById('tab-'+tab).classList.add('active');
+      document.getElementById('sb-'+tab).classList.add('active');
+      closeSidebar();
+    }
+
+    // ── GAME FILTER ──
+    function filterGames(cat, el) {
+      document.querySelectorAll('.sb-item[data-filter]').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      switchTab('home');
+      const cards = document.querySelectorAll('.game-card');
+      let count = 0;
+      cards.forEach(c => {
+        const show = cat === 'all' || c.dataset.cat === cat;
+        c.classList.toggle('hidden', !show);
+        if (show) count++;
+      });
+      const names = { all: 'All Games', arcade: 'Arcade', puzzle: 'Puzzle', strategy: 'Strategy' };
+      document.getElementById('sectionTitle').textContent = names[cat];
+      document.getElementById('sectionCount').textContent = count + ' game' + (count !== 1 ? 's' : '');
+    }
+
+    // ── MOBILE SIDEBAR ──
     const hamburger = document.getElementById('hamburger');
-    const mobileNav = document.getElementById('mobileNav');
+    const sidebar = document.getElementById('sidebar');
+    const sbOverlay = document.getElementById('sbOverlay');
+
     hamburger.addEventListener('click', () => {
       hamburger.classList.toggle('open');
-      mobileNav.classList.toggle('open');
+      sidebar.classList.toggle('mobile-open');
+      sbOverlay.classList.toggle('open');
     });
-    function closeMobileNav() {
+    function closeSidebar() {
       hamburger.classList.remove('open');
-      mobileNav.classList.remove('open');
+      sidebar.classList.remove('mobile-open');
+      sbOverlay.classList.remove('open');
     }
 
-    const container = document.getElementById('particles');
-    const colors = ['rgba(124,58,237,', 'rgba(6,182,212,'];
-    for (let i = 0; i < 25; i++) {
-      const dot = document.createElement('div');
-      dot.classList.add('dot');
-      const size = Math.random() * 4 + 2;
-      const colorBase = colors[Math.floor(Math.random() * colors.length)];
-      const alpha = (Math.random() * 0.3 + 0.1).toFixed(2);
-      dot.style.cssText = `width:${size}px;height:${size}px;background:${colorBase}${alpha});left:${Math.random()*100}%;bottom:-8px;animation-delay:${Math.random()*18}s;animation-duration:${Math.random()*14+12}s;`;
-      container.appendChild(dot);
-    }
-
+    // ── MODALS ──
     function openModal(id) {
       document.getElementById(id).classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -755,7 +806,7 @@
     function closeModalOnOverlay(e, id) {
       if (e.target === e.currentTarget) closeModal(id);
     }
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal-overlay.active').forEach(m => {
           m.classList.remove('active');
@@ -764,6 +815,7 @@
       }
     });
 
+    // ── COOKIE ──
     function acceptCookies() {
       localStorage.setItem('zorblify_cookie_consent', '1');
       document.getElementById('cookieBanner').classList.remove('visible');
@@ -772,10 +824,16 @@
       setTimeout(() => document.getElementById('cookieBanner').classList.add('visible'), 800);
     }
 
-    function handleContactSubmit(e) {
-      e.preventDefault();
+    // ── CONTACT FORM ──
+    function handleContact() {
+      const name = document.getElementById('contactName').value.trim();
+      const email = document.getElementById('contactEmail').value.trim();
+      const msg = document.getElementById('contactMessage').value.trim();
+      if (!name || !email || !msg) return;
       document.getElementById('formSuccess').classList.add('visible');
-      e.target.reset();
+      document.getElementById('contactName').value = '';
+      document.getElementById('contactEmail').value = '';
+      document.getElementById('contactMessage').value = '';
     }
   </script>
 </body>
