@@ -467,11 +467,11 @@
         <div class="sb-label">Games</div>
         <div class="sb-item active" data-filter="all" onclick="filterGames('all',this)">
           <div class="sb-dot"></div>All Games
-          <span class="sb-count">4</span>
+          <span class="sb-count">5</span>
         </div>
         <div class="sb-item" data-filter="arcade" onclick="filterGames('arcade',this)">
           <div class="sb-dot"></div>Arcade
-          <span class="sb-count">2</span>
+          <span class="sb-count">3</span>
         </div>
         <div class="sb-item" data-filter="puzzle" onclick="filterGames('puzzle',this)">
           <div class="sb-dot"></div>Puzzle
@@ -648,7 +648,7 @@
       <div class="panel" id="panel-contact">
         <div class="contact-content">
           <div class="panel-title">Get in Touch</div>
-          <div class="panel-sub">Have a question or feedback? We respond within 48 hours.</div>
+          <div class="panel-sub">Have a question or feedback? Reach us by email.</div>
           <div class="contact-info-row">
             <div class="contact-info-card">
               <div class="ci-label">Email</div>
@@ -659,22 +659,9 @@
               <div class="ci-value">Within 48 hours</div>
             </div>
           </div>
-          <div class="contact-form">
-            <div class="form-group">
-              <label class="form-label" for="contactName">Name</label>
-              <input class="form-input" type="text" id="contactName" placeholder="Your name" required />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="contactEmail">Email</label>
-              <input class="form-input" type="email" id="contactEmail" placeholder="your@email.com" required />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="contactMessage">Message</label>
-              <textarea class="form-input form-textarea" id="contactMessage" placeholder="Your message..." required></textarea>
-            </div>
-            <button class="btn-submit" onclick="handleContact()">Send Message</button>
-            <div class="form-success" id="formSuccess">Message sent! We'll get back to you within 48 hours.</div>
-          </div>
+          <p style="font-size:14px;color:var(--text-muted);line-height:1.7;">
+            Send us an email at <a href="mailto:contact@zorblify.com" style="color:var(--secondary);text-decoration:none;">contact@zorblify.com</a> and we'll get back to you within 48 hours.
+          </p>
         </div>
         <div class="footer-bar">
           <span>© 2026 Zorblify. All rights reserved.</span>
@@ -824,17 +811,7 @@
       setTimeout(() => document.getElementById('cookieBanner').classList.add('visible'), 800);
     }
 
-    // ── CONTACT FORM ──
-    function handleContact() {
-      const name = document.getElementById('contactName').value.trim();
-      const email = document.getElementById('contactEmail').value.trim();
-      const msg = document.getElementById('contactMessage').value.trim();
-      if (!name || !email || !msg) return;
-      document.getElementById('formSuccess').classList.add('visible');
-      document.getElementById('contactName').value = '';
-      document.getElementById('contactEmail').value = '';
-      document.getElementById('contactMessage').value = '';
-    }
+
   </script>
 </body>
 </html>
