@@ -5,14 +5,19 @@
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
   <link rel="apple-touch-icon" sizes="192x192" href="/favicon-192.png">
+  <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#7c3aed">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zorblify — Web Game Platform</title>
-  <meta name="description" content="Free browser games. No download. No login. Play Gravity Flip, Stack Up, Volt Grid, Castle Defense and more on Zorblify.">
-  <meta property="og:title" content="Zorblify — Free Web Games">
-  <meta property="og:description" content="Free browser games. No download. No login.">
+  <title>Zorblify — Free Browser Games</title>
+  <meta name="description" content="Play free browser games instantly. No download, no login required. Enjoy Gravity Flip, Stack Up, Volt Grid, Castle Defense, Neon Runner, Aura Clash and more on Zorblify.">
+  <meta property="og:title" content="Zorblify — Free Browser Games">
+  <meta property="og:description" content="Play free browser games instantly. No download, no login required.">
   <meta property="og:image" content="https://zorblify.com/favicon-512.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://zorblify.com">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Zorblify — Free Browser Games">
+  <meta name="twitter:description" content="Play free browser games instantly. No download, no login.">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -31,10 +36,10 @@
       --text-muted: #8888aa;
       --border: rgba(255,255,255,0.07);
       --sidebar-w: 220px;
+      --gold: #f0c060;
     }
 
     html, body { height: 100%; }
-
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--bg);
@@ -45,10 +50,10 @@
       flex-direction: column;
     }
 
-    /* ── TOP HEADER ── */
+    /* ── HEADER ── */
     header {
-      height: 52px;
-      background: rgba(7,7,15,0.97);
+      height: 56px;
+      background: rgba(7,7,15,0.98);
       border-bottom: 1px solid rgba(124,58,237,0.15);
       display: flex;
       align-items: center;
@@ -56,17 +61,37 @@
       padding: 0 20px;
       flex-shrink: 0;
       z-index: 100;
+      backdrop-filter: blur(20px);
     }
+    .header-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .header-logo img { display: block; }
-    .header-right {
-      display: flex; align-items: center; gap: 8px;
+    .header-logo-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
+    .header-right { display: flex; align-items: center; gap: 10px; }
     .header-badge {
       font-size: 11px; font-family: 'Syne', sans-serif;
       color: var(--text-muted); background: rgba(255,255,255,0.04);
       border: 1px solid var(--border); border-radius: 20px;
       padding: 4px 12px; letter-spacing: 0.5px;
     }
+    .install-btn {
+      display: none;
+      font-size: 11px; font-family: 'Syne', sans-serif; font-weight: 700;
+      color: var(--primary); background: rgba(124,58,237,0.1);
+      border: 1px solid rgba(124,58,237,0.3); border-radius: 20px;
+      padding: 5px 14px; cursor: pointer; letter-spacing: 0.5px;
+      transition: all .15s;
+    }
+    .install-btn:hover { background: rgba(124,58,237,0.2); }
+    .install-btn.visible { display: block; }
     .hamburger {
       display: none; flex-direction: column; gap: 5px;
       cursor: pointer; padding: 4px; background: none; border: none;
@@ -81,11 +106,7 @@
     .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
     /* ── LAYOUT ── */
-    .layout {
-      display: flex;
-      flex: 1;
-      overflow: hidden;
-    }
+    .layout { display: flex; flex: 1; overflow: hidden; }
 
     /* ── SIDEBAR ── */
     .sidebar {
@@ -109,26 +130,13 @@
       padding: 8px 12px; border-radius: 8px; cursor: pointer;
       font-size: 13px; color: var(--text-muted);
       transition: background 0.15s, color 0.15s;
-      font-family: 'DM Sans', sans-serif;
       text-decoration: none;
     }
     .sb-item:hover { background: rgba(124,58,237,0.08); color: var(--text); }
-    .sb-item.active {
-      background: rgba(124,58,237,0.15);
-      color: var(--text);
-      font-weight: 600;
-    }
+    .sb-item.active { background: rgba(124,58,237,0.15); color: var(--text); font-weight: 600; }
     .sb-item.active .sb-dot { background: var(--primary); box-shadow: 0 0 6px rgba(124,58,237,0.6); }
-    .sb-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: rgba(255,255,255,0.15); flex-shrink: 0;
-      transition: background 0.15s;
-    }
-    .sb-count {
-      margin-left: auto; font-size: 10px; color: var(--text-muted);
-      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-      border-radius: 20px; padding: 1px 7px;
-    }
+    .sb-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.15); flex-shrink: 0; }
+    .sb-count { margin-left: auto; font-size: 10px; color: var(--text-muted); background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 20px; padding: 1px 7px; }
     .sb-divider { height: 1px; background: var(--border); margin: 10px 10px; }
     .sb-nav-item {
       display: flex; align-items: center; gap: 10px;
@@ -140,18 +148,25 @@
     .sb-nav-item.active { color: var(--text); font-weight: 600; }
     .sb-nav-icon { font-size: 15px; opacity: 0.7; }
 
-    /* ── MOBILE SIDEBAR OVERLAY ── */
-    .sb-overlay {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-      z-index: 90; backdrop-filter: blur(4px);
+    /* Sidebar stats */
+    .sb-stats {
+      margin: 12px 10px 0;
+      background: rgba(124,58,237,0.06);
+      border: 1px solid rgba(124,58,237,0.12);
+      border-radius: 10px;
+      padding: 12px;
     }
+    .sb-stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .sb-stat-row:last-child { margin-bottom: 0; }
+    .sb-stat-label { font-size: 10px; color: var(--text-muted); }
+    .sb-stat-val { font-size: 12px; font-weight: 700; color: var(--secondary); }
+
+    .sb-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 90; backdrop-filter: blur(4px); }
     .sb-overlay.open { display: block; }
     .sidebar.mobile-open { transform: translateX(0) !important; }
 
-    /* ── MAIN CONTENT ── */
-    .main {
-      flex: 1; overflow-y: auto; display: flex; flex-direction: column;
-    }
+    /* ── MAIN ── */
+    .main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
 
     /* ── TAB BAR ── */
     .tabbar {
@@ -160,6 +175,7 @@
       gap: 4px; flex-shrink: 0;
       background: rgba(7,7,15,0.9);
       position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(10px);
     }
     .tab {
       font-size: 13px; font-family: 'Syne', sans-serif; font-weight: 600;
@@ -168,100 +184,251 @@
       background: transparent; letter-spacing: 0.3px;
     }
     .tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
-    .tab.active {
-      color: var(--text); background: rgba(124,58,237,0.15);
-      border: 1px solid rgba(124,58,237,0.25);
-    }
+    .tab.active { color: var(--text); background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.25); }
 
     /* ── PANELS ── */
     .panel { display: none; flex: 1; }
     .panel.active { display: flex; flex-direction: column; }
 
     /* ── HOME PANEL ── */
-    .home-content { padding: 24px; flex: 1; }
+    .home-content { padding: 0; flex: 1; }
 
-    .hero-strip {
-      background: var(--surface);
-      border: 1px solid rgba(124,58,237,0.15);
-      border-radius: 16px; padding: 20px 24px;
-      margin-bottom: 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      position: relative; overflow: hidden;
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      padding: 48px 32px 40px;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(124,58,237,0.08) 0%, transparent 60%),
+                  linear-gradient(225deg, rgba(6,182,212,0.06) 0%, transparent 60%);
+      border-bottom: 1px solid var(--border);
     }
-    .hero-strip::before {
+    .hero::before {
       content: '';
       position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 0% 50%, rgba(124,58,237,0.08), transparent 60%);
+      background-image:
+        linear-gradient(rgba(124,58,237,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(124,58,237,0.05) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(ellipse 80% 100% at 50% 0%, black 30%, transparent 100%);
       pointer-events: none;
     }
-    .hero-text-block { position: relative; z-index: 1; }
+    .hero-content { position: relative; z-index: 1; max-width: 600px; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.25);
+      border-radius: 100px; padding: 5px 14px;
+      font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
+      color: #a78bfa; letter-spacing: 1px; text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    .hero-eyebrow-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #a78bfa;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.5;transform:scale(0.8);} }
     .hero-title {
-      font-size: clamp(18px, 2.5vw, 26px); font-weight: 800;
-      font-family: 'Syne', sans-serif; letter-spacing: -0.5px;
-      margin-bottom: 6px;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 900; font-family: 'Syne', sans-serif;
+      letter-spacing: -1px; line-height: 1.1;
+      margin-bottom: 14px;
     }
-    .hero-title span {
+    .hero-title .grad {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .hero-sub { font-size: 14px; color: var(--text-muted); }
-    .hero-stats { display: flex; gap: 24px; position: relative; z-index: 1; }
-    .hero-stat { text-align: center; }
+    .hero-sub {
+      font-size: 16px; color: var(--text-muted);
+      margin-bottom: 28px; max-width: 460px; line-height: 1.7;
+    }
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+    .btn-hero-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--primary); color: #fff;
+      border: none; padding: 12px 24px; border-radius: 10px;
+      font-size: 14px; font-weight: 700; font-family: 'Syne', sans-serif;
+      cursor: pointer; text-decoration: none; letter-spacing: 0.3px;
+      transition: all .15s; box-shadow: 0 0 24px var(--primary-glow);
+    }
+    .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 0 36px var(--primary-glow); }
+    .btn-hero-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--text-muted);
+      border: 1px solid var(--border); padding: 12px 20px; border-radius: 10px;
+      font-size: 14px; font-weight: 600; font-family: 'Syne', sans-serif;
+      cursor: pointer; text-decoration: none;
+      transition: all .15s;
+    }
+    .btn-hero-outline:hover { border-color: var(--secondary); color: var(--secondary); }
+
+    /* Stats row */
+    .hero-stats {
+      display: flex; gap: 28px; flex-wrap: wrap;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .hero-stat { display: flex; flex-direction: column; }
     .hero-stat-val {
-      font-size: 24px; font-weight: 800; font-family: 'Syne', sans-serif;
+      font-size: 26px; font-weight: 800; font-family: 'Syne', sans-serif;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
+      background-clip: text; line-height: 1.2;
     }
     .hero-stat-lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-    /* ── SECTION HEADER ── */
+    /* Floating orbs in hero */
+    .hero-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(60px); pointer-events: none; opacity: 0.2;
+    }
+    .hero-orb-1 { width: 300px; height: 300px; background: var(--primary); top: -80px; right: 10%; }
+    .hero-orb-2 { width: 200px; height: 200px; background: var(--secondary); bottom: -40px; right: 30%; }
+
+    /* Floating particles in hero */
+    @keyframes floatParticle {
+      0%   { transform: translateY(0) scale(1); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(-80px) scale(0.5); opacity: 0; }
+    }
+    .hero-particle {
+      position: absolute; border-radius: 50%; pointer-events: none;
+      animation: floatParticle linear infinite;
+    }
+
+    /* ── FEATURED GAME ── */
+    .featured-section { padding: 28px 24px 0; }
     .section-hdr {
       display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
-    .section-hdr-title {
-      font-size: 15px; font-weight: 700; font-family: 'Syne', sans-serif;
+    .section-hdr-left { display: flex; align-items: center; gap: 10px; }
+    .section-badge {
+      font-size: 9px; font-weight: 700; font-family: 'Syne', sans-serif;
+      padding: 3px 8px; border-radius: 4px; letter-spacing: 1px;
+      text-transform: uppercase;
     }
-    .section-hdr-count {
+    .badge-new { background: rgba(74,222,128,0.15); color: #4ade80; border: 1px solid rgba(74,222,128,0.2); }
+    .badge-hot { background: rgba(248,113,113,0.15); color: #f87171; border: 1px solid rgba(248,113,113,0.2); }
+    .badge-featured { background: rgba(240,192,96,0.15); color: var(--gold); border: 1px solid rgba(240,192,96,0.2); }
+    .badge-staff { background: rgba(167,139,250,0.15); color: #a78bfa; border: 1px solid rgba(167,139,250,0.2); }
+    .section-title { font-size: 16px; font-weight: 700; font-family: 'Syne', sans-serif; }
+    .section-count {
       font-size: 12px; color: var(--text-muted);
       background: rgba(255,255,255,0.04); border: 1px solid var(--border);
       border-radius: 20px; padding: 2px 10px;
     }
 
+    /* Featured banner */
+    .featured-banner {
+      background: var(--surface);
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: 16px;
+      padding: 24px 28px;
+      display: flex; align-items: center; gap: 24px;
+      margin-bottom: 28px;
+      position: relative; overflow: hidden;
+      cursor: pointer; text-decoration: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .featured-banner:hover {
+      border-color: rgba(124,58,237,0.5);
+      box-shadow: 0 8px 40px rgba(124,58,237,0.15);
+    }
+    .featured-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 80% 50%, rgba(124,58,237,0.08), transparent 60%);
+      pointer-events: none;
+    }
+    .featured-icon-wrap {
+      width: 72px; height: 72px; flex-shrink: 0;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(124,58,237,0.3), rgba(6,182,212,0.15));
+      border: 1px solid rgba(124,58,237,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+    }
+    .featured-info { flex: 1; position: relative; z-index: 1; }
+    .featured-label {
+      font-size: 10px; font-weight: 700; font-family: 'Syne', sans-serif;
+      color: var(--gold); letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 6px; display: flex; align-items: center; gap: 6px;
+    }
+    .featured-title { font-size: 22px; font-weight: 800; font-family: 'Syne', sans-serif; margin-bottom: 6px; }
+    .featured-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; max-width: 480px; }
+    .featured-tags { display: flex; gap: 6px; margin-top: 10px; }
+    .featured-action {
+      flex-shrink: 0; position: relative; z-index: 1;
+      background: var(--primary); color: #fff;
+      padding: 10px 22px; border-radius: 10px;
+      font-size: 13px; font-weight: 700; font-family: 'Syne', sans-serif;
+      white-space: nowrap;
+    }
+
+    /* ── GAME CARDS SECTION ── */
+    .games-section { padding: 0 24px 24px; }
+
     /* ── GAME CARDS ── */
     .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
       gap: 14px;
     }
     .game-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 16px; padding: 20px;
-      display: flex; flex-direction: column; gap: 10px;
+      border-radius: 16px;
+      display: flex; flex-direction: column;
       transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-      position: relative;
+      position: relative; overflow: hidden;
+      cursor: pointer;
     }
     .game-card:hover {
       transform: translateY(-4px);
       border-color: rgba(124,58,237,0.35);
       box-shadow: 0 8px 32px rgba(124,58,237,0.12);
     }
-    .game-card.hidden { display: none; }
-    .card-top { display: flex; align-items: center; gap: 12px; }
-    .card-icon-wrap {
-      width: 44px; height: 44px; border-radius: 10px;
-      background: rgba(124,58,237,0.1);
-      border: 1px solid rgba(124,58,237,0.2);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; flex-shrink: 0;
+    .game-card:hover .card-preview-icon {
+      transform: scale(1.12) rotate(-3deg);
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
     }
+    .card-preview-icon {
+      transition: transform 0.2s ease;
+    }
+    .game-card.hidden { display: none; }
+
+    /* Card top preview area */
+    .card-preview {
+      height: 120px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      border-radius: 15px 15px 0 0;
+    }
+    .card-preview-bg {
+      position: absolute; inset: 0;
+      opacity: 0.12;
+    }
+    .card-preview-icon { font-size: 52px; position: relative; z-index: 1; }
+    .card-preview-glow {
+      position: absolute; width: 120px; height: 120px;
+      border-radius: 50%; filter: blur(40px); opacity: 0.3; z-index: 0;
+    }
+
+    /* Card badges */
+    .card-badges {
+      position: absolute; top: 10px; left: 10px;
+      display: flex; gap: 4px; z-index: 2;
+    }
+
+    /* Card body */
+    .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
     .card-title { font-size: 15px; font-weight: 700; font-family: 'Syne', sans-serif; }
-    .card-cat { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-    .card-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; flex: 1; }
-    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+    .card-cat { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+    .card-rating { display: flex; align-items: center; gap: 3px; font-size: 11px; color: var(--gold); white-space: nowrap; }
+    .card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; flex: 1; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; padding-top: 10px; border-top: 1px solid var(--border); }
     .tag {
       font-size: 10px; font-weight: 700; font-family: 'Syne', sans-serif;
       padding: 3px 10px; border-radius: 6px;
@@ -279,78 +446,74 @@
       transition: background 0.15s, color 0.15s, transform 0.15s;
       position: relative; z-index: 2;
     }
-    .btn-play:hover {
-      background: var(--primary); color: #fff;
-      box-shadow: 0 0 16px var(--primary-glow);
-      transform: translateY(-1px);
-    }
+    .btn-play:hover { background: var(--primary); color: #fff; box-shadow: 0 0 16px var(--primary-glow); transform: translateY(-1px); }
 
-    /* ── ABOUT PANEL ── */
-    .about-content { padding: 32px 24px; flex: 1; max-width: 680px; }
-    .panel-title {
-      font-size: 22px; font-weight: 800; font-family: 'Syne', sans-serif;
-      margin-bottom: 8px;
+    /* Card play count */
+    .card-plays { font-size: 10px; color: var(--text-muted); display: flex; align-items: center; gap: 3px; }
+
+    /* ── WHY ZORBLIFY ── */
+    .why-section {
+      margin: 0 24px 28px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
     }
-    .panel-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; font-style: italic; }
+    .why-title { font-size: 18px; font-weight: 800; font-family: 'Syne', sans-serif; margin-bottom: 20px; text-align: center; }
+    .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+    .why-card {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 10px; padding: 20px 16px; text-align: center;
+      background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+      border-radius: 12px; transition: border-color .2s, transform .2s;
+    }
+    .why-card:hover { border-color: rgba(6,182,212,0.3); transform: translateY(-3px); }
+    .why-icon { font-size: 28px; }
+    .why-label { font-size: 13px; font-weight: 700; font-family: 'Syne', sans-serif; }
+    .why-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── ABOUT ── */
+    .about-content { padding: 32px 24px; flex: 1; max-width: 720px; overflow-y: auto; }
+    .panel-title { font-size: 24px; font-weight: 800; font-family: 'Syne', sans-serif; margin-bottom: 8px; }
+    .panel-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; font-style: italic; }
     .about-text { font-size: 15px; color: var(--text-muted); line-height: 1.85; margin-bottom: 28px; }
-    .features-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 12px;
+    .about-highlight {
+      background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.15);
+      border-radius: 12px; padding: 20px 24px;
+      margin-bottom: 28px;
+      font-size: 14px; color: var(--text-muted); line-height: 1.8;
     }
+    .about-highlight strong { color: var(--text); }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
     .feature-card {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 14px; padding: 20px 16px;
       display: flex; flex-direction: column; align-items: center; gap: 10px;
-      transition: border-color 0.2s, transform 0.2s;
+      transition: border-color 0.2s, transform 0.2s; text-align: center;
     }
     .feature-card:hover { border-color: rgba(6,182,212,0.3); transform: translateY(-3px); }
     .feature-icon { font-size: 28px; }
     .feature-label { font-size: 13px; font-weight: 700; font-family: 'Syne', sans-serif; }
+    .feature-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
 
-    /* ── CONTACT PANEL ── */
+    /* ── CONTACT ── */
     .contact-content { padding: 32px 24px; flex: 1; max-width: 680px; }
     .contact-info-row { display: flex; gap: 10px; margin-bottom: 24px; }
-    .contact-info-card {
-      flex: 1; background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px 16px;
-    }
-    .ci-label {
-      font-size: 10px; font-family: 'Syne', sans-serif; color: var(--text-muted);
-      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;
-    }
+    .contact-info-card { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+    .ci-label { font-size: 10px; font-family: 'Syne', sans-serif; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
     .ci-value { font-size: 13px; color: var(--text); }
-    .contact-form {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 16px; padding: 24px;
-      display: flex; flex-direction: column; gap: 16px;
+
+    /* ── FOOTER ── */
+    .footer-bar {
+      border-top: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 12px; color: var(--text-muted); flex-shrink: 0;
+      flex-wrap: wrap; gap: 8px;
     }
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-label {
-      font-size: 11px; font-weight: 700; font-family: 'Syne', sans-serif;
-      color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase;
-    }
-    .form-input {
-      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09);
-      border-radius: 10px; padding: 11px 14px;
-      font-size: 14px; font-family: 'DM Sans', sans-serif;
-      color: var(--text); outline: none; transition: border-color 0.2s;
-    }
-    .form-input::placeholder { color: rgba(136,136,170,0.4); }
-    .form-input:focus { border-color: var(--primary); }
-    .form-textarea { min-height: 110px; resize: vertical; }
-    .btn-submit {
-      background: var(--primary); color: #fff; border: none;
-      padding: 12px; border-radius: 10px;
-      font-size: 14px; font-weight: 700; font-family: 'Syne', sans-serif;
-      cursor: pointer; transition: box-shadow 0.15s, transform 0.15s;
-    }
-    .btn-submit:hover { box-shadow: 0 0 24px var(--primary-glow); transform: translateY(-1px); }
-    .form-success {
-      display: none; background: rgba(6,182,212,0.08);
-      border: 1px solid rgba(6,182,212,0.25); border-radius: 10px;
-      padding: 12px 16px; font-size: 14px; color: var(--secondary); text-align: center;
-    }
-    .form-success.visible { display: block; }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 12px; transition: color 0.15s; }
+    .footer-links a:hover { color: var(--text); }
 
     /* ── MODALS ── */
     .modal-overlay {
@@ -366,26 +529,12 @@
       max-height: 85vh; display: flex; flex-direction: column;
       position: relative; animation: modalIn 0.22s ease;
     }
-    @keyframes modalIn {
-      from { opacity: 0; transform: translateY(12px) scale(0.98); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .modal-close {
-      position: absolute; top: 16px; right: 20px;
-      background: none; border: none; color: var(--text-muted);
-      font-size: 24px; cursor: pointer; z-index: 1;
-    }
+    @keyframes modalIn { from{opacity:0;transform:translateY(12px) scale(0.98);} to{opacity:1;transform:translateY(0) scale(1);} }
+    .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; z-index: 1; }
     .modal-close:hover { color: var(--text); }
-    .modal-title {
-      font-size: 20px; font-weight: 800; font-family: 'Syne', sans-serif;
-      padding: 28px 32px 4px;
-    }
+    .modal-title { font-size: 20px; font-weight: 800; font-family: 'Syne', sans-serif; padding: 28px 32px 4px; }
     .modal-meta { font-size: 12px; color: var(--text-muted); padding: 0 32px 20px; border-bottom: 1px solid var(--border); }
-    .modal-body {
-      overflow-y: auto; padding: 24px 32px 32px;
-      font-size: 14px; line-height: 1.75; color: var(--text-muted);
-      display: flex; flex-direction: column; gap: 14px;
-    }
+    .modal-body { overflow-y: auto; padding: 24px 32px 32px; font-size: 14px; line-height: 1.75; color: var(--text-muted); display: flex; flex-direction: column; gap: 14px; }
     .modal-body h3 { font-size: 13px; font-weight: 700; color: var(--text); margin-top: 6px; }
     .modal-body p { margin: 0; }
     .modal-body ul { padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
@@ -394,64 +543,52 @@
 
     /* ── COOKIE ── */
     .cookie-banner {
-      position: fixed; bottom: -120px; left: 0; right: 0; z-index: 150;
-      background: #0e0e1e; border-top: 1px solid rgba(124,58,237,0.2);
-      padding: 14px 24px; display: flex; align-items: center;
+      position: fixed; bottom: -140px; left: 0; right: 0; z-index: 150;
+      background: rgba(13,13,28,0.98); border-top: 1px solid rgba(124,58,237,0.2);
+      padding: 16px 24px; display: flex; align-items: center;
       justify-content: space-between; gap: 14px;
       transition: bottom 0.4s cubic-bezier(0.34,1.56,0.64,1); flex-wrap: wrap;
+      backdrop-filter: blur(10px);
     }
     .cookie-banner.visible { bottom: 0; }
-    .cookie-text { font-size: 13px; color: var(--text-muted); flex: 1; min-width: 200px; }
-    .cookie-actions { display: flex; align-items: center; gap: 14px; }
-    .cookie-learn { font-size: 12px; font-weight: 600; color: var(--text-muted); text-decoration: none; }
-    .cookie-learn:hover { color: var(--secondary); }
-    .cookie-accept {
-      font-size: 12px; font-weight: 700; font-family: 'Syne', sans-serif;
-      padding: 8px 20px; border-radius: 8px;
-      background: var(--primary); color: #fff; border: none; cursor: pointer;
-    }
+    .cookie-text { font-size: 13px; color: var(--text-muted); flex: 1; min-width: 200px; line-height: 1.5; }
+    .cookie-text a { color: var(--secondary); text-decoration: none; }
+    .cookie-actions { display: flex; align-items: center; gap: 10px; }
+    .cookie-decline { font-size: 12px; color: var(--text-muted); background: none; border: 1px solid var(--border); padding: 7px 14px; border-radius: 8px; cursor: pointer; }
+    .cookie-accept { font-size: 12px; font-weight: 700; font-family: 'Syne', sans-serif; padding: 8px 20px; border-radius: 8px; background: var(--primary); color: #fff; border: none; cursor: pointer; transition: box-shadow .15s; }
+    .cookie-accept:hover { box-shadow: 0 0 16px var(--primary-glow); }
 
-    /* ── FOOTER ── */
-    .footer-bar {
-      border-top: 1px solid var(--border);
-      padding: 12px 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      font-size: 12px; color: var(--text-muted); flex-shrink: 0;
-      flex-wrap: wrap; gap: 8px;
-    }
-    .footer-links { display: flex; gap: 16px; }
-    .footer-links a {
-      color: var(--text-muted); text-decoration: none; font-size: 12px;
-      transition: color 0.15s;
-    }
-    .footer-links a:hover { color: var(--text); }
+    /* ── COUNTER ANIMATION ── */
+    @keyframes countUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+    .count-animated { animation: countUp .6s ease forwards; }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      .sidebar {
-        position: fixed; left: 0; top: 52px; bottom: 0;
-        z-index: 95; transform: translateX(-100%);
-        transition: transform 0.3s;
-      }
+      .sidebar { position: fixed; left: 0; top: 56px; bottom: 0; z-index: 95; transform: translateX(-100%); transition: transform 0.3s; }
       .hamburger { display: flex; }
       .header-badge { display: none; }
-      .hero-stats { display: none; }
-      .home-content, .about-content, .contact-content { padding: 16px; }
+      .hero { padding: 28px 16px; }
+      .hero-stats { gap: 16px; }
+      .featured-banner { flex-direction: column; }
+      .featured-action { width: 100%; text-align: center; padding: 12px; }
+      .home-content .featured-section, .home-content .games-section { padding-left: 16px; padding-right: 16px; }
+      .why-section { margin: 0 16px 24px; }
+      .hero-orb { display: none; }
     }
-    @media (min-width: 769px) {
-      .hamburger { display: none; }
-    }
+    @media (min-width: 769px) { .hamburger { display: none; } }
   </style>
 </head>
 <body>
 
   <!-- HEADER -->
   <header>
-    <div class="header-logo">
-      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIHJ4PSI0MCIgZmlsbD0iIzA4MDgxMCIvPgogIDxyZWN0IHg9IjMyMCIgeT0iNDAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjM0MCIgeT0iNjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiIHJ4PSIxIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNTUiIHk9IjMwMCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgcng9IjEiIGZpbGw9IiMwNmI2ZDQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjMzMCIgeT0iMzEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNjAiIHk9IjcwIiB3aWR0aD0iNiIgaGVpZ2h0PSI2IiByeD0iMSIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC4yIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIxNzIiIHk9IjEwMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjIxNCIgeT0iMTAwIiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjU2IiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIyMTQiIHk9IjE0MiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMTg0IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzA2YjZkNCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMjY4IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjE0IiB5PSIyNjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIyNTYiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjI5NiIgeT0iMTA4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIzIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIxMDQiIHk9IjI3NiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMyIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC41Ii8+CiAgPHRleHQgeD0iMjAwIiB5PSIzNTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgSW1wYWN0LCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMyIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iNCI+Wk9SQkxJRlk8L3RleHQ+Cjwvc3ZnPgo=" height="36" alt="Zorblify">
-    </div>
+    <a href="#" class="header-logo" onclick="switchTab('home');return false;">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIHJ4PSI0MCIgZmlsbD0iIzA4MDgxMCIvPgogIDxyZWN0IHg9IjMyMCIgeT0iNDAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjM0MCIgeT0iNjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiIHJ4PSIxIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNTUiIHk9IjMwMCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgcng9IjEiIGZpbGw9IiMwNmI2ZDQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjMzMCIgeT0iMzEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNjAiIHk9IjcwIiB3aWR0aD0iNiIgaGVpZ2h0PSI2IiByeD0iMSIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC4yIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIxNzIiIHk9IjEwMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjIxNCIgeT0iMTAwIiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjU2IiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIyMTQiIHk9IjE0MiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMTg0IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzA2YjZkNCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMjY4IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjE0IiB5PSIyNjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIyNTYiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjI5NiIgeT0iMTA4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIzIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIxMDQiIHk9IjI3NiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMyIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC41Ii8+CiAgPHRleHQgeD0iMjAwIiB5PSIzNTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgSW1wYWN0LCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMyIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iNCI+Wk9SQkxJRlk8L3RleHQ+Cjwvc3ZnPgo=" height="32" alt="Zorblify">
+      <span class="header-logo-text">ZORBLIFY</span>
+    </a>
     <div class="header-right">
       <div class="header-badge">Free · No Login · No Download</div>
+      <button class="install-btn" id="installBtn" onclick="installPWA()">⬇ Install App</button>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
@@ -462,24 +599,19 @@
 
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
-
       <div class="sb-section">
         <div class="sb-label">Games</div>
         <div class="sb-item active" data-filter="all" onclick="filterGames('all',this)">
-          <div class="sb-dot"></div>All Games
-          <span class="sb-count">6</span>
+          <div class="sb-dot"></div>All Games<span class="sb-count">6</span>
         </div>
         <div class="sb-item" data-filter="arcade" onclick="filterGames('arcade',this)">
-          <div class="sb-dot"></div>Arcade
-          <span class="sb-count">4</span>
+          <div class="sb-dot"></div>Arcade<span class="sb-count">4</span>
         </div>
         <div class="sb-item" data-filter="puzzle" onclick="filterGames('puzzle',this)">
-          <div class="sb-dot"></div>Puzzle
-          <span class="sb-count">1</span>
+          <div class="sb-dot"></div>Puzzle<span class="sb-count">1</span>
         </div>
         <div class="sb-item" data-filter="strategy" onclick="filterGames('strategy',this)">
-          <div class="sb-dot"></div>Strategy
-          <span class="sb-count">1</span>
+          <div class="sb-dot"></div>Strategy<span class="sb-count">1</span>
         </div>
       </div>
 
@@ -498,6 +630,27 @@
         </div>
       </div>
 
+      <div class="sb-divider"></div>
+
+      <div class="sb-stats">
+        <div class="sb-label" style="padding:0 0 8px;">Platform Stats</div>
+        <div class="sb-stat-row">
+          <span class="sb-stat-label">🎮 Total Games</span>
+          <span class="sb-stat-val">6</span>
+        </div>
+        <div class="sb-stat-row">
+          <span class="sb-stat-label">♾️ Always Free</span>
+          <span class="sb-stat-val">Yes</span>
+        </div>
+        <div class="sb-stat-row">
+          <span class="sb-stat-label">🔓 Login Required</span>
+          <span class="sb-stat-val">Never</span>
+        </div>
+        <div class="sb-stat-row">
+          <span class="sb-stat-label">📱 Mobile Ready</span>
+          <span class="sb-stat-val">Yes</span>
+        </div>
+      </div>
     </aside>
 
     <div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
@@ -516,126 +669,261 @@
       <div class="panel active" id="panel-home">
         <div class="home-content">
 
-          <div class="hero-strip">
-            <div class="hero-text-block">
-              <div class="hero-title">Free <span>Browser Games</span></div>
-              <div class="hero-sub">No download. No login. Just play.</div>
-            </div>
-            <div class="hero-stats">
-              <div class="hero-stat">
-                <div class="hero-stat-val" id="heroGameCount">6</div>
-                <div class="hero-stat-lbl">Games</div>
+          <!-- HERO -->
+          <div class="hero">
+            <div class="hero-orb hero-orb-1"></div>
+            <div class="hero-orb hero-orb-2"></div>
+            <div class="hero-particle" style="width:4px;height:4px;background:#7c3aed;left:15%;top:60%;animation-duration:8s;animation-delay:0s;"></div>
+            <div class="hero-particle" style="width:3px;height:3px;background:#06b6d4;left:25%;top:70%;animation-duration:11s;animation-delay:2s;"></div>
+            <div class="hero-particle" style="width:5px;height:5px;background:#a78bfa;left:60%;top:40%;animation-duration:9s;animation-delay:1s;"></div>
+            <div class="hero-particle" style="width:3px;height:3px;background:#f0c060;left:75%;top:65%;animation-duration:12s;animation-delay:3s;"></div>
+            <div class="hero-particle" style="width:4px;height:4px;background:#06b6d4;left:85%;top:50%;animation-duration:10s;animation-delay:0.5s;"></div>
+            <div class="hero-content">
+              <div class="hero-eyebrow">
+                <div class="hero-eyebrow-dot"></div>
+                6 Games Available Now
               </div>
-              <div class="hero-stat">
-                <div class="hero-stat-val">Free</div>
-                <div class="hero-stat-lbl">Always</div>
+              <h1 class="hero-title">
+                Play Free <span class="grad">Browser Games</span> — Instantly
+              </h1>
+              <p class="hero-sub">No download. No account. No waiting. Jump into action-packed games right in your browser — completely free, forever.</p>
+              <div class="hero-actions">
+                <a href="#games-grid" class="btn-hero-primary" onclick="document.getElementById('cardsGrid').scrollIntoView({behavior:'smooth'});return false;">
+                  🎮 Browse Games
+                </a>
+                <a href="#" class="btn-hero-outline" onclick="switchTab('about');return false;">
+                  Learn More →
+                </a>
+              </div>
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <div class="hero-stat-val" id="statGames">6</div>
+                  <div class="hero-stat-lbl">Free Games</div>
+                </div>
+                <div class="hero-stat">
+                  <div class="hero-stat-val" style="color:#4ade80;-webkit-text-fill-color:#4ade80;">0</div>
+                  <div class="hero-stat-lbl">Downloads Needed</div>
+                </div>
+                <div class="hero-stat">
+                  <div class="hero-stat-val" style="color:#f0c060;-webkit-text-fill-color:#f0c060;">∞</div>
+                  <div class="hero-stat-lbl">Hours of Fun</div>
+                </div>
+                <div class="hero-stat">
+                  <div class="hero-stat-val" style="color:#06b6d4;-webkit-text-fill-color:#06b6d4;">Free</div>
+                  <div class="hero-stat-lbl">Forever</div>
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="section-hdr">
-            <div class="section-hdr-title" id="sectionTitle">All Games</div>
-            <div class="section-hdr-count" id="sectionCount">6 games</div>
+          <!-- FEATURED GAME -->
+          <div class="featured-section">
+            <div class="section-hdr">
+              <div class="section-hdr-left">
+                <div class="section-title">Featured Game</div>
+                <span class="section-badge badge-featured">⭐ Staff Pick</span>
+              </div>
+            </div>
+            <a href="/games/aura-clash/index.html" class="featured-banner">
+              <div class="featured-icon-wrap">🌟</div>
+              <div class="featured-info">
+                <div class="featured-label">⭐ Staff Pick · Arcade</div>
+                <div class="featured-title">Aura Clash</div>
+                <div class="featured-desc">Move, evade and eliminate. Face 6 unique enemy types — fast Scouts, armored Brutes, sniping enemies and exploding Bombers. Use 4 powerful abilities to survive endless waves.</div>
+                <div class="featured-tags">
+                  <span class="section-badge badge-new">New</span>
+                  <span class="section-badge badge-hot">🔥 Hot</span>
+                </div>
+              </div>
+              <div class="featured-action" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);border-radius:10px;font-weight:800;letter-spacing:0.5px;">Play Now →</div>
+            </a>
           </div>
 
-          <div class="cards-grid" id="cardsGrid">
-
-            <div class="game-card" data-cat="arcade">
-              <div class="card-top">
-                <div class="card-icon-wrap">🌀</div>
-                <div>
-                  <div class="card-title">Gravity Flip</div>
-                  <div class="card-cat">Arcade</div>
-                </div>
+          <!-- GAMES GRID -->
+          <div class="games-section">
+            <div class="section-hdr">
+              <div class="section-hdr-left">
+                <div class="section-title" id="sectionTitle">All Games</div>
               </div>
-              <div class="card-desc">Tap to flip gravity. Dodge the pipes. How long can you survive?</div>
-              <div class="card-footer">
-                <span class="tag">Arcade</span>
-                <a href="/games/gravity-flip/index.html" class="btn-play">Play Now</a>
-              </div>
+              <div class="section-count" id="sectionCount">6 games</div>
             </div>
 
-            <div class="game-card" data-cat="arcade">
-              <div class="card-top">
-                <div class="card-icon-wrap">🏗️</div>
-                <div>
-                  <div class="card-title">Stack Up</div>
-                  <div class="card-cat">Arcade</div>
+            <div class="cards-grid" id="cardsGrid">
+
+              <div class="game-card" data-cat="arcade">
+                <div class="card-preview" style="background:linear-gradient(135deg,#1a0828,#0a0a14);">
+                  <div class="card-preview-bg" style="background:radial-gradient(circle,#7c3aed,transparent);"></div>
+                  <div class="card-preview-glow" style="background:#7c3aed;"></div>
+                  <div class="card-preview-icon">🌀</div>
+                  <div class="card-badges"><span class="section-badge badge-hot">🔥 Popular</span></div>
+                </div>
+                <div class="card-body">
+                  <div class="card-top">
+                    <div><div class="card-title">Gravity Flip</div><div class="card-cat">Arcade</div></div>
+                    <div class="card-rating">★★★★★</div>
+                  </div>
+                  <div class="card-desc">Tap to flip gravity. Dodge the pipes. A classic reflex challenge — how long can you survive?</div>
+                  <div class="card-footer">
+                    <span class="tag">Arcade</span>
+                    <a href="/games/gravity-flip/index.html" class="btn-play">Play Now</a>
+                  </div>
                 </div>
               </div>
-              <div class="card-desc">Drop the block at the right moment. Stack them perfectly and build the tallest tower!</div>
-              <div class="card-footer">
-                <span class="tag">Arcade</span>
-                <a href="/games/stack-up/index.html" class="btn-play">Play Now</a>
-              </div>
-            </div>
 
-            <div class="game-card" data-cat="puzzle">
-              <div class="card-top">
-                <div class="card-icon-wrap">⚡</div>
-                <div>
-                  <div class="card-title">Volt Grid</div>
-                  <div class="card-cat">Puzzle</div>
+              <div class="game-card" data-cat="arcade">
+                <div class="card-preview" style="background:linear-gradient(135deg,#0a1428,#061020);">
+                  <div class="card-preview-bg" style="background:radial-gradient(circle,#06b6d4,transparent);"></div>
+                  <div class="card-preview-glow" style="background:#06b6d4;"></div>
+                  <div class="card-preview-icon">🏗️</div>
+                  <div class="card-badges"><span class="section-badge badge-staff">👾 Classic</span></div>
+                </div>
+                <div class="card-body">
+                  <div class="card-top">
+                    <div><div class="card-title">Stack Up</div><div class="card-cat">Arcade</div></div>
+                    <div class="card-rating">★★★★☆</div>
+                  </div>
+                  <div class="card-desc">Drop the block at the perfect moment. Stack them high, build the tallest tower, beat your best!</div>
+                  <div class="card-footer">
+                    <span class="tag">Arcade</span>
+                    <a href="/games/stack-up/index.html" class="btn-play">Play Now</a>
+                  </div>
                 </div>
               </div>
-              <div class="card-desc">Chain the energy, clear the grid. A strategic puzzle game with satisfying chain reactions.</div>
-              <div class="card-footer">
-                <span class="tag puzzle">Puzzle</span>
-                <a href="/games/volt-grid/index.html" class="btn-play">Play Now</a>
-              </div>
-            </div>
 
-            <div class="game-card" data-cat="strategy">
-              <div class="card-top">
-                <div class="card-icon-wrap">⚔️</div>
-                <div>
-                  <div class="card-title">Castle Defense</div>
-                  <div class="card-cat">Strategy</div>
+              <div class="game-card" data-cat="puzzle">
+                <div class="card-preview" style="background:linear-gradient(135deg,#0a1020,#050814);">
+                  <div class="card-preview-bg" style="background:radial-gradient(circle,#a78bfa,transparent);"></div>
+                  <div class="card-preview-glow" style="background:#a78bfa;"></div>
+                  <div class="card-preview-icon">⚡</div>
+                  <div class="card-badges"><span class="section-badge badge-staff">🧩 Brain</span></div>
+                </div>
+                <div class="card-body">
+                  <div class="card-top">
+                    <div><div class="card-title">Volt Grid</div><div class="card-cat">Puzzle</div></div>
+                    <div class="card-rating">★★★★★</div>
+                  </div>
+                  <div class="card-desc">Chain the energy, clear the grid. Trigger domino chain reactions in this strategic puzzle game.</div>
+                  <div class="card-footer">
+                    <span class="tag puzzle">Puzzle</span>
+                    <a href="/games/volt-grid/index.html" class="btn-play">Play Now</a>
+                  </div>
                 </div>
               </div>
-              <div class="card-desc">Build towers, cast spells, survive 30 campaign levels or endless waves. Protect the kingdom!</div>
-              <div class="card-footer">
-                <span class="tag strategy">Strategy</span>
-                <a href="/games/castle-defense/index.html" class="btn-play">Play Now</a>
-              </div>
-            </div>
 
-            <div class="game-card" data-cat="arcade">
-              <div class="card-top">
-                <div class="card-icon-wrap">🏃</div>
-                <div>
-                  <div class="card-title">Neon Runner</div>
-                  <div class="card-cat">Arcade</div>
+              <div class="game-card" data-cat="strategy">
+                <div class="card-preview" style="background:linear-gradient(135deg,#1a1000,#0d0800);">
+                  <div class="card-preview-bg" style="background:radial-gradient(circle,#c9a84c,transparent);"></div>
+                  <div class="card-preview-glow" style="background:#c9a84c;"></div>
+                  <div class="card-preview-icon">⚔️</div>
+                  <div class="card-badges"><span class="section-badge badge-hot">🔥 Hot</span></div>
+                </div>
+                <div class="card-body">
+                  <div class="card-top">
+                    <div><div class="card-title">Castle Defense</div><div class="card-cat">Strategy</div></div>
+                    <div class="card-rating">★★★★★</div>
+                  </div>
+                  <div class="card-desc">Build towers, cast spells, survive 30 campaign levels or endless waves. Protect the kingdom!</div>
+                  <div class="card-footer">
+                    <span class="tag strategy">Strategy</span>
+                    <a href="/games/castle-defense/index.html" class="btn-play">Play Now</a>
+                  </div>
                 </div>
               </div>
-              <div class="card-desc">Choose your runner, collect coins, survive endless obstacles. 4 themes, powerups and global leaderboard!</div>
-              <div class="card-footer">
-                <span class="tag">Arcade</span>
-                <a href="/games/neon-runner/index.html" class="btn-play">Play Now</a>
-              </div>
-            </div>
 
-            <div class="game-card" data-cat="arcade">
-              <div class="card-top">
-                <div class="card-icon-wrap">⚔️</div>
-                <div>
-                  <div class="card-title">Aura Clash</div>
-                  <div class="card-cat">Arcade</div>
+              <div class="game-card" data-cat="arcade">
+                <div class="card-preview" style="background:linear-gradient(135deg,#050510,#000818);">
+                  <div class="card-preview-bg" style="background:radial-gradient(circle,#fb923c,transparent);"></div>
+                  <div class="card-preview-glow" style="background:#fb923c;"></div>
+                  <div class="card-preview-icon">🏃</div>
+                  <div class="card-badges"><span class="section-badge badge-new">New</span></div>
+                </div>
+                <div class="card-body">
+                  <div class="card-top">
+                    <div><div class="card-title">Neon Runner</div><div class="card-cat">Arcade</div></div>
+                    <div class="card-rating">★★★★☆</div>
+                  </div>
+                  <div class="card-desc">Choose your runner, collect coins, survive endless obstacles. 4 unique themes, powerups and global leaderboard!</div>
+                  <div class="card-footer">
+                    <span class="tag">Arcade</span>
+                    <a href="/games/neon-runner/index.html" class="btn-play">Play Now</a>
+                  </div>
                 </div>
               </div>
-              <div class="card-desc">Move, evade and eliminate. 6 enemy types with unique behaviors. Use 4 abilities strategically to survive endless waves.</div>
-              <div class="card-footer">
-                <span class="tag">Arcade</span>
-                <a href="/games/aura-clash/index.html" class="btn-play">Play Now</a>
-              </div>
-            </div>
 
+              <div class="game-card" data-cat="arcade">
+                <div class="card-preview" style="background:linear-gradient(135deg,#04040c,#080818);">
+                  <div class="card-preview-bg" style="background:radial-gradient(circle,#7c3aed,transparent);"></div>
+                  <div class="card-preview-glow" style="background:#7c3aed;"></div>
+                  <div class="card-preview-icon">⚔️</div>
+                  <div class="card-badges">
+                    <span class="section-badge badge-new">New</span>
+                    <span class="section-badge badge-featured">⭐ Pick</span>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="card-top">
+                    <div><div class="card-title">Aura Clash</div><div class="card-cat">Arcade</div></div>
+                    <div class="card-rating">★★★★★</div>
+                  </div>
+                  <div class="card-desc">Move, evade and eliminate. 6 enemy types with unique behaviors. 4 abilities to master. Survive endless waves!</div>
+                  <div class="card-footer">
+                    <span class="tag">Arcade</span>
+                    <a href="/games/aura-clash/index.html" class="btn-play">Play Now</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
+
+          <!-- WHY ZORBLIFY -->
+          <div style="height:8px"></div>
+          <div class="why-section">
+            <div class="why-title">Why Zorblify?</div>
+            <div class="why-grid">
+              <div class="why-card">
+                <div class="why-icon">⚡</div>
+                <div class="why-label">Instant Play</div>
+                <div class="why-desc">No downloads, no installs. Click and play in seconds.</div>
+              </div>
+              <div class="why-card">
+                <div class="why-icon">🔓</div>
+                <div class="why-label">No Account</div>
+                <div class="why-desc">Jump straight into the game. No signup ever required.</div>
+              </div>
+              <div class="why-card">
+                <div class="why-icon">♾️</div>
+                <div class="why-label">Always Free</div>
+                <div class="why-desc">Every game, every feature — completely free forever.</div>
+              </div>
+              <div class="why-card">
+                <div class="why-icon">📱</div>
+                <div class="why-label">Mobile Ready</div>
+                <div class="why-desc">Works on any device. Phone, tablet, desktop.</div>
+              </div>
+              <div class="why-card">
+                <div class="why-icon">🏆</div>
+                <div class="why-label">Leaderboards</div>
+                <div class="why-desc">Compete globally. See how you rank against the world.</div>
+              </div>
+              <div class="why-card">
+                <div class="why-icon">🆕</div>
+                <div class="why-label">New Games</div>
+                <div class="why-desc">Fresh games added regularly. Something new to discover.</div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <div class="footer-bar">
-          <span>© 2026 Zorblify. All rights reserved.</span>
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <span style="font-weight:600;">© 2026 Zorblify. All rights reserved.</span>
+            <span style="font-size:11px;color:#444;">Free browser games — no download, no login required.</span>
+          </div>
           <div class="footer-links">
+            <a href="#" onclick="switchTab('about');return false;">About</a>
+            <a href="#" onclick="switchTab('contact');return false;">Contact</a>
             <a href="#" onclick="openModal('privacyModal');return false">Privacy Policy</a>
             <a href="#" onclick="openModal('tosModal');return false">Terms of Service</a>
           </div>
@@ -645,24 +933,38 @@
       <!-- ABOUT PANEL -->
       <div class="panel" id="panel-about">
         <div class="about-content">
-          <div class="panel-title">What is Zorblify?</div>
-          <div class="panel-sub">Free web game platform — no downloads, no accounts.</div>
+          <div class="panel-title">About Zorblify</div>
+          <div class="panel-sub">A free web game platform built for everyone.</div>
           <div class="about-text">
-            Zorblify is a growing collection of browser-based games. Play instantly in your browser — no downloads, no accounts needed. New games are added regularly, each one more polished than the last.
+            Zorblify is a growing collection of browser-based games you can play instantly — no downloads, no accounts, no barriers. We believe great games should be accessible to everyone, everywhere, on any device.
+          </div>
+          <div class="about-highlight">
+            <strong>Our mission:</strong> Build high-quality, polished browser games that are fun, challenging and completely free. Every game on Zorblify is handcrafted with care — from the gameplay mechanics to the visual design. New games are added regularly, each one pushing the bar higher.
           </div>
           <div class="features-grid">
             <div class="feature-card">
               <div class="feature-icon">♾️</div>
               <div class="feature-label">Always Free</div>
+              <div class="feature-desc">No paywalls, no premium tiers. Everything is free.</div>
             </div>
             <div class="feature-card">
               <div class="feature-icon">🔓</div>
               <div class="feature-label">No Login</div>
+              <div class="feature-desc">No account required. Ever. Just play.</div>
             </div>
             <div class="feature-card">
               <div class="feature-icon">📅</div>
-              <div class="feature-label">New Games Regularly</div>
+              <div class="feature-label">Growing Library</div>
+              <div class="feature-desc">New games added regularly across all genres.</div>
             </div>
+            <div class="feature-card">
+              <div class="feature-icon">🏆</div>
+              <div class="feature-label">Global Scores</div>
+              <div class="feature-desc">Compete on worldwide leaderboards.</div>
+            </div>
+          </div>
+          <div class="about-text" style="margin-bottom:0;">
+            Zorblify started as a passion project and is growing into a full platform. If you enjoy the games, share them with friends — that's the best support you can give us.
           </div>
         </div>
         <div class="footer-bar">
@@ -678,20 +980,29 @@
       <div class="panel" id="panel-contact">
         <div class="contact-content">
           <div class="panel-title">Get in Touch</div>
-          <div class="panel-sub">Have a question or feedback? Reach us by email.</div>
+          <div class="panel-sub">Have a question, feedback or suggestion? We'd love to hear from you.</div>
           <div class="contact-info-row">
             <div class="contact-info-card">
               <div class="ci-label">Email</div>
-              <div class="ci-value">contact@zorblify.com</div>
+              <div class="ci-value"><a href="mailto:contact@zorblify.com" style="color:var(--secondary);text-decoration:none;">contact@zorblify.com</a></div>
             </div>
             <div class="contact-info-card">
               <div class="ci-label">Response Time</div>
               <div class="ci-value">Within 48 hours</div>
             </div>
           </div>
-          <p style="font-size:14px;color:var(--text-muted);line-height:1.7;">
-            Send us an email at <a href="mailto:contact@zorblify.com" style="color:var(--secondary);text-decoration:none;">contact@zorblify.com</a> and we'll get back to you within 48 hours.
+          <p style="font-size:14px;color:var(--text-muted);line-height:1.8;margin-bottom:20px;">
+            Send us an email and we'll get back to you as soon as possible. Whether it's a bug report, a game suggestion or just a hello — we read every message.
           </p>
+          <div style="background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.15);border-radius:12px;padding:20px 24px;">
+            <div style="font-size:13px;font-weight:700;font-family:'Syne',sans-serif;margin-bottom:10px;">📬 What can you write about?</div>
+            <div style="font-size:13px;color:var(--text-muted);display:flex;flex-direction:column;gap:6px;">
+              <div>🐛 Found a bug in a game? Let us know.</div>
+              <div>💡 Have a game idea? We love suggestions.</div>
+              <div>🤝 Want to collaborate? Drop us a line.</div>
+              <div>💬 Just want to say hi? Always welcome!</div>
+            </div>
+          </div>
         </div>
         <div class="footer-bar">
           <span>© 2026 Zorblify. All rights reserved.</span>
@@ -713,11 +1024,11 @@
       <p class="modal-meta">Last updated: April 2026</p>
       <div class="modal-body">
         <h3>1. Information We Collect</h3>
-        <p>Zorblify does not require you to create an account or provide personal information to play games. We may collect limited technical data automatically when you visit.</p>
+        <p>Zorblify does not require you to create an account or provide personal information to play games. We may collect limited technical data automatically when you visit, including your browser type, device type, pages visited, and general geographic region.</p>
         <h3>2. Cookies</h3>
         <p>We use cookies and similar technologies to remember your preferences, analyze site traffic, and serve relevant advertising through third-party ad networks including Google AdSense.</p>
         <h3>3. Third-Party Advertising</h3>
-        <p>Zorblify may display advertisements served by third-party advertising partners, including Google AdSense. You may opt out at <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>.</p>
+        <p>Zorblify may display advertisements served by third-party advertising partners, including Google AdSense. You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a>.</p>
         <h3>4. Analytics</h3>
         <p>We may use analytics services to understand how visitors use the site. Data is aggregated and anonymized.</p>
         <h3>5. Children's Privacy</h3>
@@ -757,10 +1068,13 @@
 
   <!-- COOKIE BANNER -->
   <div class="cookie-banner" id="cookieBanner">
-    <div class="cookie-text">We use cookies to improve your experience and serve relevant ads.</div>
+    <div class="cookie-text">
+      We use cookies to improve your experience and serve relevant ads.
+      <a href="#" onclick="openModal('privacyModal');return false;">Learn more</a>
+    </div>
     <div class="cookie-actions">
-      <a href="#" class="cookie-learn" onclick="openModal('privacyModal');return false">Learn More</a>
-      <button class="cookie-accept" onclick="acceptCookies()">Accept</button>
+      <button class="cookie-decline" onclick="declineCookies()">Decline</button>
+      <button class="cookie-accept" onclick="acceptCookies()">Accept All</button>
     </div>
   </div>
 
@@ -799,7 +1113,6 @@
     const hamburger = document.getElementById('hamburger');
     const sidebar = document.getElementById('sidebar');
     const sbOverlay = document.getElementById('sbOverlay');
-
     hamburger.addEventListener('click', () => {
       hamburger.classList.toggle('open');
       sidebar.classList.toggle('mobile-open');
@@ -812,36 +1125,65 @@
     }
 
     // ── MODALS ──
-    function openModal(id) {
-      document.getElementById(id).classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
-      document.body.style.overflow = '';
-    }
-    function closeModalOnOverlay(e, id) {
-      if (e.target === e.currentTarget) closeModal(id);
-    }
+    function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow='hidden'; }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow=''; }
+    function closeModalOnOverlay(e, id) { if (e.target === e.currentTarget) closeModal(id); }
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        document.querySelectorAll('.modal-overlay.active').forEach(m => {
-          m.classList.remove('active');
-          document.body.style.overflow = '';
-        });
-      }
+      if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => { m.classList.remove('active'); document.body.style.overflow=''; });
     });
 
     // ── COOKIE ──
-    function acceptCookies() {
-      localStorage.setItem('zorblify_cookie_consent', '1');
-      document.getElementById('cookieBanner').classList.remove('visible');
-    }
-    if (!localStorage.getItem('zorblify_cookie_consent')) {
-      setTimeout(() => document.getElementById('cookieBanner').classList.add('visible'), 800);
+    function acceptCookies() { localStorage.setItem('zorblify_cookie','accept'); document.getElementById('cookieBanner').classList.remove('visible'); }
+    function declineCookies() { localStorage.setItem('zorblify_cookie','decline'); document.getElementById('cookieBanner').classList.remove('visible'); }
+    if (!localStorage.getItem('zorblify_cookie')) {
+      setTimeout(() => document.getElementById('cookieBanner').classList.add('visible'), 1200);
     }
 
+    // ── PWA ──
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBtn').classList.add('visible');
+    });
+    function installPWA() {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => {
+        deferredPrompt = null;
+        document.getElementById('installBtn').classList.remove('visible');
+      });
+    }
+    window.addEventListener('appinstalled', () => {
+      document.getElementById('installBtn').classList.remove('visible');
+    });
 
+    // ── SERVICE WORKER ──
+    if ('serviceWorker' in navigator && location.hostname === 'zorblify.com') {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(r => console.log('SW aktif:', r.scope))
+          .catch(e => console.log('SW hata:', e));
+      });
+    }
+
+    // ── COUNTER ANIMATION ──
+    function animateCounter(el, target, duration=1200) {
+      let start = 0;
+      const step = target / (duration / 16);
+      const timer = setInterval(() => {
+        start = Math.min(start + step, target);
+        el.textContent = Math.floor(start);
+        if (start >= target) clearInterval(timer);
+      }, 16);
+    }
+
+    // Sayfa yüklenince hero stats animate
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        animateCounter(document.getElementById('statGames'), 6, 800);
+      }, 400);
+    });
   </script>
 </body>
 </html>
