@@ -1229,5 +1229,121 @@
       }, 400);
     });
   </script>
+  // ── RATING SİSTEMİ ──
+const SUPABASE_URL = 'https://lscqqfeqpbfmcccifrwj.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_HPGXHwa51dk_1nmAqoeoXA_6zCzOVzM';
+
+const GAME_IDS = {
+  'Gravity Flip': 'gravity-flip',
+  'Stack Up': 'stack-up',
+  'Volt Grid': 'volt-grid',
+  'Castle Defense': 'castle-defense',
+  'Neon Runner': 'neon-runner',
+  'Aura Clash': 'aura-clash'
+};
+
+async function fetchRatings() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/ratings?select=game_id,rating`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const data = await res.json();
+    const agg = {};
+    data.forEach(r => {
+      if (!agg[r.game_id]) agg[r.game_id] = { sum: 0, count: 0 };
+      agg[r.game_id].sum += r.rating;
+      agg[r.game_id].count++;
+    });
+    return agg;
+  } catch(e) { return {}; }
+}
+
+function starsHTML(avg, count, gameId) {
+  const voted = localStorage.getItem('zorblify_rated_' + gameId);
+  const display = count > 0 ? avg.toFixed(1) : '—';
+  const countText = count > 0 ? `(${count})` : '';
+  let stars = '';
+  for (let i = 1; i <= 5; i++) {
+    const filled = count > 0 && i <= Math.round(avg);
+    stars += `<span class="star-btn ${filled ? 'filled' : ''} ${voted ? 'voted' : ''}"
+      data-game="${gameId}" data-val="${i}"
+      onmouseenter="hoverStars(this,${i})"
+      onmouseleave="resetStars(this)"
+      onclick="submitRating('${gameId}',${i})">★</span>`;
+  }
+  return `<div class="card-rating-wrap" id="rating-${gameId}">
+    <div class="stars-row">${stars}</div>
+    <span class="rating-score">${display}</span>
+    <span class="rating-count">${countText}</span>
+  </div>`;
+}
+
+function hoverStars(el, val) {
+  const gameId = el.dataset.game;
+  if (localStorage.getItem('zorblify_rated_' + gameId)) return;
+  const wrap = document.getElementById('rating-' + gameId);
+  wrap.querySelectorAll('.star-btn').forEach((s, i) => {
+    s.style.color = i < val ? '#f0c060' : 'rgba(255,255,255,0.2)';
+  });
+}
+
+function resetStars(el) {
+  const gameId = el.dataset.game;
+  if (localStorage.getItem('zorblify_rated_' + gameId)) return;
+  const wrap = document.getElementById('rating-' + gameId);
+  wrap.querySelectorAll('.star-btn').forEach(s => s.style.color = '');
+}
+
+async function submitRating(gameId, val) {
+  if (localStorage.getItem('zorblify_rated_' + gameId)) return;
+  localStorage.setItem('zorblify_rated_' + gameId, val);
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/ratings`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ game_id: gameId, rating: val })
+    });
+  } catch(e) {}
+  await initRatings();
+}
+
+async function initRatings() {
+  const agg = await fetchRatings();
+  document.querySelectorAll('.game-card').forEach(card => {
+    const titleEl = card.querySelector('.card-title');
+    if (!titleEl) return;
+    const gameId = GAME_IDS[titleEl.textContent.trim()];
+    if (!gameId) return;
+    const ratingEl = card.querySelector('.card-rating');
+    if (!ratingEl) return;
+    const info = agg[gameId] || { sum: 0, count: 0 };
+    const avg = info.count > 0 ? info.sum / info.count : 0;
+    ratingEl.outerHTML = starsHTML(avg, info.count, gameId);
+  });
+}
+
+// Rating CSS
+const ratingStyle = document.createElement('style');
+ratingStyle.textContent = `
+  .card-rating-wrap { display:flex; align-items:center; gap:4px; }
+  .stars-row { display:flex; gap:1px; }
+  .star-btn {
+    font-size:14px; color:rgba(255,255,255,0.2);
+    cursor:pointer; transition:color .15s; line-height:1;
+    user-select:none;
+  }
+  .star-btn.filled { color:#f0c060; }
+  .star-btn.voted { cursor:default; }
+  .rating-score { font-size:11px; color:var(--gold); font-weight:700; }
+  .rating-count { font-size:10px; color:var(--text-muted); }
+`;
+document.head.appendChild(ratingStyle);
+
+window.addEventListener('load', initRatings);
 </body>
 </html>
