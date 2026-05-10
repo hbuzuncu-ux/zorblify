@@ -530,6 +530,20 @@
     @keyframes countUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
     .count-animated { animation: countUp .6s ease forwards; }
 
+
+    .search-wrap { margin-left:auto; position:relative; display:flex; align-items:center; }
+    .search-wrap input {
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 8px; padding: 5px 32px 5px 12px;
+      font-size: 12px; color: var(--text); outline: none;
+      font-family: 'DM Sans', sans-serif; width: 180px;
+      transition: border-color .15s, width .2s;
+    }
+    .search-wrap input:focus { border-color: rgba(124,58,237,0.4); width: 220px; }
+    .search-wrap input::placeholder { color: var(--text-muted); }
+    .search-icon { position:absolute; right:8px; font-size:12px; pointer-events:none; }
+    .no-results { text-align:center; padding:40px; color:var(--text-muted); font-size:14px; display:none; }
+
     @media (max-width: 768px) {
       .sidebar { position: fixed; left: 0; top: 56px; bottom: 0; z-index: 95; transform: translateX(-100%); transition: transform 0.3s; }
       .hamburger { display: flex; }
@@ -647,6 +661,10 @@
         <button class="tab active" id="tab-home" onclick="switchTab('home')">Home</button>
         <button class="tab" id="tab-about" onclick="switchTab('about')">About</button>
         <button class="tab" id="tab-contact" onclick="switchTab('contact')">Contact</button>
+        <div class="search-wrap">
+          <input type="text" id="gameSearch" placeholder="Search games..." oninput="searchGames(this.value)" autocomplete="off">
+          <span class="search-icon">🔍</span>
+        </div>
       </div>
 
       <div class="panel active" id="panel-home">
@@ -686,7 +704,7 @@
                 <span class="section-badge badge-featured">⭐ Staff Pick</span>
               </div>
             </div>
-            <a href="/games/aura-clash/index.html" class="featured-banner">
+            <a href="/games/aura-clash/index.html" class="featured-banner" target="_blank">
               <div class="featured-icon-wrap">🌟</div>
               <div class="featured-info">
                 <div class="featured-label">⭐ Staff Pick · Arcade</div>
@@ -711,105 +729,85 @@
             <div class="cards-grid" id="cardsGrid">
 
               <div class="game-card" data-cat="arcade">
-                <div class="card-preview" style="background:linear-gradient(135deg,#1a0828,#0a0a14);">
-                  <div class="card-preview-bg" style="background:radial-gradient(circle,#7c3aed,transparent);"></div>
-                  <div class="card-preview-glow" style="background:#7c3aed;"></div>
-                  <div class="card-preview-icon">🌀</div>
-                  <div class="card-badges"><span class="section-badge badge-hot">🔥 Popular</span></div>
-                </div>
+                <div class="card-preview" style="background:#080810;position:relative;">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMjAwIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzBhMDUxNCIvPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI0MDAiIGhlaWdodD0iMiIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC42Ii8+PHJlY3QgeD0iMCIgeT0iMTk4IiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuNiIvPjxyZWN0IHg9IjU1IiB5PSIxNSIgd2lkdGg9IjI4IiBoZWlnaHQ9Ijg4IiByeD0iNCIgZmlsbD0iIzRjMWQ5NSIvPjxyZWN0IHg9IjU1IiB5PSIxMzgiIHdpZHRoPSIyOCIgaGVpZ2h0PSI0NyIgcng9IjQiIGZpbGw9IiM0YzFkOTUiLz48cmVjdCB4PSIxNDgiIHk9IjAiIHdpZHRoPSIyOCIgaGVpZ2h0PSI1MiIgcng9IjQiIGZpbGw9IiM2ZDI4ZDkiLz48cmVjdCB4PSIxNDgiIHk9IjEwOCIgd2lkdGg9IjI4IiBoZWlnaHQ9IjkyIiByeD0iNCIgZmlsbD0iIzZkMjhkOSIvPjxyZWN0IHg9IjI0MSIgeT0iMjIiIHdpZHRoPSIyOCIgaGVpZ2h0PSI3OCIgcng9IjQiIGZpbGw9IiM0YzFkOTUiLz48cmVjdCB4PSIyNDEiIHk9IjE1MCIgd2lkdGg9IjI4IiBoZWlnaHQ9IjUwIiByeD0iNCIgZmlsbD0iIzRjMWQ5NSIvPjxyZWN0IHg9IjMzNCIgeT0iOCIgd2lkdGg9IjI4IiBoZWlnaHQ9IjkwIiByeD0iNCIgZmlsbD0iIzZkMjhkOSIvPjxyZWN0IHg9IjMzNCIgeT0iMTQ4IiB3aWR0aD0iMjgiIGhlaWdodD0iNTIiIHJ4PSI0IiBmaWxsPSIjNmQyOGQ5Ii8+PGNpcmNsZSBjeD0iMTA4IiBjeT0iMTAwIiByPSIxNiIgZmlsbD0iIzdjM2FlZCIvPjxjaXJjbGUgY3g9IjEwOCIgY3k9IjEwMCIgcj0iMTAiIGZpbGw9IiNjNGI1ZmQiLz48Y2lyY2xlIGN4PSIxMDgiIGN5PSIxMDAiIHI9IjUiIGZpbGw9IiNlZGU5ZmUiLz48cGF0aCBkPSJNNzYgMTAwIFExMDggNTIgMTQwIDEwMCIgc3Ryb2tlPSIjYTc4YmZhIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiIHN0cm9rZS1kYXNoYXJyYXk9IjUsMyIvPjxwYXRoIGQ9Ik03NiAxMDAgUTEwOCAxNDggMTQwIDEwMCIgc3Ryb2tlPSIjNmQyOGQ5IiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWRhc2hhcnJheT0iMyw0IiBvcGFjaXR5PSIwLjUiLz48Y2lyY2xlIGN4PSI4MiIgY3k9IjY4IiByPSIzIiBmaWxsPSIjYTc4YmZhIiBvcGFjaXR5PSIwLjUiLz48Y2lyY2xlIGN4PSIxMzYiIGN5PSIxMzIiIHI9IjIiIGZpbGw9IiNhNzhiZmEiIG9wYWNpdHk9IjAuNCIvPjx0ZXh0IHg9IjIwMCIgeT0iMTkwIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2siIGZvbnQtc2l6ZT0iMTEiIGZpbGw9IiNhNzhiZmEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGxldHRlci1zcGFjaW5nPSIzIj5HUkFWSVRZIEZMSVA8L3RleHQ+PC9zdmc+" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:15px 15px 0 0;">
+                  <div class="card-badges"><span class="section-badge badge-hot">🔥 Popular</span></div></div>
                 <div class="card-body">
                   <div class="card-top">
                     <div><div class="card-title">Gravity Flip</div><div class="card-cat">Arcade</div></div>
                   </div>
                   <div class="card-desc">Tap to flip gravity. Dodge the pipes. A classic reflex challenge — how long can you survive?</div>
-                  <div class="card-footer"><span class="tag">Arcade</span><a href="/games/gravity-flip/index.html" class="btn-play">Play Now</a></div>
+                  <div class="card-footer"><span class="tag">Arcade</span><a href="/games/gravity-flip/index.html" class="btn-play" target="_blank">Play Now</a></div>
                 </div>
               </div>
 
               <div class="game-card" data-cat="arcade">
-                <div class="card-preview" style="background:linear-gradient(135deg,#0a1428,#061020);">
-                  <div class="card-preview-bg" style="background:radial-gradient(circle,#06b6d4,transparent);"></div>
-                  <div class="card-preview-glow" style="background:#06b6d4;"></div>
-                  <div class="card-preview-icon">🏗️</div>
-                  <div class="card-badges"><span class="section-badge badge-staff">👾 Classic</span></div>
-                </div>
+                <div class="card-preview" style="background:#080810;position:relative;">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMjAwIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzAyMGQxYSIvPjxyZWN0IHg9IjAiIHk9IjE3MCIgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMCIgZmlsbD0iIzAxMTAyMCIvPjxyZWN0IHg9IjE0MCIgeT0iMTU4IiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE2IiByeD0iMiIgZmlsbD0iIzE2NGU2MyIvPjxyZWN0IHg9IjEzMyIgeT0iMTM5IiB3aWR0aD0iMTM0IiBoZWlnaHQ9IjE2IiByeD0iMiIgZmlsbD0iIzE1NWU3NSIvPjxyZWN0IHg9IjEyNCIgeT0iMTIwIiB3aWR0aD0iMTUyIiBoZWlnaHQ9IjE2IiByeD0iMiIgZmlsbD0iIzBlNzQ5MCIvPjxyZWN0IHg9IjExNiIgeT0iMTAxIiB3aWR0aD0iMTY4IiBoZWlnaHQ9IjE2IiByeD0iMiIgZmlsbD0iIzA4OTFiMiIvPjxyZWN0IHg9IjEwOCIgeT0iODIiIHdpZHRoPSIxODQiIGhlaWdodD0iMTYiIHJ4PSIyIiBmaWxsPSIjMDZiNmQ0Ii8+PHJlY3QgeD0iMTE4IiB5PSI2MyIgd2lkdGg9IjE2NCIgaGVpZ2h0PSIxNiIgcng9IjIiIGZpbGw9IiMyMmQzZWUiLz48cmVjdCB4PSIxMzIiIHk9IjQ0IiB3aWR0aD0iMTM2IiBoZWlnaHQ9IjE2IiByeD0iMiIgZmlsbD0iIzY3ZThmOSIvPjxyZWN0IHg9IjE0OCIgeT0iMjUiIHdpZHRoPSIxMDQiIGhlaWdodD0iMTYiIHJ4PSIyIiBmaWxsPSIjYTVmM2ZjIi8+PHJlY3QgeD0iMTM2IiB5PSI2IiB3aWR0aD0iMTI4IiBoZWlnaHQ9IjE2IiByeD0iMiIgZmlsbD0iI2NmZmFmZSIgb3BhY2l0eT0iMC4zNSIgc3Ryb2tlPSIjMDZiNmQ0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1kYXNoYXJyYXk9IjMsMiIvPjxwYXRoIGQ9Ik0xODIgNiBMMjAwIDEgTDIxOCA2IiBmaWxsPSJub25lIiBzdHJva2U9IiMwNmI2ZDQiIHN0cm9rZS13aWR0aD0iMiIvPjxsaW5lIHgxPSIyMDAiIHkxPSIxIiB4Mj0iMjAwIiB5Mj0iNiIgc3Ryb2tlPSIjMDZiNmQ0IiBzdHJva2Utd2lkdGg9IjIiLz48bGluZSB4MT0iNjAiIHkxPSIxNzAiIHgyPSI2MCIgeTI9IjgyIiBzdHJva2U9IiMwNmI2ZDQiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWRhc2hhcnJheT0iMiwzIiBvcGFjaXR5PSIwLjI1Ii8+PGxpbmUgeDE9IjM0MCIgeTE9IjE3MCIgeDI9IjM0MCIgeTI9IjgyIiBzdHJva2U9IiMwNmI2ZDQiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWRhc2hhcnJheT0iMiwzIiBvcGFjaXR5PSIwLjI1Ii8+PHRleHQgeD0iMjAwIiB5PSIxOTMiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjayIgZm9udC1zaXplPSIxMSIgZmlsbD0iIzIyZDNlZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgbGV0dGVyLXNwYWNpbmc9IjMiPlNUQUNLIFVQPC90ZXh0Pjwvc3ZnPg==" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:15px 15px 0 0;">
+                  <div class="card-badges"><span class="section-badge badge-staff">👾 Classic</span></div></div>
                 <div class="card-body">
                   <div class="card-top">
                     <div><div class="card-title">Stack Up</div><div class="card-cat">Arcade</div></div>
                   </div>
                   <div class="card-desc">Drop the block at the perfect moment. Stack them high, build the tallest tower, beat your best!</div>
-                  <div class="card-footer"><span class="tag">Arcade</span><a href="/games/stack-up/index.html" class="btn-play">Play Now</a></div>
+                  <div class="card-footer"><span class="tag">Arcade</span><a href="/games/stack-up/index.html" class="btn-play" target="_blank">Play Now</a></div>
                 </div>
               </div>
 
               <div class="game-card" data-cat="puzzle">
-                <div class="card-preview" style="background:linear-gradient(135deg,#0a1020,#050814);">
-                  <div class="card-preview-bg" style="background:radial-gradient(circle,#a78bfa,transparent);"></div>
-                  <div class="card-preview-glow" style="background:#a78bfa;"></div>
-                  <div class="card-preview-icon">⚡</div>
-                  <div class="card-badges"><span class="section-badge badge-staff">🧩 Brain</span></div>
-                </div>
+                <div class="card-preview" style="background:#080810;position:relative;">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMjAwIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzA0MDQwZiIvPjxyZWN0IHg9IjMwIiB5PSIyMCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjQ0IiByeD0iNiIgZmlsbD0iIzFlMWI0YiIgc3Ryb2tlPSIjNDMzOGNhIiBzdHJva2Utd2lkdGg9IjEuNSIvPjxyZWN0IHg9Ijg4IiB5PSIyMCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjQ0IiByeD0iNiIgZmlsbD0iIzMxMmU4MSIgc3Ryb2tlPSIjNjM2NmYxIiBzdHJva2Utd2lkdGg9IjIiLz48cmVjdCB4PSIxNDYiIHk9IjIwIiB3aWR0aD0iNDQiIGhlaWdodD0iNDQiIHJ4PSI2IiBmaWxsPSIjMWUxYjRiIiBzdHJva2U9IiM0MzM4Y2EiIHN0cm9rZS13aWR0aD0iMS41Ii8+PHJlY3QgeD0iMjA0IiB5PSIyMCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjQ0IiByeD0iNiIgZmlsbD0iIzM3MzBhMyIgc3Ryb2tlPSIjODE4Y2Y4IiBzdHJva2Utd2lkdGg9IjIuNSIvPjxyZWN0IHg9IjI2MiIgeT0iMjAiIHdpZHRoPSI0NCIgaGVpZ2h0PSI0NCIgcng9IjYiIGZpbGw9IiMxZTFiNGIiIHN0cm9rZT0iIzQzMzhjYSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cmVjdCB4PSIzMjAiIHk9IjIwIiB3aWR0aD0iNDQiIGhlaWdodD0iNDQiIHJ4PSI2IiBmaWxsPSIjMzEyZTgxIiBzdHJva2U9IiM2MzY2ZjEiIHN0cm9rZS13aWR0aD0iMiIvPjxyZWN0IHg9IjMwIiB5PSI3OCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjQ0IiByeD0iNiIgZmlsbD0iIzMxMmU4MSIgc3Ryb2tlPSIjNjM2NmYxIiBzdHJva2Utd2lkdGg9IjIiLz48cmVjdCB4PSI4OCIgeT0iNzgiIHdpZHRoPSI0NCIgaGVpZ2h0PSI0NCIgcng9IjYiIGZpbGw9IiM0MzM4Y2EiIHN0cm9rZT0iI2E1YjRmYyIgc3Ryb2tlLXdpZHRoPSIyLjUiLz48cmVjdCB4PSIxNDYiIHk9Ijc4IiB3aWR0aD0iNDQiIGhlaWdodD0iNDQiIHJ4PSI2IiBmaWxsPSIjMWUxYjRiIiBzdHJva2U9IiM0MzM4Y2EiIHN0cm9rZS13aWR0aD0iMS41Ii8+PHJlY3QgeD0iMjA0IiB5PSI3OCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjQ0IiByeD0iNiIgZmlsbD0iIzMxMmU4MSIgc3Ryb2tlPSIjNjM2NmYxIiBzdHJva2Utd2lkdGg9IjIiLz48cmVjdCB4PSIyNjIiIHk9Ijc4IiB3aWR0aD0iNDQiIGhlaWdodD0iNDQiIHJ4PSI2IiBmaWxsPSIjNDMzOGNhIiBzdHJva2U9IiNhNWI0ZmMiIHN0cm9rZS13aWR0aD0iMi41Ii8+PHJlY3QgeD0iMzIwIiB5PSI3OCIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjQ0IiByeD0iNiIgZmlsbD0iIzFlMWI0YiIgc3Ryb2tlPSIjNDMzOGNhIiBzdHJva2Utd2lkdGg9IjEuNSIvPjxyZWN0IHg9IjMwIiB5PSIxMzYiIHdpZHRoPSI0NCIgaGVpZ2h0PSI0NCIgcng9IjYiIGZpbGw9IiMxZTFiNGIiIHN0cm9rZT0iIzQzMzhjYSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cmVjdCB4PSI4OCIgeT0iMTM2IiB3aWR0aD0iNDQiIGhlaWdodD0iNDQiIHJ4PSI2IiBmaWxsPSIjMzEyZTgxIiBzdHJva2U9IiM2MzY2ZjEiIHN0cm9rZS13aWR0aD0iMiIvPjxyZWN0IHg9IjE0NiIgeT0iMTM2IiB3aWR0aD0iNDQiIGhlaWdodD0iNDQiIHJ4PSI2IiBmaWxsPSIjNDMzOGNhIiBzdHJva2U9IiNhNWI0ZmMiIHN0cm9rZS13aWR0aD0iMi41Ii8+PHJlY3QgeD0iMjA0IiB5PSIxMzYiIHdpZHRoPSI0NCIgaGVpZ2h0PSI0NCIgcng9IjYiIGZpbGw9IiMxZTFiNGIiIHN0cm9rZT0iIzQzMzhjYSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cmVjdCB4PSIyNjIiIHk9IjEzNiIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjQ0IiByeD0iNiIgZmlsbD0iIzMxMmU4MSIgc3Ryb2tlPSIjNjM2NmYxIiBzdHJva2Utd2lkdGg9IjIiLz48cmVjdCB4PSIzMjAiIHk9IjEzNiIgd2lkdGg9IjQ0IiBoZWlnaHQ9IjQ0IiByeD0iNiIgZmlsbD0iIzFlMWI0YiIgc3Ryb2tlPSIjNDMzOGNhIiBzdHJva2Utd2lkdGg9IjEuNSIvPjx0ZXh0IHg9IjExMCIgeT0iMTA3IiBmb250LXNpemU9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZmJiZjI0IiBmb250LXdlaWdodD0iYm9sZCI+JiM5ODg5OzwvdGV4dD48dGV4dCB4PSIyMjYiIHk9IjQ5IiBmb250LXNpemU9IjIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjZmJiZjI0IiBmb250LXdlaWdodD0iYm9sZCI+JiM5ODg5OzwvdGV4dD48dGV4dCB4PSIxNjgiIHk9IjE2NSIgZm9udC1zaXplPSIyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZiYmYyNCIgZm9udC13ZWlnaHQ9ImJvbGQiPiYjOTg4OTs8L3RleHQ+PGxpbmUgeDE9IjEzMiIgeTE9IjEwMCIgeDI9IjE0NiIgeTI9IjEwMCIgc3Ryb2tlPSIjZmJiZjI0IiBzdHJva2Utd2lkdGg9IjIuNSIvPjxsaW5lIHgxPSIyMjYiIHkxPSI2NCIgeDI9IjI2MiIgeTI9IjQyIiBzdHJva2U9IiNmYmJmMjQiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iMC43Ii8+PGxpbmUgeDE9IjE2OCIgeTE9IjEzNiIgeDI9IjE0NiIgeTI9IjEyMiIgc3Ryb2tlPSIjZmJiZjI0IiBzdHJva2Utd2lkdGg9IjIiIG9wYWNpdHk9IjAuNyIvPjwvc3ZnPg==" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:15px 15px 0 0;">
+                  <div class="card-badges"><span class="section-badge badge-staff">🧩 Brain</span></div></div>
                 <div class="card-body">
                   <div class="card-top">
                     <div><div class="card-title">Volt Grid</div><div class="card-cat">Puzzle</div></div>
                   </div>
                   <div class="card-desc">Chain the energy, clear the grid. Trigger domino chain reactions in this strategic puzzle game.</div>
-                  <div class="card-footer"><span class="tag puzzle">Puzzle</span><a href="/games/volt-grid/index.html" class="btn-play">Play Now</a></div>
+                  <div class="card-footer"><span class="tag puzzle">Puzzle</span><a href="/games/volt-grid/index.html" class="btn-play" target="_blank">Play Now</a></div>
                 </div>
               </div>
 
               <div class="game-card" data-cat="strategy">
-                <div class="card-preview" style="background:linear-gradient(135deg,#1a1000,#0d0800);">
-                  <div class="card-preview-bg" style="background:radial-gradient(circle,#c9a84c,transparent);"></div>
-                  <div class="card-preview-glow" style="background:#c9a84c;"></div>
-                  <div class="card-preview-icon">⚔️</div>
-                  <div class="card-badges"><span class="section-badge badge-hot">🔥 Hot</span></div>
-                </div>
+                <div class="card-preview" style="background:#080810;position:relative;">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMjAwIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzFhMmUwZiIvPjxnIHN0cm9rZT0icmdiYSgwLDAsMCwwLjE1KSIgc3Ryb2tlLXdpZHRoPSIwLjUiPjxsaW5lIHgxPSI0MCIgeTE9IjAiIHgyPSI0MCIgeTI9IjIwMCIvPjxsaW5lIHgxPSI4MCIgeTE9IjAiIHgyPSI4MCIgeTI9IjIwMCIvPjxsaW5lIHgxPSIxMjAiIHkxPSIwIiB4Mj0iMTIwIiB5Mj0iMjAwIi8+PGxpbmUgeDE9IjE2MCIgeTE9IjAiIHgyPSIxNjAiIHkyPSIyMDAiLz48bGluZSB4MT0iMjAwIiB5MT0iMCIgeDI9IjIwMCIgeTI9IjIwMCIvPjxsaW5lIHgxPSIyNDAiIHkxPSIwIiB4Mj0iMjQwIiB5Mj0iMjAwIi8+PGxpbmUgeDE9IjI4MCIgeTE9IjAiIHgyPSIyODAiIHkyPSIyMDAiLz48bGluZSB4MT0iMzIwIiB5MT0iMCIgeDI9IjMyMCIgeTI9IjIwMCIvPjxsaW5lIHgxPSIzNjAiIHkxPSIwIiB4Mj0iMzYwIiB5Mj0iMjAwIi8+PGxpbmUgeDE9IjAiIHkxPSI0MCIgeDI9IjQwMCIgeTI9IjQwIi8+PGxpbmUgeDE9IjAiIHkxPSI4MCIgeDI9IjQwMCIgeTI9IjgwIi8+PGxpbmUgeDE9IjAiIHkxPSIxMjAiIHgyPSI0MDAiIHkyPSIxMjAiLz48bGluZSB4MT0iMCIgeTE9IjE2MCIgeDI9IjQwMCIgeTI9IjE2MCIvPjwvZz48cmVjdCB4PSIwIiB5PSI4MCIgd2lkdGg9IjIwMCIgaGVpZ2h0PSI0MCIgZmlsbD0iIzZiNGEyMiIvPjxyZWN0IHg9IjE2MCIgeT0iNDAiIHdpZHRoPSI0MCIgaGVpZ2h0PSI4MCIgZmlsbD0iIzZiNGEyMiIvPjxyZWN0IHg9IjE2MCIgeT0iNDAiIHdpZHRoPSIyMDAiIGhlaWdodD0iNDAiIGZpbGw9IiM2YjRhMjIiLz48cmVjdCB4PSIzMjAiIHk9IjQwIiB3aWR0aD0iNDAiIGhlaWdodD0iMTIwIiBmaWxsPSIjNmI0YTIyIi8+PHJlY3QgeD0iMjgwIiB5PSIxMjAiIHdpZHRoPSI4MCIgaGVpZ2h0PSI0MCIgZmlsbD0iIzZiNGEyMiIvPjx0ZXh0IHg9IjE2IiB5PSIxMDQiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC40KSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+JiM5NjU4OzwvdGV4dD48dGV4dCB4PSIzNjAiIHk9IjE0OCIgZm9udC1zaXplPSIxOCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+JiMxMjc5ODQ7PC90ZXh0PjxyZWN0IHg9IjQzIiB5PSI0MyIgd2lkdGg9IjM0IiBoZWlnaHQ9IjM0IiByeD0iNSIgZmlsbD0icmdiYSgwLDAsMCwwLjUpIiBzdHJva2U9IiNmYmJmMjQiIHN0cm9rZS13aWR0aD0iMS41Ii8+PHRleHQgeD0iNjAiIHk9IjY2IiBmb250LXNpemU9IjE4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4mIzEyNzk5Mzs8L3RleHQ+PHJlY3QgeD0iODMiIHk9IjEyMyIgd2lkdGg9IjM0IiBoZWlnaHQ9IjM0IiByeD0iNSIgZmlsbD0icmdiYSgwLDAsMCwwLjUpIiBzdHJva2U9IiNhNzhiZmEiIHN0cm9rZS13aWR0aD0iMS41Ii8+PHRleHQgeD0iMTAwIiB5PSIxNDYiIGZvbnQtc2l6ZT0iMTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiYjMTI4MzAyOzwvdGV4dD48cmVjdCB4PSIyMDMiIHk9IjgzIiB3aWR0aD0iMzQiIGhlaWdodD0iMzQiIHJ4PSI1IiBmaWxsPSJyZ2JhKDAsMCwwLDAuNSkiIHN0cm9rZT0iI2Y4NzE3MSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48dGV4dCB4PSIyMjAiIHk9IjEwNiIgZm9udC1zaXplPSIxOCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+JiMxMjgxNjM7PC90ZXh0PjxyZWN0IHg9IjI0MyIgeT0iODMiIHdpZHRoPSIzNCIgaGVpZ2h0PSIzNCIgcng9IjUiIGZpbGw9InJnYmEoMCwwLDAsMC41KSIgc3Ryb2tlPSIjZmJiZjI0IiBzdHJva2Utd2lkdGg9IjEuNSIvPjx0ZXh0IHg9IjI2MCIgeT0iMTA2IiBmb250LXNpemU9IjE4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4mIzEyNzk5Mzs8L3RleHQ+PHJlY3QgeD0iMjgzIiB5PSI0MyIgd2lkdGg9IjM0IiBoZWlnaHQ9IjM0IiByeD0iNSIgZmlsbD0icmdiYSgwLDAsMCwwLjUpIiBzdHJva2U9IiNhNzhiZmEiIHN0cm9rZS13aWR0aD0iMS41Ii8+PHRleHQgeD0iMzAwIiB5PSI2NiIgZm9udC1zaXplPSIxOCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+JiMxMjgzMDI7PC90ZXh0PjxjaXJjbGUgY3g9IjUwIiBjeT0iMTAwIiByPSIxMCIgZmlsbD0iIzFhM2QwYSIgc3Ryb2tlPSIjNGFkZTgwIiBzdHJva2Utd2lkdGg9IjEuNSIvPjx0ZXh0IHg9IjUwIiB5PSIxMDQiIGZvbnQtc2l6ZT0iMTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiYjMTI4MTIyOzwvdGV4dD48Y2lyY2xlIGN4PSIxMTAiIGN5PSIxMDAiIHI9IjEyIiBmaWxsPSIjMWEyYTRhIiBzdHJva2U9IiM5M2M1ZmQiIHN0cm9rZS13aWR0aD0iMS41Ii8+PHRleHQgeD0iMTEwIiB5PSIxMDUiIGZvbnQtc2l6ZT0iMTMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiYjOTg3NjsmIzY1MDM5OzwvdGV4dD48Y2lyY2xlIGN4PSIxODAiIGN5PSI2MCIgcj0iMTAiIGZpbGw9IiMxYTNkMWEiIHN0cm9rZT0iIzg2ZWZhYyIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48dGV4dCB4PSIxODAiIHk9IjY0IiBmb250LXNpemU9IjExIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4mIzEyOTUwMzs8L3RleHQ+PHJlY3QgeD0iNDAiIHk9Ijg4IiB3aWR0aD0iMjAiIGhlaWdodD0iMyIgZmlsbD0iIzFhMWExYSIvPjxyZWN0IHg9IjQwIiB5PSI4OCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjMiIGZpbGw9IiM0YWRlODAiLz48cmVjdCB4PSI5OCIgeT0iODYiIHdpZHRoPSIyNCIgaGVpZ2h0PSIzIiBmaWxsPSIjMWExYTFhIi8+PHJlY3QgeD0iOTgiIHk9Ijg2IiB3aWR0aD0iMTYiIGhlaWdodD0iMyIgZmlsbD0iI2Y1OWUwYiIvPjxjaXJjbGUgY3g9Ijc1IiBjeT0iOTUiIHI9IjMiIGZpbGw9IiNmYmJmMjQiLz48Y2lyY2xlIGN4PSIxNDUiIGN5PSI5MiIgcj0iMiIgZmlsbD0iI2E3OGJmYSIvPjxjaXJjbGUgY3g9IjYwIiBjeT0iNjAiIHI9IjI4IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjUxLDE5MSwzNiwwLjEyKSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtZGFzaGFycmF5PSIzLDMiLz48cmVjdCB4PSIzNTUiIHk9IjAiIHdpZHRoPSI0NSIgaGVpZ2h0PSIyMDAiIGZpbGw9InJnYmEoMTAsOCw0LDAuOSkiLz48bGluZSB4MT0iMzU1IiB5MT0iMCIgeDI9IjM1NSIgeTI9IjIwMCIgc3Ryb2tlPSJyZ2JhKDIwMSwxNjgsNzYsMC4yKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PHRleHQgeD0iMzc4IiB5PSIyOCIgZm9udC1zaXplPSI4IiBmaWxsPSIjNWE0ZTM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2VyaWYiPlNIT1A8L3RleHQ+PHRleHQgeD0iMzc4IiB5PSI1NSIgZm9udC1zaXplPSIxMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+JiMxMjc5OTM7PC90ZXh0Pjx0ZXh0IHg9IjM3OCIgeT0iODUiIGZvbnQtc2l6ZT0iMTMiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiYjMTI4MzAyOzwvdGV4dD48dGV4dCB4PSIzNzgiIHk9IjExNSIgZm9udC1zaXplPSIxMyIgdGV4dC1hbmNob3I9Im1pZGRsZSI+JiMxMjgxNjM7PC90ZXh0Pjx0ZXh0IHg9IjIwMCIgeT0iMTkwIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2siIGZvbnQtc2l6ZT0iMTAiIGZpbGw9IiNjOWE4NGMiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGxldHRlci1zcGFjaW5nPSIyIj5DQVNUTEUgREVGRU5TRTwvdGV4dD48L3N2Zz4=" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:15px 15px 0 0;">
+                  <div class="card-badges"><span class="section-badge badge-hot">🔥 Hot</span></div></div>
                 <div class="card-body">
                   <div class="card-top">
                     <div><div class="card-title">Castle Defense</div><div class="card-cat">Strategy</div></div>
                   </div>
                   <div class="card-desc">Build towers, cast spells, survive 30 campaign levels or endless waves. Protect the kingdom!</div>
-                  <div class="card-footer"><span class="tag strategy">Strategy</span><a href="/games/castle-defense/index.html" class="btn-play">Play Now</a></div>
+                  <div class="card-footer"><span class="tag strategy">Strategy</span><a href="/games/castle-defense/index.html" class="btn-play" target="_blank">Play Now</a></div>
                 </div>
               </div>
 
               <div class="game-card" data-cat="arcade">
-                <div class="card-preview" style="background:linear-gradient(135deg,#050510,#000818);">
-                  <div class="card-preview-bg" style="background:radial-gradient(circle,#fb923c,transparent);"></div>
-                  <div class="card-preview-glow" style="background:#fb923c;"></div>
-                  <div class="card-preview-icon">🏃</div>
-                  <div class="card-badges"><span class="section-badge badge-new">New</span></div>
-                </div>
+                <div class="card-preview" style="background:#080810;position:relative;">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMjAwIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzAyMDMwNiIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMjAiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNSIvPjxjaXJjbGUgY3g9IjgwIiBjeT0iMTUiIHI9IjAuOCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC40Ii8+PGNpcmNsZSBjeD0iMTQwIiBjeT0iMjUiIHI9IjEuMiIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC42Ii8+PGNpcmNsZSBjeD0iMjAwIiBjeT0iMTAiIHI9IjAuOCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC4zIi8+PGNpcmNsZSBjeD0iMjYwIiBjeT0iMjAiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNSIvPjxjaXJjbGUgY3g9IjMxMCIgY3k9IjgiIHI9IjAuOCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC40Ii8+PGNpcmNsZSBjeD0iMzcwIiBjeT0iMTgiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNiIvPjxyZWN0IHg9IjAiIHk9IjgwIiB3aWR0aD0iMzUiIGhlaWdodD0iODUiIGZpbGw9IiMwODA4MTgiIG9wYWNpdHk9IjAuNiIvPjxyZWN0IHg9IjQwIiB5PSI2NSIgd2lkdGg9IjI1IiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzA2MDYxMiIgb3BhY2l0eT0iMC42Ii8+PHJlY3QgeD0iNzAiIHk9Ijc1IiB3aWR0aD0iNDAiIGhlaWdodD0iOTAiIGZpbGw9IiMwODA4MTgiIG9wYWNpdHk9IjAuNiIvPjxyZWN0IHg9IjI4MCIgeT0iNTUiIHdpZHRoPSIzMCIgaGVpZ2h0PSIxMTAiIGZpbGw9IiMwNjA2MTIiIG9wYWNpdHk9IjAuNiIvPjxyZWN0IHg9IjMxNSIgeT0iNzAiIHdpZHRoPSI0NSIgaGVpZ2h0PSI5NSIgZmlsbD0iIzA4MDgxOCIgb3BhY2l0eT0iMC42Ii8+PHJlY3QgeD0iMzY1IiB5PSI2MCIgd2lkdGg9IjM1IiBoZWlnaHQ9IjEwNSIgZmlsbD0iIzA2MDYxMiIgb3BhY2l0eT0iMC42Ii8+PHJlY3QgeD0iMTIiIHk9Ijk1IiB3aWR0aD0iNiIgaGVpZ2h0PSI3IiBmaWxsPSIjYTc4YmZhIiBvcGFjaXR5PSIwLjMiLz48cmVjdCB4PSIyMiIgeT0iOTAiIHdpZHRoPSI2IiBoZWlnaHQ9IjciIGZpbGw9IiMwNmI2ZDQiIG9wYWNpdHk9IjAuMyIvPjxyZWN0IHg9IjQ3IiB5PSI4MCIgd2lkdGg9IjUiIGhlaWdodD0iNiIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC4zIi8+PHJlY3QgeD0iMjkwIiB5PSI3MCIgd2lkdGg9IjYiIGhlaWdodD0iNyIgZmlsbD0iI2E3OGJmYSIgb3BhY2l0eT0iMC40Ii8+PHJlY3QgeD0iMzI1IiB5PSI4NSIgd2lkdGg9IjYiIGhlaWdodD0iNyIgZmlsbD0iIzA2YjZkNCIgb3BhY2l0eT0iMC4zIi8+PHJlY3QgeD0iMCIgeT0iMTU1IiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQ1IiBmaWxsPSIjMGEwNTAwIi8+PGxpbmUgeDE9IjAiIHkxPSIxNTUiIHgyPSI0MDAiIHkyPSIxNTUiIHN0cm9rZT0iI2ZiOTIzYyIgc3Ryb2tlLXdpZHRoPSIxLjUiIG9wYWNpdHk9IjAuNyIvPjxsaW5lIHgxPSI2MCIgeTE9IjE1NSIgeDI9IjYwIiB5Mj0iMjAwIiBzdHJva2U9IiNmYjkyM2MiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48bGluZSB4MT0iMTIwIiB5MT0iMTU1IiB4Mj0iMTIwIiB5Mj0iMjAwIiBzdHJva2U9IiNmYjkyM2MiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48bGluZSB4MT0iMTgwIiB5MT0iMTU1IiB4Mj0iMTgwIiB5Mj0iMjAwIiBzdHJva2U9IiNmYjkyM2MiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48bGluZSB4MT0iMjQwIiB5MT0iMTU1IiB4Mj0iMjQwIiB5Mj0iMjAwIiBzdHJva2U9IiNmYjkyM2MiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48bGluZSB4MT0iMzAwIiB5MT0iMTU1IiB4Mj0iMzAwIiB5Mj0iMjAwIiBzdHJva2U9IiNmYjkyM2MiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48cmVjdCB4PSIyMDAiIHk9IjEwNSIgd2lkdGg9IjIyIiBoZWlnaHQ9IjUwIiByeD0iMiIgZmlsbD0iIzQzMTQwNyIvPjxyZWN0IHg9IjIwMCIgeT0iMTAwIiB3aWR0aD0iMjIiIGhlaWdodD0iOCIgcng9IjIiIGZpbGw9IiNmYjkyM2MiIG9wYWNpdHk9IjAuOSIvPjxyZWN0IHg9IjI5MCIgeT0iOTAiIHdpZHRoPSIyOCIgaGVpZ2h0PSI2NSIgcng9IjIiIGZpbGw9IiM0MzE0MDciLz48cmVjdCB4PSIyOTAiIHk9Ijg1IiB3aWR0aD0iMjgiIGhlaWdodD0iOCIgcng9IjIiIGZpbGw9IiNmYjkyM2MiIG9wYWNpdHk9IjAuOSIvPjxyZWN0IHg9IjM1MCIgeT0iMTI1IiB3aWR0aD0iMTgiIGhlaWdodD0iMzAiIHJ4PSIyIiBmaWxsPSIjNDMxNDA3Ii8+PHJlY3QgeD0iMzUwIiB5PSIxMjAiIHdpZHRoPSIxOCIgaGVpZ2h0PSI4IiByeD0iMiIgZmlsbD0iI2VhNTgwYyIvPjxjaXJjbGUgY3g9IjI0MCIgY3k9IjEzMCIgcj0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmI5MjNjIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIyNDAiIGN5PSIxMzAiIHI9IjMiIGZpbGw9IiNmYjkyM2MiIG9wYWNpdHk9IjAuOCIvPjxjaXJjbGUgY3g9IjI2MCIgY3k9IjEyMCIgcj0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmI5MjNjIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIyNjAiIGN5PSIxMjAiIHI9IjMiIGZpbGw9IiNmYjkyM2MiIG9wYWNpdHk9IjAuOCIvPjxjaXJjbGUgY3g9IjI4MCIgY3k9IjEzMCIgcj0iNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmI5MjNjIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIyODAiIGN5PSIxMzAiIHI9IjMiIGZpbGw9IiNmYjkyM2MiIG9wYWNpdHk9IjAuOCIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDExMCwxMDUpIj48cmVjdCB4PSItNyIgeT0iMTgiIHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiByeD0iMyIgZmlsbD0iIzBlNzQ5MCIvPjxyZWN0IHg9IjIiIHk9IjE4IiB3aWR0aD0iNyIgaGVpZ2h0PSIxNCIgcng9IjMiIGZpbGw9IiMwZTc0OTAiLz48cmVjdCB4PSItOSIgeT0iMzUiIHdpZHRoPSI5IiBoZWlnaHQ9IjQiIHJ4PSIxIiBmaWxsPSIjMDZiNmQ0Ii8+PHJlY3QgeD0iMiIgeT0iMzAiIHdpZHRoPSI5IiBoZWlnaHQ9IjQiIHJ4PSIxIiBmaWxsPSIjMDZiNmQ0Ii8+PHJlY3QgeD0iLTEwIiB5PSIyIiB3aWR0aD0iMjAiIGhlaWdodD0iMTgiIHJ4PSI1IiBmaWxsPSIjMDZiNmQ0Ii8+PHJlY3QgeD0iLTE3IiB5PSIzIiB3aWR0aD0iNyIgaGVpZ2h0PSIxMyIgcng9IjMiIGZpbGw9IiMwODkxYjIiLz48cmVjdCB4PSIxMCIgeT0iMyIgd2lkdGg9IjciIGhlaWdodD0iMTAiIHJ4PSIzIiBmaWxsPSIjMDg5MWIyIi8+PGNpcmNsZSBjeD0iMCIgY3k9Ii00IiByPSIxMiIgZmlsbD0iIzA2YjZkNCIvPjxwYXRoIGQ9Ik0tOCAtMiBRMCAtMTAgOCAtMiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjEyKSIvPjxlbGxpcHNlIGN4PSItMyIgY3k9Ii01IiByeD0iMy41IiByeT0iMi41IiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuMjUpIi8+PGxpbmUgeDE9IjYiIHkxPSItMTMiIHgyPSI2IiB5Mj0iLTIwIiBzdHJva2U9IiMwNmI2ZDQiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjYiIGN5PSItMjEiIHI9IjIuNSIgZmlsbD0iI2YwYzA2MCIvPjwvZz48Y2lyY2xlIGN4PSI5MCIgY3k9IjE1MyIgcj0iMiIgZmlsbD0iI2ZiOTIzYyIgb3BhY2l0eT0iMC41Ii8+PGNpcmNsZSBjeD0iODIiIGN5PSIxNTEiIHI9IjEuNSIgZmlsbD0iI2ZiOTIzYyIgb3BhY2l0eT0iMC4zNSIvPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI0MDAiIGhlaWdodD0iMjIiIGZpbGw9InJnYmEoNSw1LDE2LDAuOSkiLz48dGV4dCB4PSIyMCIgeT0iMTQiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iI2YwYzA2MCIgZm9udC1mYW1pbHk9IkFyaWFsIj40NyBjb2luczwvdGV4dD48dGV4dCB4PSI5MCIgeT0iMTQiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iIzRhZGU4MCIgZm9udC1mYW1pbHk9IkFyaWFsIj5TY29yZTogMTI0MDwvdGV4dD48dGV4dCB4PSIyMTAiIHk9IjE0IiBmb250LXNpemU9IjkiIGZpbGw9IiNhNzhiZmEiIGZvbnQtZmFtaWx5PSJBcmlhbCI+MjQwbTwvdGV4dD48dGV4dCB4PSIyOTAiIHk9IjE0IiBmb250LXNpemU9IjkiIGZpbGw9IiNmODcxNzEiIGZvbnQtZmFtaWx5PSJBcmlhbCI+ZGFuZ2VyPC90ZXh0Pjx0ZXh0IHg9IjIwMCIgeT0iMTkwIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2siIGZvbnQtc2l6ZT0iMTEiIGZpbGw9IiNmYjkyM2MiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGxldHRlci1zcGFjaW5nPSIyIj5ORU9OIFJVTk5FUjwvdGV4dD48L3N2Zz4=" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:15px 15px 0 0;">
+                  <div class="card-badges"><span class="section-badge badge-new">New</span></div></div>
                 <div class="card-body">
                   <div class="card-top">
                     <div><div class="card-title">Neon Runner</div><div class="card-cat">Arcade</div></div>
                   </div>
                   <div class="card-desc">Choose your runner, collect coins, survive endless obstacles. 4 unique themes, powerups and global leaderboard!</div>
-                  <div class="card-footer"><span class="tag">Arcade</span><a href="/games/neon-runner/index.html" class="btn-play">Play Now</a></div>
+                  <div class="card-footer"><span class="tag">Arcade</span><a href="/games/neon-runner/index.html" class="btn-play" target="_blank">Play Now</a></div>
                 </div>
               </div>
 
               <div class="game-card" data-cat="arcade">
-                <div class="card-preview" style="background:linear-gradient(135deg,#04040c,#080818);">
-                  <div class="card-preview-bg" style="background:radial-gradient(circle,#7c3aed,transparent);"></div>
-                  <div class="card-preview-glow" style="background:#7c3aed;"></div>
-                  <div class="card-preview-icon">⚔️</div>
-                  <div class="card-badges">
-                    <span class="section-badge badge-new">New</span>
-                    <span class="section-badge badge-featured">⭐ Pick</span>
-                  </div>
-                </div>
+                <div class="card-preview" style="background:#080810;position:relative;">
+                  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMjAwIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzAzMDMwYSIvPjxnIHN0cm9rZT0icmdiYSgxMjQsNTgsMjM3LDAuMDYpIiBzdHJva2Utd2lkdGg9IjEiPjxsaW5lIHgxPSIwIiB5MT0iNDAiIHgyPSI0MDAiIHkyPSI0MCIvPjxsaW5lIHgxPSIwIiB5MT0iODAiIHgyPSI0MDAiIHkyPSI4MCIvPjxsaW5lIHgxPSIwIiB5MT0iMTIwIiB4Mj0iNDAwIiB5Mj0iMTIwIi8+PGxpbmUgeDE9IjAiIHkxPSIxNjAiIHgyPSI0MDAiIHkyPSIxNjAiLz48bGluZSB4MT0iNDAiIHkxPSIwIiB4Mj0iNDAiIHkyPSIyMDAiLz48bGluZSB4MT0iODAiIHkxPSIwIiB4Mj0iODAiIHkyPSIyMDAiLz48bGluZSB4MT0iMTIwIiB5MT0iMCIgeDI9IjEyMCIgeTI9IjIwMCIvPjxsaW5lIHgxPSIxNjAiIHkxPSIwIiB4Mj0iMTYwIiB5Mj0iMjAwIi8+PGxpbmUgeDE9IjIwMCIgeTE9IjAiIHgyPSIyMDAiIHkyPSIyMDAiLz48bGluZSB4MT0iMjQwIiB5MT0iMCIgeDI9IjI0MCIgeTI9IjIwMCIvPjxsaW5lIHgxPSIyODAiIHkxPSIwIiB4Mj0iMjgwIiB5Mj0iMjAwIi8+PGxpbmUgeDE9IjMyMCIgeTE9IjAiIHgyPSIzMjAiIHkyPSIyMDAiLz48bGluZSB4MT0iMzYwIiB5MT0iMCIgeDI9IjM2MCIgeTI9IjIwMCIvPjwvZz48Y2lyY2xlIGN4PSIxOTgiIGN5PSIxMDAiIHI9IjcyIiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMTY3LDEzOSwyNTAsMC4xNSkiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWRhc2hhcnJheT0iNCw2Ii8+PGxpbmUgeDE9IjQ4IiB5MT0iNDIiIHgyPSIxOTgiIHkyPSIxMDAiIHN0cm9rZT0icmdiYSgyNTEsMTkxLDM2LDAuMikiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWRhc2hhcnJheT0iNCw4Ii8+PGNpcmNsZSBjeD0iMTk4IiBjeT0iMTAwIiByPSIzMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDEyNCw1OCwyMzcsMC4yKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PGNpcmNsZSBjeD0iMTk4IiBjeT0iMTAwIiByPSIyMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDEyNCw1OCwyMzcsMC4zNSkiIHN0cm9rZS13aWR0aD0iMS41Ii8+PGNpcmNsZSBjeD0iMTk4IiBjeT0iNzIiIHI9IjMuNSIgZmlsbD0iI2E3OGJmYSIvPjxjaXJjbGUgY3g9IjIyMSIgY3k9IjEwNyIgcj0iMy41IiBmaWxsPSIjYTc4YmZhIi8+PGNpcmNsZSBjeD0iMTc1IiBjeT0iMTA3IiByPSIzLjUiIGZpbGw9IiNhNzhiZmEiLz48Y2lyY2xlIGN4PSIxOTgiIGN5PSIxMDAiIHI9IjE2IiBmaWxsPSIjM2IwNzY0IiBzdHJva2U9IiNhNzhiZmEiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjE5OCIgY3k9IjEwMCIgcj0iOSIgZmlsbD0iIzZkMjhkOSIvPjxjaXJjbGUgY3g9IjE5OCIgY3k9IjEwMCIgcj0iNSIgZmlsbD0iI2M0YjVmZCIvPjxjaXJjbGUgY3g9IjE5OCIgY3k9IjEwMCIgcj0iMi41IiBmaWxsPSJ3aGl0ZSIvPjxjaXJjbGUgY3g9IjE5MSIgY3k9Ijk0IiByPSIyIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNikiLz48Y2lyY2xlIGN4PSIyMDUiIGN5PSI5NCIgcj0iMiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjYpIi8+PGNpcmNsZSBjeD0iMTk4IiBjeT0iMTA4IiByPSIyIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNikiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg3MCw0MikiPjxwb2x5Z29uIHBvaW50cz0iMCwtMTQgMTIsMTAgLTEyLDEwIiBmaWxsPSIjMTQ1MzJkIiBzdHJva2U9IiM0YWRlODAiIHN0cm9rZS13aWR0aD0iMiIvPjxyZWN0IHg9Ii0xNCIgeT0iMTMiIHdpZHRoPSIyOCIgaGVpZ2h0PSI0IiByeD0iMSIgZmlsbD0iIzFhMWExYSIvPjxyZWN0IHg9Ii0xNCIgeT0iMTMiIHdpZHRoPSIyMCIgaGVpZ2h0PSI0IiByeD0iMSIgZmlsbD0iIzRhZGU4MCIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMTgsOTUpIj48cG9seWdvbiBwb2ludHM9IjAsLTIwIDE3LC0xMCAxNywxMCAwLDIwIC0xNywxMCAtMTcsLTEwIiBmaWxsPSIjN2YxZDFkIiBzdHJva2U9IiNmODcxNzEiIHN0cm9rZS13aWR0aD0iMi41Ii8+PHBvbHlnb24gcG9pbnRzPSIwLC0xMiAxMCwtNiAxMCw2IDAsMTIgLTEwLDYgLTEwLC02IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4xNSkiIHN0cm9rZS13aWR0aD0iMS41Ii8+PHJlY3QgeD0iLTIwIiB5PSIyMiIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQiIHJ4PSIxIiBmaWxsPSIjMWExYTFhIi8+PHJlY3QgeD0iLTIwIiB5PSIyMiIgd2lkdGg9IjI4IiBoZWlnaHQ9IjQiIHJ4PSIxIiBmaWxsPSIjZjg3MTcxIi8+PC9nPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDMzOCwzOCkiPjxyZWN0IHg9Ii0xNCIgeT0iLTE0IiB3aWR0aD0iMjgiIGhlaWdodD0iMjgiIGZpbGw9IiM3ODM1MGYiIHN0cm9rZT0iI2ZiYmYyNCIgc3Ryb2tlLXdpZHRoPSIyIi8+PGxpbmUgeDE9IjAiIHkxPSItMjAiIHgyPSIwIiB5Mj0iMjAiIHN0cm9rZT0icmdiYSgyNTEsMTkxLDM2LDAuNCkiIHN0cm9rZS13aWR0aD0iMSIvPjxsaW5lIHgxPSItMjAiIHkxPSIwIiB4Mj0iMjAiIHkyPSIwIiBzdHJva2U9InJnYmEoMjUxLDE5MSwzNiwwLjQpIiBzdHJva2Utd2lkdGg9IjEiLz48cmVjdCB4PSItMTgiIHk9IjE2IiB3aWR0aD0iMzYiIGhlaWdodD0iNCIgcng9IjEiIGZpbGw9IiMxYTFhMWEiLz48cmVjdCB4PSItMTgiIHk9IjE2IiB3aWR0aD0iMjYiIGhlaWdodD0iNCIgcng9IjEiIGZpbGw9IiNmYmJmMjQiLz48L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNjgsMTUyKSI+PGNpcmNsZSBjeD0iMCIgY3k9IjAiIHI9IjE0IiBmaWxsPSIjMGM0YTZlIiBzdHJva2U9IiMwNmI2ZDQiIHN0cm9rZS13aWR0aD0iMiIvPjxsaW5lIHgxPSItNyIgeTE9Ii03IiB4Mj0iNyIgeTI9IjciIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjUpIiBzdHJva2Utd2lkdGg9IjIuNSIvPjxsaW5lIHgxPSI3IiB5MT0iLTciIHgyPSItNyIgeTI9IjciIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjUpIiBzdHJva2Utd2lkdGg9IjIuNSIvPjxyZWN0IHg9Ii0xNiIgeT0iMTYiIHdpZHRoPSIzMiIgaGVpZ2h0PSI0IiByeD0iMSIgZmlsbD0iIzFhMWExYSIvPjxyZWN0IHg9Ii0xNiIgeT0iMTYiIHdpZHRoPSIyNiIgaGVpZ2h0PSI0IiByeD0iMSIgZmlsbD0iIzA2YjZkNCIvPjxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIxOCIgZmlsbD0icmdiYSg2LDE4MiwyMTIsMC4xMikiLz48L2c+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMjk4LDE1NSkiPjxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIxMiIgZmlsbD0iIzJlMTA2NSIgc3Ryb2tlPSIjYTg1NWY3IiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNLTE0LC04IEExNiwxNiAwIDAsMCAtMTQsOCIgc3Ryb2tlPSIjYTc4YmZhIiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxyZWN0IHg9Ii0xNCIgeT0iMTQiIHdpZHRoPSIyOCIgaGVpZ2h0PSI0IiByeD0iMSIgZmlsbD0iIzFhMWExYSIvPjxyZWN0IHg9Ii0xNCIgeT0iMTQiIHdpZHRoPSIyMiIgaGVpZ2h0PSI0IiByeD0iMSIgZmlsbD0iI2E4NTVmNyIvPjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNTUsMTU1KSI+PHBvbHlnb24gcG9pbnRzPSIwLC0xNCAxMCwtMTAgMTQsMCAxMCwxMCAwLDE0IC0xMCwxMCAtMTQsMCAtMTAsLTEwIiBmaWxsPSIjN2MyZDEyIiBzdHJva2U9IiNmYjkyM2MiIHN0cm9rZS13aWR0aD0iMiIvPjxsaW5lIHgxPSItMTQiIHkxPSIwIiB4Mj0iMTQiIHkyPSIwIiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4yKSIgc3Ryb2tlLXdpZHRoPSIxLjUiLz48cmVjdCB4PSItMTQiIHk9IjE2IiB3aWR0aD0iMjgiIGhlaWdodD0iNCIgcng9IjEiIGZpbGw9IiMxYTFhMWEiLz48cmVjdCB4PSItMTQiIHk9IjE2IiB3aWR0aD0iMTgiIGhlaWdodD0iNCIgcng9IjEiIGZpbGw9IiNmYjkyM2MiLz48L2c+PGNpcmNsZSBjeD0iMjkwIiBjeT0iNjUiIHI9IjYiIGZpbGw9IiNmYmJmMjQiIG9wYWNpdHk9IjAuOSIvPjxjaXJjbGUgY3g9IjI4MCIgY3k9IjY5IiByPSI0IiBmaWxsPSIjZmJiZjI0IiBvcGFjaXR5PSIwLjUiLz48Y2lyY2xlIGN4PSIyNzAiIGN5PSI3MyIgcj0iMi41IiBmaWxsPSIjZmJiZjI0IiBvcGFjaXR5PSIwLjMiLz48Y2lyY2xlIGN4PSIxMjAiIGN5PSIxNDUiIHI9IjE0IiBmaWxsPSJub25lIiBzdHJva2U9InJnYmEoNiwxODIsMjEyLDAuMzUpIiBzdHJva2Utd2lkdGg9IjEuNSIvPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSI0MDAiIGhlaWdodD0iMjAiIGZpbGw9InJnYmEoMCwwLDAsMC43NSkiLz48dGV4dCB4PSIxNCIgeT0iMTMiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iIzRhZGU4MCIgZm9udC1mYW1pbHk9IkFyaWFsIj5TY29yZTogNDgyMDwvdGV4dD48dGV4dCB4PSIxMTAiIHk9IjEzIiBmb250LXNpemU9IjkiIGZpbGw9IiNhNzhiZmEiIGZvbnQtZmFtaWx5PSJBcmlhbCI+V2F2ZSAzPC90ZXh0Pjx0ZXh0IHg9IjE4MCIgeT0iMTMiIGZvbnQtc2l6ZT0iOSIgZmlsbD0iIzA2YjZkNCIgZm9udC1mYW1pbHk9IkFyaWFsIj5LaWxsczogMjQ8L3RleHQ+PHRleHQgeD0iMjYwIiB5PSIxMyIgZm9udC1zaXplPSI5IiBmaWxsPSIjZmJiZjI0IiBmb250LWZhbWlseT0iQXJpYWwiPkNvbWJvIHgzPC90ZXh0Pjx0ZXh0IHg9IjIwMCIgeT0iMTkyIiBmb250LWZhbWlseT0iQXJpYWwgQmxhY2siIGZvbnQtc2l6ZT0iMTEiIGZpbGw9IiNhNzhiZmEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGxldHRlci1zcGFjaW5nPSIyIj5BVVJBIENMQVNIPC90ZXh0Pjwvc3ZnPg==" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:15px 15px 0 0;">
+                  <div class="card-badges"><span class="section-badge badge-new">New</span><span class="section-badge badge-featured">⭐ Pick</span></div></div>
                 <div class="card-body">
                   <div class="card-top">
                     <div><div class="card-title">Aura Clash</div><div class="card-cat">Arcade</div></div>
                   </div>
                   <div class="card-desc">Move, evade and eliminate. 6 enemy types with unique behaviors. 4 abilities to master. Survive endless waves!</div>
-                  <div class="card-footer"><span class="tag">Arcade</span><a href="/games/aura-clash/index.html" class="btn-play">Play Now</a></div>
+                  <div class="card-footer"><span class="tag">Arcade</span><a href="/games/aura-clash/index.html" class="btn-play" target="_blank">Play Now</a></div>
                 </div>
               </div>
 
             </div>
+            <div class="no-results" id="noResults">No games found. Try a different search.</div>
           </div>
 
           <div style="height:8px"></div>
@@ -1047,6 +1045,52 @@
       setTimeout(() => { animateCounter(document.getElementById('statGames'), 6, 800); }, 400);
     });
 
+
+
+    // ── FEATURED ROTATION ──
+    const FEATURED_GAMES = [
+      { title:'Aura Clash', desc:'Move, evade and eliminate. Face 6 unique enemy types with 4 powerful abilities.', url:'/games/aura-clash/index.html', icon:'🌟', label:'⭐ Staff Pick · Arcade', badges:'<span class="section-badge badge-new">New</span><span class="section-badge badge-hot">🔥 Hot</span>' },
+      { title:'Castle Defense', desc:'Build towers, cast spells, survive 30 campaign levels or endless waves.', url:'/games/castle-defense/index.html', icon:'⚔️', label:'🔥 Hot · Strategy', badges:'<span class="section-badge badge-hot">🔥 Hot</span>' },
+      { title:'Volt Grid', desc:'Chain the energy, clear the grid. Strategic puzzle with satisfying chain reactions.', url:'/games/volt-grid/index.html', icon:'⚡', label:'🧩 Brain · Puzzle', badges:'<span class="section-badge badge-staff">🧩 Brain</span>' },
+      { title:'Neon Runner', desc:'Choose your runner, collect coins, survive obstacles. 4 themes and global leaderboard!', url:'/games/neon-runner/index.html', icon:'🏃', label:'🆕 New · Arcade', badges:'<span class="section-badge badge-new">New</span>' },
+      { title:'Gravity Flip', desc:'Tap to flip gravity. Dodge the pipes. A classic reflex challenge.', url:'/games/gravity-flip/index.html', icon:'🌀', label:'🔥 Popular · Arcade', badges:'<span class="section-badge badge-hot">🔥 Popular</span>' },
+      { title:'Stack Up', desc:'Drop the block at the perfect moment. Build the tallest tower and beat your best!', url:'/games/stack-up/index.html', icon:'🏗️', label:'👾 Classic · Arcade', badges:'<span class="section-badge badge-staff">👾 Classic</span>' },
+    ];
+    let featIdx = 0;
+    function rotateFeatured() {
+      featIdx = (featIdx + 1) % FEATURED_GAMES.length;
+      const g = FEATURED_GAMES[featIdx];
+      const banner = document.querySelector('.featured-banner');
+      if (!banner) return;
+      banner.href = g.url;
+      banner.querySelector('.featured-icon-wrap').textContent = g.icon;
+      banner.querySelector('.featured-label').textContent = '';
+      banner.querySelector('.featured-label').textContent = g.label;
+      banner.querySelector('.featured-title').textContent = g.title;
+      banner.querySelector('.featured-desc').textContent = g.desc;
+      banner.querySelector('.featured-tags').innerHTML = g.badges;
+    }
+    setInterval(rotateFeatured, 5000);
+
+    // ── SEARCH ──
+    function searchGames(q) {
+      const query = q.toLowerCase().trim();
+      const cards = document.querySelectorAll('.game-card');
+      let visible = 0;
+      cards.forEach(card => {
+        const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
+        const desc = card.querySelector('.card-desc')?.textContent.toLowerCase() || '';
+        const cat = (card.dataset.cat || '').toLowerCase();
+        const match = !query || title.includes(query) || desc.includes(query) || cat.includes(query);
+        card.classList.toggle('hidden', !match);
+        if (match) visible++;
+      });
+      const noResults = document.getElementById('noResults');
+      if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+      document.getElementById('sectionCount').textContent = visible + ' game' + (visible !== 1 ? 's' : '');
+      if (query) document.getElementById('sectionTitle').textContent = 'Search Results';
+      else document.getElementById('sectionTitle').textContent = 'All Games';
+    }
 
   </script>
 </body>
