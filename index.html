@@ -557,6 +557,29 @@
       .hero-orb { display: none; }
     }
     @media (min-width: 769px) { .hamburger { display: none; } }
+
+    /* SKELETON LOADING */
+    .skeleton{
+      background:linear-gradient(90deg,rgba(255,255,255,0.04) 25%,rgba(255,255,255,0.08) 50%,rgba(255,255,255,0.04) 75%);
+      background-size:200% 100%;
+      animation:shimmer 1.6s infinite;
+      border-radius:8px;
+    }
+    @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+    .skeleton-card{
+      background:var(--surface);border:1px solid var(--border);border-radius:16px;
+      overflow:hidden;display:flex;flex-direction:column;
+    }
+    .sk-preview{height:120px;border-radius:15px 15px 0 0;}
+    .sk-body{padding:16px;display:flex;flex-direction:column;gap:10px;}
+    .sk-title{height:16px;width:60%;}
+    .sk-desc{height:12px;width:100%;}
+    .sk-desc2{height:12px;width:80%;}
+    .sk-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:10px;border-top:1px solid var(--border);}
+    .sk-tag{height:22px;width:60px;border-radius:6px;}
+    .sk-btn{height:30px;width:80px;border-radius:8px;}
+    .cards-grid.loading .game-card{display:none;}
+    .cards-grid:not(.loading) .skeleton-card{display:none;}
   </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QPDBHFXQES"></script>
   <script>
@@ -726,7 +749,81 @@
               </div>
               <div class="section-count" id="sectionCount">6 games</div>
             </div>
-            <div class="cards-grid" id="cardsGrid">
+            <div class="cards-grid loading" id="cardsGrid">
+              <!-- SKELETON CARDS (shown while JS loads) -->
+              <div class="skeleton-card">
+                <div class="skeleton sk-preview"></div>
+                <div class="sk-body">
+                  <div class="skeleton sk-title"></div>
+                  <div class="skeleton sk-desc"></div>
+                  <div class="skeleton sk-desc2"></div>
+                  <div class="sk-footer">
+                    <div class="skeleton sk-tag"></div>
+                    <div class="skeleton sk-btn"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="skeleton-card">
+                <div class="skeleton sk-preview"></div>
+                <div class="sk-body">
+                  <div class="skeleton sk-title"></div>
+                  <div class="skeleton sk-desc"></div>
+                  <div class="skeleton sk-desc2"></div>
+                  <div class="sk-footer">
+                    <div class="skeleton sk-tag"></div>
+                    <div class="skeleton sk-btn"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="skeleton-card">
+                <div class="skeleton sk-preview"></div>
+                <div class="sk-body">
+                  <div class="skeleton sk-title"></div>
+                  <div class="skeleton sk-desc"></div>
+                  <div class="skeleton sk-desc2"></div>
+                  <div class="sk-footer">
+                    <div class="skeleton sk-tag"></div>
+                    <div class="skeleton sk-btn"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="skeleton-card">
+                <div class="skeleton sk-preview"></div>
+                <div class="sk-body">
+                  <div class="skeleton sk-title"></div>
+                  <div class="skeleton sk-desc"></div>
+                  <div class="skeleton sk-desc2"></div>
+                  <div class="sk-footer">
+                    <div class="skeleton sk-tag"></div>
+                    <div class="skeleton sk-btn"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="skeleton-card">
+                <div class="skeleton sk-preview"></div>
+                <div class="sk-body">
+                  <div class="skeleton sk-title"></div>
+                  <div class="skeleton sk-desc"></div>
+                  <div class="skeleton sk-desc2"></div>
+                  <div class="sk-footer">
+                    <div class="skeleton sk-tag"></div>
+                    <div class="skeleton sk-btn"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="skeleton-card">
+                <div class="skeleton sk-preview"></div>
+                <div class="sk-body">
+                  <div class="skeleton sk-title"></div>
+                  <div class="skeleton sk-desc"></div>
+                  <div class="skeleton sk-desc2"></div>
+                  <div class="sk-footer">
+                    <div class="skeleton sk-tag"></div>
+                    <div class="skeleton sk-btn"></div>
+                  </div>
+                </div>
+              </div>
+
 
               <div class="game-card" data-cat="arcade">
                 <div class="card-preview" style="background:#080810;position:relative;">
@@ -943,6 +1040,15 @@
   </div>
 
   <script>
+
+    // ── SKELETON REMOVAL ──
+    window.addEventListener('load', () => {
+      const grid = document.getElementById('cardsGrid');
+      if (grid) {
+        setTimeout(() => grid.classList.remove('loading'), 300);
+      }
+    });
+
     // ── TAB SWITCHING ──
     function switchTab(tab) {
       ['home','about','contact'].forEach(t => {
