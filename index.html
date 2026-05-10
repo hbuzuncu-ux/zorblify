@@ -720,7 +720,6 @@
                 <div class="card-body">
                   <div class="card-top">
                     <div><div class="card-title">Gravity Flip</div><div class="card-cat">Arcade</div></div>
-                    <div class="card-rating">★★★★★</div>
                   </div>
                   <div class="card-desc">Tap to flip gravity. Dodge the pipes. A classic reflex challenge — how long can you survive?</div>
                   <div class="card-footer"><span class="tag">Arcade</span><a href="/games/gravity-flip/index.html" class="btn-play">Play Now</a></div>
@@ -737,7 +736,6 @@
                 <div class="card-body">
                   <div class="card-top">
                     <div><div class="card-title">Stack Up</div><div class="card-cat">Arcade</div></div>
-                    <div class="card-rating">★★★★☆</div>
                   </div>
                   <div class="card-desc">Drop the block at the perfect moment. Stack them high, build the tallest tower, beat your best!</div>
                   <div class="card-footer"><span class="tag">Arcade</span><a href="/games/stack-up/index.html" class="btn-play">Play Now</a></div>
@@ -754,7 +752,6 @@
                 <div class="card-body">
                   <div class="card-top">
                     <div><div class="card-title">Volt Grid</div><div class="card-cat">Puzzle</div></div>
-                    <div class="card-rating">★★★★★</div>
                   </div>
                   <div class="card-desc">Chain the energy, clear the grid. Trigger domino chain reactions in this strategic puzzle game.</div>
                   <div class="card-footer"><span class="tag puzzle">Puzzle</span><a href="/games/volt-grid/index.html" class="btn-play">Play Now</a></div>
@@ -771,7 +768,6 @@
                 <div class="card-body">
                   <div class="card-top">
                     <div><div class="card-title">Castle Defense</div><div class="card-cat">Strategy</div></div>
-                    <div class="card-rating">★★★★★</div>
                   </div>
                   <div class="card-desc">Build towers, cast spells, survive 30 campaign levels or endless waves. Protect the kingdom!</div>
                   <div class="card-footer"><span class="tag strategy">Strategy</span><a href="/games/castle-defense/index.html" class="btn-play">Play Now</a></div>
@@ -788,7 +784,6 @@
                 <div class="card-body">
                   <div class="card-top">
                     <div><div class="card-title">Neon Runner</div><div class="card-cat">Arcade</div></div>
-                    <div class="card-rating">★★★★☆</div>
                   </div>
                   <div class="card-desc">Choose your runner, collect coins, survive endless obstacles. 4 unique themes, powerups and global leaderboard!</div>
                   <div class="card-footer"><span class="tag">Arcade</span><a href="/games/neon-runner/index.html" class="btn-play">Play Now</a></div>
@@ -808,7 +803,6 @@
                 <div class="card-body">
                   <div class="card-top">
                     <div><div class="card-title">Aura Clash</div><div class="card-cat">Arcade</div></div>
-                    <div class="card-rating">★★★★★</div>
                   </div>
                   <div class="card-desc">Move, evade and eliminate. 6 enemy types with unique behaviors. 4 abilities to master. Survive endless waves!</div>
                   <div class="card-footer"><span class="tag">Arcade</span><a href="/games/aura-clash/index.html" class="btn-play">Play Now</a></div>
@@ -1053,101 +1047,7 @@
       setTimeout(() => { animateCounter(document.getElementById('statGames'), 6, 800); }, 400);
     });
 
-    // ── RATING SİSTEMİ ──
-    const SB_URL = 'https://lscqqfeqpbfmcccifrwj.supabase.co';
-    const SB_KEY = 'sb_publishable_HPGXHwa51dk_1nmAqoeoXA_6zCzOVzM';
-    const GAME_IDS = {
-      'Gravity Flip':'gravity-flip','Stack Up':'stack-up','Volt Grid':'volt-grid',
-      'Castle Defense':'castle-defense','Neon Runner':'neon-runner','Aura Clash':'aura-clash'
-    };
 
-    async function fetchRatings() {
-      try {
-        const res = await fetch(`${SB_URL}/rest/v1/ratings?select=game_id,rating`, {
-          headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
-        });
-        const data = await res.json();
-        const agg = {};
-        data.forEach(r => {
-          if (!agg[r.game_id]) agg[r.game_id] = { sum: 0, count: 0 };
-          agg[r.game_id].sum += r.rating;
-          agg[r.game_id].count++;
-        });
-        return agg;
-      } catch(e) { return {}; }
-    }
-
-    function starsHTML(avg, count, gameId) {
-      const voted = localStorage.getItem('zorblify_rated_' + gameId);
-      const display = count > 0 ? avg.toFixed(1) : '—';
-      const countText = count > 0 ? `(${count})` : 'Rate';
-      let stars = '';
-      for (let i = 1; i <= 5; i++) {
-        const filled = count > 0 && i <= Math.round(avg);
-        stars += `<span class="star-btn${filled ? ' filled' : ''}${voted ? ' voted' : ''}" data-game="${gameId}" data-val="${i}" onmouseenter="hoverStars(this,${i})" onmouseleave="resetStars(this)" onclick="submitRating('${gameId}',${i})">★</span>`;
-      }
-      return `<div class="card-rating-wrap" id="rating-${gameId}"><div class="stars-row">${stars}</div><span class="rating-score">${display}</span><span class="rating-count">${countText}</span></div>`;
-    }
-
-    function hoverStars(el, val) {
-      const gid = el.dataset.game;
-      if (localStorage.getItem('zorblify_rated_' + gid)) return;
-      document.getElementById('rating-' + gid).querySelectorAll('.star-btn').forEach((s, i) => {
-        s.style.color = i < val ? '#f0c060' : 'rgba(255,255,255,0.15)';
-      });
-    }
-
-    function resetStars(el) {
-      const gid = el.dataset.game;
-      if (localStorage.getItem('zorblify_rated_' + gid)) return;
-      document.getElementById('rating-' + gid).querySelectorAll('.star-btn').forEach(s => s.style.color = '');
-    }
-
-    async function submitRating(gameId, val) {
-      if (localStorage.getItem('zorblify_rated_' + gameId)) return;
-      localStorage.setItem('zorblify_rated_' + gameId, val);
-      try {
-        await fetch(`${SB_URL}/rest/v1/ratings`, {
-          method: 'POST',
-          headers: {
-            'apikey': SB_KEY,
-            'Authorization': `Bearer ${SB_KEY}`,
-            'Content-Type': 'application/json',
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify({ game_id: gameId, rating: val })
-        });
-      } catch(e) {}
-      await initRatings();
-    }
-
-    async function initRatings() {
-      const agg = await fetchRatings();
-      document.querySelectorAll('.game-card').forEach(card => {
-        const titleEl = card.querySelector('.card-title');
-        if (!titleEl) return;
-        const gameId = GAME_IDS[titleEl.textContent.trim()];
-        if (!gameId) return;
-        const ratingEl = card.querySelector('.card-rating, .card-rating-wrap');
-        if (!ratingEl) return;
-        const info = agg[gameId] || { sum: 0, count: 0 };
-        const avg = info.count > 0 ? info.sum / info.count : 0;
-        ratingEl.outerHTML = starsHTML(avg, info.count, gameId);
-      });
-    }
-
-    const rStyle = document.createElement('style');
-    rStyle.textContent = `
-      .card-rating-wrap { display:flex; align-items:center; gap:4px; }
-      .stars-row { display:flex; gap:1px; }
-      .star-btn { font-size:14px; color:rgba(255,255,255,0.2); cursor:pointer; transition:color .15s; user-select:none; }
-      .star-btn.filled { color:#f0c060; }
-      .star-btn.voted { cursor:default; }
-      .rating-score { font-size:11px; color:var(--gold); font-weight:700; }
-      .rating-count { font-size:10px; color:var(--text-muted); }
-    `;
-    document.head.appendChild(rStyle);
-    window.addEventListener('load', initRatings);
   </script>
 </body>
 </html>
