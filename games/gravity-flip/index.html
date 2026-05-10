@@ -3,7 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gravity Flip — Zorblify</title>
+  <title>Gravity Flip — Free Arcade Game | Zorblify</title>
+  <meta name="description" content="Tap to flip gravity. Dodge the pipes. A classic reflex challenge — how long can you survive? Free browser game, no download required.">
+  <meta property="og:title" content="Gravity Flip — Free Arcade Game | Zorblify">
+  <meta property="og:description" content="Tap to flip gravity. Dodge the pipes. How long can you survive?">
+  <meta property="og:url" content="https://zorblify.com/games/gravity-flip/index.html">
+  <meta property="og:image" content="https://zorblify.com/favicon-512.png">
+  <meta name="twitter:card" content="summary">
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QPDBHFXQES"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-QPDBHFXQES");
+  </script>
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "name": "Gravity Flip",
+    "url": "https://zorblify.com/games/gravity-flip/index.html",
+    "description": "Tap to flip gravity. Dodge the pipes. A classic reflex challenge.",
+    "genre": "Arcade",
+    "gamePlatform": "Web Browser",
+    "applicationCategory": "Game",
+    "offers": {"@type":"Offer","price":"0","priceCurrency":"USD"},
+    "publisher": {"@type":"Organization","name":"Zorblify","url":"https://zorblify.com"}
+  }
+  </script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #080810; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
@@ -12,22 +41,7 @@
 </head>
 <body>
   <div style="position:fixed;top:16px;left:16px;z-index:999;">
-  <a href="/" style="
-    display:flex;
-    align-items:center;
-    gap:8px;
-    background:rgba(124,58,237,0.85);
-    color:#ffffff;
-    text-decoration:none;
-    padding:8px 16px;
-    border-radius:8px;
-    font-family:Arial,sans-serif;
-    font-size:14px;
-    font-weight:600;
-    backdrop-filter:blur(8px);
-    border:1px solid rgba(124,58,237,0.5);
-    transition:all 0.2s;
-  ">← Zorblify</a>
+  <a href="/" style="display:flex;align-items:center;gap:8px;background:rgba(124,58,237,0.85);color:#ffffff;text-decoration:none;padding:8px 16px;border-radius:8px;font-family:Arial,sans-serif;font-size:14px;font-weight:600;backdrop-filter:blur(8px);border:1px solid rgba(124,58,237,0.5);transition:all 0.2s;">← Zorblify</a>
 </div>
 <canvas id="game"></canvas>
 <script>
@@ -168,10 +182,10 @@
     ctx.shadowBlur = 0;
     ctx.fillStyle = '#cccccc';
     ctx.font = '18px Arial';
-    ctx.fillText('Tıkla veya Space ile başla', canvas.width / 2, canvas.height / 2 - 10);
+    ctx.fillText('Click or Space to start', canvas.width / 2, canvas.height / 2 - 10);
     ctx.fillStyle = '#06b6d4';
     ctx.font = '15px Arial';
-    ctx.fillText('Her tıklamada yerçekimi tersine döner!', canvas.width / 2, canvas.height / 2 + 25);
+    ctx.fillText('Each tap flips gravity!', canvas.width / 2, canvas.height / 2 + 25);
     const bounce = Math.sin(Date.now() / 300) * 8;
     ctx.fillStyle = '#7c3aed';
     ctx.font = '28px Arial';
@@ -189,13 +203,13 @@
     ctx.shadowBlur = 0;
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 34px Arial';
-    ctx.fillText('Skor: ' + score, canvas.width / 2, canvas.height / 2 - 25);
+    ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 - 25);
     if (score > 0 && score >= bestScore) {
       ctx.shadowBlur = 15;
       ctx.shadowColor = '#fbbf24';
       ctx.fillStyle = '#fbbf24';
       ctx.font = 'bold 22px Arial';
-      ctx.fillText('🏆 YENİ REKOR!', canvas.width / 2, canvas.height / 2 + 18);
+      ctx.fillText('NEW RECORD!', canvas.width / 2, canvas.height / 2 + 18);
       ctx.shadowBlur = 0;
     }
     ctx.fillStyle = '#7c3aed';
@@ -204,7 +218,7 @@
     ctx.fill();
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 18px Arial';
-    ctx.fillText('Tekrar Oyna', canvas.width / 2, canvas.height / 2 + 86);
+    ctx.fillText('Play Again', canvas.width / 2, canvas.height / 2 + 86);
   }
   function gameLoop() {
     drawBackground();
