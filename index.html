@@ -53,7 +53,6 @@
       flex-direction: column;
     }
 
-    /* ── HEADER ── */
     header {
       height: 56px;
       background: rgba(7,7,15,0.98);
@@ -108,10 +107,8 @@
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    /* ── LAYOUT ── */
     .layout { display: flex; flex: 1; overflow: hidden; }
 
-    /* ── SIDEBAR ── */
     .sidebar {
       width: var(--sidebar-w);
       flex-shrink: 0;
@@ -151,7 +148,6 @@
     .sb-nav-item.active { color: var(--text); font-weight: 600; }
     .sb-nav-icon { font-size: 15px; opacity: 0.7; }
 
-    /* Sidebar stats */
     .sb-stats {
       margin: 12px 10px 0;
       background: rgba(124,58,237,0.06);
@@ -168,10 +164,8 @@
     .sb-overlay.open { display: block; }
     .sidebar.mobile-open { transform: translateX(0) !important; }
 
-    /* ── MAIN ── */
     .main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
 
-    /* ── TAB BAR ── */
     .tabbar {
       height: 44px; border-bottom: 1px solid var(--border);
       display: flex; align-items: center; padding: 0 20px;
@@ -189,14 +183,10 @@
     .tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
     .tab.active { color: var(--text); background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.25); }
 
-    /* ── PANELS ── */
     .panel { display: none; flex: 1; }
     .panel.active { display: flex; flex-direction: column; }
-
-    /* ── HOME PANEL ── */
     .home-content { padding: 0; flex: 1; }
 
-    /* ── HERO ── */
     .hero {
       position: relative;
       padding: 48px 32px 40px;
@@ -264,7 +254,6 @@
     }
     .btn-hero-outline:hover { border-color: var(--secondary); color: var(--secondary); }
 
-    /* Stats row */
     .hero-stats {
       display: flex; gap: 28px; flex-wrap: wrap;
       padding-top: 24px;
@@ -279,7 +268,6 @@
     }
     .hero-stat-lbl { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
 
-    /* Floating orbs in hero */
     .hero-orb {
       position: absolute; border-radius: 50%;
       filter: blur(60px); pointer-events: none; opacity: 0.2;
@@ -287,7 +275,6 @@
     .hero-orb-1 { width: 300px; height: 300px; background: var(--primary); top: -80px; right: 10%; }
     .hero-orb-2 { width: 200px; height: 200px; background: var(--secondary); bottom: -40px; right: 30%; }
 
-    /* Floating particles in hero */
     @keyframes floatParticle {
       0%   { transform: translateY(0) scale(1); opacity: 0; }
       10%  { opacity: 1; }
@@ -299,7 +286,6 @@
       animation: floatParticle linear infinite;
     }
 
-    /* ── FEATURED GAME ── */
     .featured-section { padding: 28px 24px 0; }
     .section-hdr {
       display: flex; align-items: center; justify-content: space-between;
@@ -322,7 +308,6 @@
       border-radius: 20px; padding: 2px 10px;
     }
 
-    /* Featured banner */
     .featured-banner {
       background: var(--surface);
       border: 1px solid rgba(124,58,237,0.2);
@@ -369,10 +354,8 @@
       white-space: nowrap;
     }
 
-    /* ── GAME CARDS SECTION ── */
     .games-section { padding: 0 24px 24px; }
 
-    /* ── GAME CARDS ── */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
@@ -396,35 +379,26 @@
       transform: scale(1.12) rotate(-3deg);
       transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .card-preview-icon {
-      transition: transform 0.2s ease;
-    }
+    .card-preview-icon { transition: transform 0.2s ease; }
     .game-card.hidden { display: none; }
 
-    /* Card top preview area */
     .card-preview {
       height: 120px;
       display: flex; align-items: center; justify-content: center;
       position: relative; overflow: hidden;
       border-radius: 15px 15px 0 0;
     }
-    .card-preview-bg {
-      position: absolute; inset: 0;
-      opacity: 0.12;
-    }
+    .card-preview-bg { position: absolute; inset: 0; opacity: 0.12; }
     .card-preview-icon { font-size: 52px; position: relative; z-index: 1; }
     .card-preview-glow {
       position: absolute; width: 120px; height: 120px;
       border-radius: 50%; filter: blur(40px); opacity: 0.3; z-index: 0;
     }
-
-    /* Card badges */
     .card-badges {
       position: absolute; top: 10px; left: 10px;
       display: flex; gap: 4px; z-index: 2;
     }
 
-    /* Card body */
     .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
     .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
     .card-title { font-size: 15px; font-weight: 700; font-family: 'Syne', sans-serif; }
@@ -450,11 +424,8 @@
       position: relative; z-index: 2;
     }
     .btn-play:hover { background: var(--primary); color: #fff; box-shadow: 0 0 16px var(--primary-glow); transform: translateY(-1px); }
-
-    /* Card play count */
     .card-plays { font-size: 10px; color: var(--text-muted); display: flex; align-items: center; gap: 3px; }
 
-    /* ── WHY ZORBLIFY ── */
     .why-section {
       margin: 0 24px 28px;
       background: var(--surface);
@@ -475,7 +446,6 @@
     .why-label { font-size: 13px; font-weight: 700; font-family: 'Syne', sans-serif; }
     .why-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
 
-    /* ── ABOUT ── */
     .about-content { padding: 32px 24px; flex: 1; max-width: 720px; overflow-y: auto; }
     .panel-title { font-size: 24px; font-weight: 800; font-family: 'Syne', sans-serif; margin-bottom: 8px; }
     .panel-sub { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; font-style: italic; }
@@ -499,14 +469,12 @@
     .feature-label { font-size: 13px; font-weight: 700; font-family: 'Syne', sans-serif; }
     .feature-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
 
-    /* ── CONTACT ── */
     .contact-content { padding: 32px 24px; flex: 1; max-width: 680px; }
     .contact-info-row { display: flex; gap: 10px; margin-bottom: 24px; }
     .contact-info-card { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
     .ci-label { font-size: 10px; font-family: 'Syne', sans-serif; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
     .ci-value { font-size: 13px; color: var(--text); }
 
-    /* ── FOOTER ── */
     .footer-bar {
       border-top: 1px solid var(--border);
       padding: 14px 24px;
@@ -518,7 +486,6 @@
     .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 12px; transition: color 0.15s; }
     .footer-links a:hover { color: var(--text); }
 
-    /* ── MODALS ── */
     .modal-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0,0,0,0.8); z-index: 200;
@@ -544,7 +511,6 @@
     .modal-body a { color: var(--secondary); text-decoration: none; }
     .modal-body a:hover { text-decoration: underline; }
 
-    /* ── COOKIE ── */
     .cookie-banner {
       position: fixed; bottom: -140px; left: 0; right: 0; z-index: 150;
       background: rgba(13,13,28,0.98); border-top: 1px solid rgba(124,58,237,0.2);
@@ -561,11 +527,9 @@
     .cookie-accept { font-size: 12px; font-weight: 700; font-family: 'Syne', sans-serif; padding: 8px 20px; border-radius: 8px; background: var(--primary); color: #fff; border: none; cursor: pointer; transition: box-shadow .15s; }
     .cookie-accept:hover { box-shadow: 0 0 16px var(--primary-glow); }
 
-    /* ── COUNTER ANIMATION ── */
     @keyframes countUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
     .count-animated { animation: countUp .6s ease forwards; }
 
-    /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .sidebar { position: fixed; left: 0; top: 56px; bottom: 0; z-index: 95; transform: translateX(-100%); transition: transform 0.3s; }
       .hamburger { display: flex; }
@@ -580,7 +544,6 @@
     }
     @media (min-width: 769px) { .hamburger { display: none; } }
   </style>
-  <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-QPDBHFXQES"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -588,7 +551,6 @@
     gtag("js", new Date());
     gtag("config", "G-QPDBHFXQES");
   </script>
-  <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -624,7 +586,6 @@
 </head>
 <body>
 
-  <!-- HEADER -->
   <header>
     <a href="#" class="header-logo" onclick="switchTab('home');return false;">
       <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiB2aWV3Qm94PSIwIDAgNDAwIDQwMCI+CiAgPHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI0MDAiIHJ4PSI0MCIgZmlsbD0iIzA4MDgxMCIvPgogIDxyZWN0IHg9IjMyMCIgeT0iNDAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgcng9IjIiIGZpbGw9IiM3YzNhZWQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjM0MCIgeT0iNjAiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiIHJ4PSIxIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNTUiIHk9IjMwMCIgd2lkdGg9IjgiIGhlaWdodD0iOCIgcng9IjEiIGZpbGw9IiMwNmI2ZDQiIG9wYWNpdHk9IjAuMiIvPgogIDxyZWN0IHg9IjMzMCIgeT0iMzEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHJ4PSIyIiBmaWxsPSIjN2MzYWVkIiBvcGFjaXR5PSIwLjE1Ii8+CiAgPHJlY3QgeD0iNjAiIHk9IjcwIiB3aWR0aD0iNiIgaGVpZ2h0PSI2IiByeD0iMSIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC4yIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIxNzIiIHk9IjEwMCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjIxNCIgeT0iMTAwIiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjU2IiB5PSIxMDAiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIyMTQiIHk9IjE0MiIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMTg0IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMTMwIiB5PSIyMjYiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiMwNmI2ZDQiLz4KICA8cmVjdCB4PSIxMzAiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzA2YjZkNCIvPgogIDxyZWN0IHg9IjE3MiIgeT0iMjY4IiB3aWR0aD0iMzYiIGhlaWdodD0iMzYiIHJ4PSI2IiBmaWxsPSIjN2MzYWVkIi8+CiAgPHJlY3QgeD0iMjE0IiB5PSIyNjgiIHdpZHRoPSIzNiIgaGVpZ2h0PSIzNiIgcng9IjYiIGZpbGw9IiM3YzNhZWQiLz4KICA8cmVjdCB4PSIyNTYiIHk9IjI2OCIgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iNiIgZmlsbD0iIzdjM2FlZCIvPgogIDxyZWN0IHg9IjI5NiIgeT0iMTA4IiB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHJ4PSIzIiBmaWxsPSIjMDZiNmQ0IiBvcGFjaXR5PSIwLjUiLz4KICA8cmVjdCB4PSIxMDQiIHk9IjI3NiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2IiByeD0iMyIgZmlsbD0iIzdjM2FlZCIgb3BhY2l0eT0iMC41Ii8+CiAgPHRleHQgeD0iMjAwIiB5PSIzNTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCBCbGFjaywgSW1wYWN0LCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMyIiBmb250LXdlaWdodD0iOTAwIiBmaWxsPSIjZmZmZmZmIiBsZXR0ZXItc3BhY2luZz0iNCI+Wk9SQkxJRlk8L3RleHQ+Cjwvc3ZnPgo=" height="32" alt="Zorblify">
@@ -640,8 +601,6 @@
   </header>
 
   <div class="layout">
-
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
       <div class="sb-section">
         <div class="sb-label">Games</div>
@@ -658,9 +617,7 @@
           <div class="sb-dot"></div>Strategy<span class="sb-count">1</span>
         </div>
       </div>
-
       <div class="sb-divider"></div>
-
       <div class="sb-section">
         <div class="sb-label">Pages</div>
         <div class="sb-nav-item active" id="sb-home" onclick="switchTab('home')">
@@ -673,47 +630,27 @@
           <span class="sb-nav-icon">✉️</span>Contact
         </div>
       </div>
-
       <div class="sb-divider"></div>
-
       <div class="sb-stats">
         <div class="sb-label" style="padding:0 0 8px;">Platform Stats</div>
-        <div class="sb-stat-row">
-          <span class="sb-stat-label">🎮 Total Games</span>
-          <span class="sb-stat-val">6</span>
-        </div>
-        <div class="sb-stat-row">
-          <span class="sb-stat-label">♾️ Always Free</span>
-          <span class="sb-stat-val">Yes</span>
-        </div>
-        <div class="sb-stat-row">
-          <span class="sb-stat-label">🔓 Login Required</span>
-          <span class="sb-stat-val">Never</span>
-        </div>
-        <div class="sb-stat-row">
-          <span class="sb-stat-label">📱 Mobile Ready</span>
-          <span class="sb-stat-val">Yes</span>
-        </div>
+        <div class="sb-stat-row"><span class="sb-stat-label">🎮 Total Games</span><span class="sb-stat-val">6</span></div>
+        <div class="sb-stat-row"><span class="sb-stat-label">♾️ Always Free</span><span class="sb-stat-val">Yes</span></div>
+        <div class="sb-stat-row"><span class="sb-stat-label">🔓 Login Required</span><span class="sb-stat-val">Never</span></div>
+        <div class="sb-stat-row"><span class="sb-stat-label">📱 Mobile Ready</span><span class="sb-stat-val">Yes</span></div>
       </div>
     </aside>
 
     <div class="sb-overlay" id="sbOverlay" onclick="closeSidebar()"></div>
 
-    <!-- MAIN -->
     <div class="main">
-
-      <!-- TAB BAR -->
       <div class="tabbar">
         <button class="tab active" id="tab-home" onclick="switchTab('home')">Home</button>
         <button class="tab" id="tab-about" onclick="switchTab('about')">About</button>
         <button class="tab" id="tab-contact" onclick="switchTab('contact')">Contact</button>
       </div>
 
-      <!-- HOME PANEL -->
       <div class="panel active" id="panel-home">
         <div class="home-content">
-
-          <!-- HERO -->
           <div class="hero">
             <div class="hero-orb hero-orb-1"></div>
             <div class="hero-orb hero-orb-2"></div>
@@ -727,40 +664,21 @@
                 <div class="hero-eyebrow-dot"></div>
                 6 Games Available Now
               </div>
-              <h1 class="hero-title">
-                Play Free <span class="grad">Browser Games</span> — Instantly
-              </h1>
+              <h1 class="hero-title">Play Free <span class="grad">Browser Games</span> — Instantly</h1>
               <p class="hero-sub">No download. No account. No waiting. Jump into action-packed games right in your browser — completely free, forever.</p>
               <div class="hero-actions">
-                <a href="#games-grid" class="btn-hero-primary" onclick="document.getElementById('cardsGrid').scrollIntoView({behavior:'smooth'});return false;">
-                  🎮 Browse Games
-                </a>
-                <a href="#" class="btn-hero-outline" onclick="switchTab('about');return false;">
-                  Learn More →
-                </a>
+                <a href="#games-grid" class="btn-hero-primary" onclick="document.getElementById('cardsGrid').scrollIntoView({behavior:'smooth'});return false;">🎮 Browse Games</a>
+                <a href="#" class="btn-hero-outline" onclick="switchTab('about');return false;">Learn More →</a>
               </div>
               <div class="hero-stats">
-                <div class="hero-stat">
-                  <div class="hero-stat-val" id="statGames">6</div>
-                  <div class="hero-stat-lbl">Free Games</div>
-                </div>
-                <div class="hero-stat">
-                  <div class="hero-stat-val" style="color:#4ade80;-webkit-text-fill-color:#4ade80;">0</div>
-                  <div class="hero-stat-lbl">Downloads Needed</div>
-                </div>
-                <div class="hero-stat">
-                  <div class="hero-stat-val" style="color:#f0c060;-webkit-text-fill-color:#f0c060;">∞</div>
-                  <div class="hero-stat-lbl">Hours of Fun</div>
-                </div>
-                <div class="hero-stat">
-                  <div class="hero-stat-val" style="color:#06b6d4;-webkit-text-fill-color:#06b6d4;">Free</div>
-                  <div class="hero-stat-lbl">Forever</div>
-                </div>
+                <div class="hero-stat"><div class="hero-stat-val" id="statGames">6</div><div class="hero-stat-lbl">Free Games</div></div>
+                <div class="hero-stat"><div class="hero-stat-val" style="color:#4ade80;-webkit-text-fill-color:#4ade80;">0</div><div class="hero-stat-lbl">Downloads Needed</div></div>
+                <div class="hero-stat"><div class="hero-stat-val" style="color:#f0c060;-webkit-text-fill-color:#f0c060;">∞</div><div class="hero-stat-lbl">Hours of Fun</div></div>
+                <div class="hero-stat"><div class="hero-stat-val" style="color:#06b6d4;-webkit-text-fill-color:#06b6d4;">Free</div><div class="hero-stat-lbl">Forever</div></div>
               </div>
             </div>
           </div>
 
-          <!-- FEATURED GAME -->
           <div class="featured-section">
             <div class="section-hdr">
               <div class="section-hdr-left">
@@ -783,7 +701,6 @@
             </a>
           </div>
 
-          <!-- GAMES GRID -->
           <div class="games-section">
             <div class="section-hdr">
               <div class="section-hdr-left">
@@ -791,7 +708,6 @@
               </div>
               <div class="section-count" id="sectionCount">6 games</div>
             </div>
-
             <div class="cards-grid" id="cardsGrid">
 
               <div class="game-card" data-cat="arcade">
@@ -807,10 +723,7 @@
                     <div class="card-rating">★★★★★</div>
                   </div>
                   <div class="card-desc">Tap to flip gravity. Dodge the pipes. A classic reflex challenge — how long can you survive?</div>
-                  <div class="card-footer">
-                    <span class="tag">Arcade</span>
-                    <a href="/games/gravity-flip/index.html" class="btn-play">Play Now</a>
-                  </div>
+                  <div class="card-footer"><span class="tag">Arcade</span><a href="/games/gravity-flip/index.html" class="btn-play">Play Now</a></div>
                 </div>
               </div>
 
@@ -827,10 +740,7 @@
                     <div class="card-rating">★★★★☆</div>
                   </div>
                   <div class="card-desc">Drop the block at the perfect moment. Stack them high, build the tallest tower, beat your best!</div>
-                  <div class="card-footer">
-                    <span class="tag">Arcade</span>
-                    <a href="/games/stack-up/index.html" class="btn-play">Play Now</a>
-                  </div>
+                  <div class="card-footer"><span class="tag">Arcade</span><a href="/games/stack-up/index.html" class="btn-play">Play Now</a></div>
                 </div>
               </div>
 
@@ -847,10 +757,7 @@
                     <div class="card-rating">★★★★★</div>
                   </div>
                   <div class="card-desc">Chain the energy, clear the grid. Trigger domino chain reactions in this strategic puzzle game.</div>
-                  <div class="card-footer">
-                    <span class="tag puzzle">Puzzle</span>
-                    <a href="/games/volt-grid/index.html" class="btn-play">Play Now</a>
-                  </div>
+                  <div class="card-footer"><span class="tag puzzle">Puzzle</span><a href="/games/volt-grid/index.html" class="btn-play">Play Now</a></div>
                 </div>
               </div>
 
@@ -867,10 +774,7 @@
                     <div class="card-rating">★★★★★</div>
                   </div>
                   <div class="card-desc">Build towers, cast spells, survive 30 campaign levels or endless waves. Protect the kingdom!</div>
-                  <div class="card-footer">
-                    <span class="tag strategy">Strategy</span>
-                    <a href="/games/castle-defense/index.html" class="btn-play">Play Now</a>
-                  </div>
+                  <div class="card-footer"><span class="tag strategy">Strategy</span><a href="/games/castle-defense/index.html" class="btn-play">Play Now</a></div>
                 </div>
               </div>
 
@@ -887,10 +791,7 @@
                     <div class="card-rating">★★★★☆</div>
                   </div>
                   <div class="card-desc">Choose your runner, collect coins, survive endless obstacles. 4 unique themes, powerups and global leaderboard!</div>
-                  <div class="card-footer">
-                    <span class="tag">Arcade</span>
-                    <a href="/games/neon-runner/index.html" class="btn-play">Play Now</a>
-                  </div>
+                  <div class="card-footer"><span class="tag">Arcade</span><a href="/games/neon-runner/index.html" class="btn-play">Play Now</a></div>
                 </div>
               </div>
 
@@ -910,54 +811,25 @@
                     <div class="card-rating">★★★★★</div>
                   </div>
                   <div class="card-desc">Move, evade and eliminate. 6 enemy types with unique behaviors. 4 abilities to master. Survive endless waves!</div>
-                  <div class="card-footer">
-                    <span class="tag">Arcade</span>
-                    <a href="/games/aura-clash/index.html" class="btn-play">Play Now</a>
-                  </div>
+                  <div class="card-footer"><span class="tag">Arcade</span><a href="/games/aura-clash/index.html" class="btn-play">Play Now</a></div>
                 </div>
               </div>
 
             </div>
           </div>
 
-          <!-- WHY ZORBLIFY -->
           <div style="height:8px"></div>
           <div class="why-section">
             <div class="why-title">Why Zorblify?</div>
             <div class="why-grid">
-              <div class="why-card">
-                <div class="why-icon">⚡</div>
-                <div class="why-label">Instant Play</div>
-                <div class="why-desc">No downloads, no installs. Click and play in seconds.</div>
-              </div>
-              <div class="why-card">
-                <div class="why-icon">🔓</div>
-                <div class="why-label">No Account</div>
-                <div class="why-desc">Jump straight into the game. No signup ever required.</div>
-              </div>
-              <div class="why-card">
-                <div class="why-icon">♾️</div>
-                <div class="why-label">Always Free</div>
-                <div class="why-desc">Every game, every feature — completely free forever.</div>
-              </div>
-              <div class="why-card">
-                <div class="why-icon">📱</div>
-                <div class="why-label">Mobile Ready</div>
-                <div class="why-desc">Works on any device. Phone, tablet, desktop.</div>
-              </div>
-              <div class="why-card">
-                <div class="why-icon">🏆</div>
-                <div class="why-label">Leaderboards</div>
-                <div class="why-desc">Compete globally. See how you rank against the world.</div>
-              </div>
-              <div class="why-card">
-                <div class="why-icon">🆕</div>
-                <div class="why-label">New Games</div>
-                <div class="why-desc">Fresh games added regularly. Something new to discover.</div>
-              </div>
+              <div class="why-card"><div class="why-icon">⚡</div><div class="why-label">Instant Play</div><div class="why-desc">No downloads, no installs. Click and play in seconds.</div></div>
+              <div class="why-card"><div class="why-icon">🔓</div><div class="why-label">No Account</div><div class="why-desc">Jump straight into the game. No signup ever required.</div></div>
+              <div class="why-card"><div class="why-icon">♾️</div><div class="why-label">Always Free</div><div class="why-desc">Every game, every feature — completely free forever.</div></div>
+              <div class="why-card"><div class="why-icon">📱</div><div class="why-label">Mobile Ready</div><div class="why-desc">Works on any device. Phone, tablet, desktop.</div></div>
+              <div class="why-card"><div class="why-icon">🏆</div><div class="why-label">Leaderboards</div><div class="why-desc">Compete globally. See how you rank against the world.</div></div>
+              <div class="why-card"><div class="why-icon">🆕</div><div class="why-label">New Games</div><div class="why-desc">Fresh games added regularly. Something new to discover.</div></div>
             </div>
           </div>
-
         </div>
 
         <div class="footer-bar">
@@ -974,42 +846,19 @@
         </div>
       </div>
 
-      <!-- ABOUT PANEL -->
       <div class="panel" id="panel-about">
         <div class="about-content">
           <div class="panel-title">About Zorblify</div>
           <div class="panel-sub">A free web game platform built for everyone.</div>
-          <div class="about-text">
-            Zorblify is a growing collection of browser-based games you can play instantly — no downloads, no accounts, no barriers. We believe great games should be accessible to everyone, everywhere, on any device.
-          </div>
-          <div class="about-highlight">
-            <strong>Our mission:</strong> Build high-quality, polished browser games that are fun, challenging and completely free. Every game on Zorblify is handcrafted with care — from the gameplay mechanics to the visual design. New games are added regularly, each one pushing the bar higher.
-          </div>
+          <div class="about-text">Zorblify is a growing collection of browser-based games you can play instantly — no downloads, no accounts, no barriers. We believe great games should be accessible to everyone, everywhere, on any device.</div>
+          <div class="about-highlight"><strong>Our mission:</strong> Build high-quality, polished browser games that are fun, challenging and completely free. Every game on Zorblify is handcrafted with care — from the gameplay mechanics to the visual design. New games are added regularly, each one pushing the bar higher.</div>
           <div class="features-grid">
-            <div class="feature-card">
-              <div class="feature-icon">♾️</div>
-              <div class="feature-label">Always Free</div>
-              <div class="feature-desc">No paywalls, no premium tiers. Everything is free.</div>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">🔓</div>
-              <div class="feature-label">No Login</div>
-              <div class="feature-desc">No account required. Ever. Just play.</div>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">📅</div>
-              <div class="feature-label">Growing Library</div>
-              <div class="feature-desc">New games added regularly across all genres.</div>
-            </div>
-            <div class="feature-card">
-              <div class="feature-icon">🏆</div>
-              <div class="feature-label">Global Scores</div>
-              <div class="feature-desc">Compete on worldwide leaderboards.</div>
-            </div>
+            <div class="feature-card"><div class="feature-icon">♾️</div><div class="feature-label">Always Free</div><div class="feature-desc">No paywalls, no premium tiers. Everything is free.</div></div>
+            <div class="feature-card"><div class="feature-icon">🔓</div><div class="feature-label">No Login</div><div class="feature-desc">No account required. Ever. Just play.</div></div>
+            <div class="feature-card"><div class="feature-icon">📅</div><div class="feature-label">Growing Library</div><div class="feature-desc">New games added regularly across all genres.</div></div>
+            <div class="feature-card"><div class="feature-icon">🏆</div><div class="feature-label">Global Scores</div><div class="feature-desc">Compete on worldwide leaderboards.</div></div>
           </div>
-          <div class="about-text" style="margin-bottom:0;">
-            Zorblify started as a passion project and is growing into a full platform. If you enjoy the games, share them with friends — that's the best support you can give us.
-          </div>
+          <div class="about-text" style="margin-bottom:0;">Zorblify started as a passion project and is growing into a full platform. If you enjoy the games, share them with friends — that's the best support you can give us.</div>
         </div>
         <div class="footer-bar">
           <span>© 2026 Zorblify. All rights reserved.</span>
@@ -1020,24 +869,15 @@
         </div>
       </div>
 
-      <!-- CONTACT PANEL -->
       <div class="panel" id="panel-contact">
         <div class="contact-content">
           <div class="panel-title">Get in Touch</div>
           <div class="panel-sub">Have a question, feedback or suggestion? We'd love to hear from you.</div>
           <div class="contact-info-row">
-            <div class="contact-info-card">
-              <div class="ci-label">Email</div>
-              <div class="ci-value"><a href="mailto:contact@zorblify.com" style="color:var(--secondary);text-decoration:none;">contact@zorblify.com</a></div>
-            </div>
-            <div class="contact-info-card">
-              <div class="ci-label">Response Time</div>
-              <div class="ci-value">Within 48 hours</div>
-            </div>
+            <div class="contact-info-card"><div class="ci-label">Email</div><div class="ci-value"><a href="mailto:contact@zorblify.com" style="color:var(--secondary);text-decoration:none;">contact@zorblify.com</a></div></div>
+            <div class="contact-info-card"><div class="ci-label">Response Time</div><div class="ci-value">Within 48 hours</div></div>
           </div>
-          <p style="font-size:14px;color:var(--text-muted);line-height:1.8;margin-bottom:20px;">
-            Send us an email and we'll get back to you as soon as possible. Whether it's a bug report, a game suggestion or just a hello — we read every message.
-          </p>
+          <p style="font-size:14px;color:var(--text-muted);line-height:1.8;margin-bottom:20px;">Send us an email and we'll get back to you as soon as possible. Whether it's a bug report, a game suggestion or just a hello — we read every message.</p>
           <div style="background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.15);border-radius:12px;padding:20px 24px;">
             <div style="font-size:13px;font-weight:700;font-family:'Syne',sans-serif;margin-bottom:10px;">📬 What can you write about?</div>
             <div style="font-size:13px;color:var(--text-muted);display:flex;flex-direction:column;gap:6px;">
@@ -1056,11 +896,9 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 
-  <!-- PRIVACY MODAL -->
   <div class="modal-overlay" id="privacyModal" onclick="closeModalOnOverlay(event,'privacyModal')">
     <div class="modal">
       <button class="modal-close" onclick="closeModal('privacyModal')">&times;</button>
@@ -1083,39 +921,29 @@
     </div>
   </div>
 
-  <!-- TOS MODAL -->
   <div class="modal-overlay" id="tosModal" onclick="closeModalOnOverlay(event,'tosModal')">
     <div class="modal">
       <button class="modal-close" onclick="closeModal('tosModal')">&times;</button>
       <h2 class="modal-title">Terms of Service</h2>
       <p class="modal-meta">Last updated: April 2026</p>
       <div class="modal-body">
-        <h3>1. Acceptance</h3>
-        <p>By using Zorblify, you agree to these Terms of Service.</p>
-        <h3>2. Age Requirement</h3>
-        <p>You must be at least 13 years old to use Zorblify.</p>
-        <h3>3. No Account Required</h3>
-        <p>No personal information is required to enjoy the games.</p>
-        <h3>4. Content Ownership</h3>
-        <p>All content on Zorblify is owned by or licensed to Zorblify and protected by intellectual property laws.</p>
+        <h3>1. Acceptance</h3><p>By using Zorblify, you agree to these Terms of Service.</p>
+        <h3>2. Age Requirement</h3><p>You must be at least 13 years old to use Zorblify.</p>
+        <h3>3. No Account Required</h3><p>No personal information is required to enjoy the games.</p>
+        <h3>4. Content Ownership</h3><p>All content on Zorblify is owned by or licensed to Zorblify and protected by intellectual property laws.</p>
         <h3>5. Acceptable Use</h3>
         <ul>
           <li>Do not attempt unauthorized access to any part of the site.</li>
           <li>Do not use automated tools to scrape or download content.</li>
           <li>Do not use the site for any unlawful purpose.</li>
         </ul>
-        <h3>6. Contact</h3>
-        <p>Questions? Contact us at <a href="mailto:contact@zorblify.com">contact@zorblify.com</a>.</p>
+        <h3>6. Contact</h3><p>Questions? Contact us at <a href="mailto:contact@zorblify.com">contact@zorblify.com</a>.</p>
       </div>
     </div>
   </div>
 
-  <!-- COOKIE BANNER -->
   <div class="cookie-banner" id="cookieBanner">
-    <div class="cookie-text">
-      We use cookies to improve your experience and serve relevant ads.
-      <a href="#" onclick="openModal('privacyModal');return false;">Learn more</a>
-    </div>
+    <div class="cookie-text">We use cookies to improve your experience and serve relevant ads. <a href="#" onclick="openModal('privacyModal');return false;">Learn more</a></div>
     <div class="cookie-actions">
       <button class="cookie-decline" onclick="declineCookies()">Decline</button>
       <button class="cookie-accept" onclick="acceptCookies()">Accept All</button>
@@ -1221,129 +1049,105 @@
         if (start >= target) clearInterval(timer);
       }, 16);
     }
-
-    // Sayfa yüklenince hero stats animate
     window.addEventListener('load', () => {
-      setTimeout(() => {
-        animateCounter(document.getElementById('statGames'), 6, 800);
-      }, 400);
+      setTimeout(() => { animateCounter(document.getElementById('statGames'), 6, 800); }, 400);
     });
+
+    // ── RATING SİSTEMİ ──
+    const SB_URL = 'https://lscqqfeqpbfmcccifrwj.supabase.co';
+    const SB_KEY = 'sb_publishable_HPGXHwa51dk_1nmAqoeoXA_6zCzOVzM';
+    const GAME_IDS = {
+      'Gravity Flip':'gravity-flip','Stack Up':'stack-up','Volt Grid':'volt-grid',
+      'Castle Defense':'castle-defense','Neon Runner':'neon-runner','Aura Clash':'aura-clash'
+    };
+
+    async function fetchRatings() {
+      try {
+        const res = await fetch(`${SB_URL}/rest/v1/ratings?select=game_id,rating`, {
+          headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` }
+        });
+        const data = await res.json();
+        const agg = {};
+        data.forEach(r => {
+          if (!agg[r.game_id]) agg[r.game_id] = { sum: 0, count: 0 };
+          agg[r.game_id].sum += r.rating;
+          agg[r.game_id].count++;
+        });
+        return agg;
+      } catch(e) { return {}; }
+    }
+
+    function starsHTML(avg, count, gameId) {
+      const voted = localStorage.getItem('zorblify_rated_' + gameId);
+      const display = count > 0 ? avg.toFixed(1) : '—';
+      const countText = count > 0 ? `(${count})` : 'Rate';
+      let stars = '';
+      for (let i = 1; i <= 5; i++) {
+        const filled = count > 0 && i <= Math.round(avg);
+        stars += `<span class="star-btn${filled ? ' filled' : ''}${voted ? ' voted' : ''}" data-game="${gameId}" data-val="${i}" onmouseenter="hoverStars(this,${i})" onmouseleave="resetStars(this)" onclick="submitRating('${gameId}',${i})">★</span>`;
+      }
+      return `<div class="card-rating-wrap" id="rating-${gameId}"><div class="stars-row">${stars}</div><span class="rating-score">${display}</span><span class="rating-count">${countText}</span></div>`;
+    }
+
+    function hoverStars(el, val) {
+      const gid = el.dataset.game;
+      if (localStorage.getItem('zorblify_rated_' + gid)) return;
+      document.getElementById('rating-' + gid).querySelectorAll('.star-btn').forEach((s, i) => {
+        s.style.color = i < val ? '#f0c060' : 'rgba(255,255,255,0.15)';
+      });
+    }
+
+    function resetStars(el) {
+      const gid = el.dataset.game;
+      if (localStorage.getItem('zorblify_rated_' + gid)) return;
+      document.getElementById('rating-' + gid).querySelectorAll('.star-btn').forEach(s => s.style.color = '');
+    }
+
+    async function submitRating(gameId, val) {
+      if (localStorage.getItem('zorblify_rated_' + gameId)) return;
+      localStorage.setItem('zorblify_rated_' + gameId, val);
+      try {
+        await fetch(`${SB_URL}/rest/v1/ratings`, {
+          method: 'POST',
+          headers: {
+            'apikey': SB_KEY,
+            'Authorization': `Bearer ${SB_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ game_id: gameId, rating: val })
+        });
+      } catch(e) {}
+      await initRatings();
+    }
+
+    async function initRatings() {
+      const agg = await fetchRatings();
+      document.querySelectorAll('.game-card').forEach(card => {
+        const titleEl = card.querySelector('.card-title');
+        if (!titleEl) return;
+        const gameId = GAME_IDS[titleEl.textContent.trim()];
+        if (!gameId) return;
+        const ratingEl = card.querySelector('.card-rating, .card-rating-wrap');
+        if (!ratingEl) return;
+        const info = agg[gameId] || { sum: 0, count: 0 };
+        const avg = info.count > 0 ? info.sum / info.count : 0;
+        ratingEl.outerHTML = starsHTML(avg, info.count, gameId);
+      });
+    }
+
+    const rStyle = document.createElement('style');
+    rStyle.textContent = `
+      .card-rating-wrap { display:flex; align-items:center; gap:4px; }
+      .stars-row { display:flex; gap:1px; }
+      .star-btn { font-size:14px; color:rgba(255,255,255,0.2); cursor:pointer; transition:color .15s; user-select:none; }
+      .star-btn.filled { color:#f0c060; }
+      .star-btn.voted { cursor:default; }
+      .rating-score { font-size:11px; color:var(--gold); font-weight:700; }
+      .rating-count { font-size:10px; color:var(--text-muted); }
+    `;
+    document.head.appendChild(rStyle);
+    window.addEventListener('load', initRatings);
   </script>
-  // ── RATING SİSTEMİ ──
-const SUPABASE_URL = 'https://lscqqfeqpbfmcccifrwj.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_HPGXHwa51dk_1nmAqoeoXA_6zCzOVzM';
-
-const GAME_IDS = {
-  'Gravity Flip': 'gravity-flip',
-  'Stack Up': 'stack-up',
-  'Volt Grid': 'volt-grid',
-  'Castle Defense': 'castle-defense',
-  'Neon Runner': 'neon-runner',
-  'Aura Clash': 'aura-clash'
-};
-
-async function fetchRatings() {
-  try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/ratings?select=game_id,rating`, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-    });
-    const data = await res.json();
-    const agg = {};
-    data.forEach(r => {
-      if (!agg[r.game_id]) agg[r.game_id] = { sum: 0, count: 0 };
-      agg[r.game_id].sum += r.rating;
-      agg[r.game_id].count++;
-    });
-    return agg;
-  } catch(e) { return {}; }
-}
-
-function starsHTML(avg, count, gameId) {
-  const voted = localStorage.getItem('zorblify_rated_' + gameId);
-  const display = count > 0 ? avg.toFixed(1) : '—';
-  const countText = count > 0 ? `(${count})` : '';
-  let stars = '';
-  for (let i = 1; i <= 5; i++) {
-    const filled = count > 0 && i <= Math.round(avg);
-    stars += `<span class="star-btn ${filled ? 'filled' : ''} ${voted ? 'voted' : ''}"
-      data-game="${gameId}" data-val="${i}"
-      onmouseenter="hoverStars(this,${i})"
-      onmouseleave="resetStars(this)"
-      onclick="submitRating('${gameId}',${i})">★</span>`;
-  }
-  return `<div class="card-rating-wrap" id="rating-${gameId}">
-    <div class="stars-row">${stars}</div>
-    <span class="rating-score">${display}</span>
-    <span class="rating-count">${countText}</span>
-  </div>`;
-}
-
-function hoverStars(el, val) {
-  const gameId = el.dataset.game;
-  if (localStorage.getItem('zorblify_rated_' + gameId)) return;
-  const wrap = document.getElementById('rating-' + gameId);
-  wrap.querySelectorAll('.star-btn').forEach((s, i) => {
-    s.style.color = i < val ? '#f0c060' : 'rgba(255,255,255,0.2)';
-  });
-}
-
-function resetStars(el) {
-  const gameId = el.dataset.game;
-  if (localStorage.getItem('zorblify_rated_' + gameId)) return;
-  const wrap = document.getElementById('rating-' + gameId);
-  wrap.querySelectorAll('.star-btn').forEach(s => s.style.color = '');
-}
-
-async function submitRating(gameId, val) {
-  if (localStorage.getItem('zorblify_rated_' + gameId)) return;
-  localStorage.setItem('zorblify_rated_' + gameId, val);
-  try {
-    await fetch(`${SUPABASE_URL}/rest/v1/ratings`, {
-      method: 'POST',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({ game_id: gameId, rating: val })
-    });
-  } catch(e) {}
-  await initRatings();
-}
-
-async function initRatings() {
-  const agg = await fetchRatings();
-  document.querySelectorAll('.game-card').forEach(card => {
-    const titleEl = card.querySelector('.card-title');
-    if (!titleEl) return;
-    const gameId = GAME_IDS[titleEl.textContent.trim()];
-    if (!gameId) return;
-    const ratingEl = card.querySelector('.card-rating');
-    if (!ratingEl) return;
-    const info = agg[gameId] || { sum: 0, count: 0 };
-    const avg = info.count > 0 ? info.sum / info.count : 0;
-    ratingEl.outerHTML = starsHTML(avg, info.count, gameId);
-  });
-}
-
-// Rating CSS
-const ratingStyle = document.createElement('style');
-ratingStyle.textContent = `
-  .card-rating-wrap { display:flex; align-items:center; gap:4px; }
-  .stars-row { display:flex; gap:1px; }
-  .star-btn {
-    font-size:14px; color:rgba(255,255,255,0.2);
-    cursor:pointer; transition:color .15s; line-height:1;
-    user-select:none;
-  }
-  .star-btn.filled { color:#f0c060; }
-  .star-btn.voted { cursor:default; }
-  .rating-score { font-size:11px; color:var(--gold); font-weight:700; }
-  .rating-count { font-size:10px; color:var(--text-muted); }
-`;
-document.head.appendChild(ratingStyle);
-
-window.addEventListener('load', initRatings);
 </body>
 </html>
