@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>404 — Page Not Found | Zorblify</title>
+  <meta name="robots" content="noindex"/>
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --bg:#07070f;
+      --primary:#7c3aed;
+      --secondary:#06b6d4;
+      --text:#f0f0ff;
+      --muted:#8888aa;
+      --border:rgba(255,255,255,0.07);
+    }
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overflow:hidden;}
+
+    /* GRID BG */
+    .grid-bg{
+      position:fixed;inset:0;
+      background-image:
+        linear-gradient(rgba(124,58,237,0.04) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(124,58,237,0.04) 1px,transparent 1px);
+      background-size:48px 48px;
+      pointer-events:none;
+    }
+
+    /* GLITCH ORBS */
+    .orb{position:fixed;border-radius:50%;filter:blur(80px);pointer-events:none;opacity:0.15;}
+    .orb-1{width:500px;height:500px;background:var(--primary);top:-150px;left:-100px;animation:drift1 12s ease-in-out infinite;}
+    .orb-2{width:350px;height:350px;background:var(--secondary);bottom:-100px;right:-80px;animation:drift2 15s ease-in-out infinite;}
+    @keyframes drift1{0%,100%{transform:translate(0,0);}50%{transform:translate(60px,40px);}}
+    @keyframes drift2{0%,100%{transform:translate(0,0);}50%{transform:translate(-40px,-30px);}}
+
+    /* SCANLINES */
+    .scanlines{
+      position:fixed;inset:0;pointer-events:none;
+      background:repeating-linear-gradient(
+        0deg,
+        transparent,transparent 2px,
+        rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px
+      );
+    }
+
+    /* MAIN */
+    .container{
+      position:relative;z-index:10;
+      height:100vh;display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      padding:24px;text-align:center;
+      gap:0;
+    }
+
+    /* 404 GLITCH NUMBER */
+    .glitch-wrap{position:relative;margin-bottom:8px;}
+    .glitch{
+      font-size:clamp(100px,20vw,180px);
+      font-weight:900;line-height:1;
+      letter-spacing:-4px;
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+      position:relative;
+      animation:glitch-main 4s infinite;
+    }
+    .glitch::before,.glitch::after{
+      content:'404';
+      position:absolute;inset:0;
+      -webkit-background-clip:text;background-clip:text;
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      -webkit-text-fill-color:transparent;
+    }
+    .glitch::before{
+      animation:glitch-top 4s infinite;
+      clip-path:polygon(0 0,100% 0,100% 35%,0 35%);
+      transform:translate(-3px,0);
+    }
+    .glitch::after{
+      animation:glitch-bot 4s infinite;
+      clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%);
+      transform:translate(3px,0);
+    }
+    @keyframes glitch-main{
+      0%,94%,100%{transform:none;}
+      95%{transform:skewX(-2deg);}
+      96%{transform:skewX(2deg);}
+      97%{transform:none;}
+    }
+    @keyframes glitch-top{
+      0%,94%,100%{transform:translate(-3px,0);opacity:0.7;}
+      95%{transform:translate(4px,-2px);opacity:1;}
+      96%{transform:translate(-4px,2px);opacity:0.7;}
+      97%{transform:translate(-3px,0);opacity:0.7;}
+    }
+    @keyframes glitch-bot{
+      0%,94%,100%{transform:translate(3px,0);opacity:0.7;}
+      95%{transform:translate(-4px,2px);opacity:1;}
+      96%{transform:translate(4px,-2px);opacity:0.7;}
+      97%{transform:translate(3px,0);opacity:0.7;}
+    }
+
+    /* ERROR CODE */
+    .error-code{
+      font-family:'DM Mono',monospace;
+      font-size:11px;color:var(--secondary);
+      letter-spacing:3px;text-transform:uppercase;
+      background:rgba(6,182,212,0.08);
+      border:1px solid rgba(6,182,212,0.2);
+      padding:5px 16px;border-radius:20px;
+      margin-bottom:20px;
+      animation:fadeIn .6s ease .2s both;
+    }
+
+    /* MESSAGE */
+    .title{
+      font-size:clamp(20px,3vw,28px);
+      font-weight:800;margin-bottom:10px;
+      animation:fadeIn .6s ease .3s both;
+    }
+    .subtitle{
+      font-size:14px;color:var(--muted);
+      max-width:400px;line-height:1.7;
+      margin-bottom:32px;
+      animation:fadeIn .6s ease .4s both;
+    }
+
+    /* ACTIONS */
+    .actions{
+      display:flex;gap:12px;flex-wrap:wrap;justify-content:center;
+      animation:fadeIn .6s ease .5s both;
+    }
+    .btn-primary{
+      display:inline-flex;align-items:center;gap:8px;
+      background:var(--primary);color:#fff;
+      padding:12px 24px;border-radius:10px;
+      font-size:14px;font-weight:700;font-family:'Syne',sans-serif;
+      text-decoration:none;letter-spacing:0.3px;
+      transition:all .15s;
+      box-shadow:0 0 28px rgba(124,58,237,0.4);
+    }
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(124,58,237,0.6);}
+    .btn-secondary{
+      display:inline-flex;align-items:center;gap:8px;
+      background:transparent;color:var(--muted);
+      padding:12px 20px;border-radius:10px;
+      font-size:14px;font-weight:600;font-family:'Syne',sans-serif;
+      text-decoration:none;
+      border:1px solid var(--border);
+      transition:all .15s;
+    }
+    .btn-secondary:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
+
+    /* GAME SUGGESTIONS */
+    .suggestions{
+      margin-top:40px;
+      animation:fadeIn .6s ease .6s both;
+    }
+    .sug-label{
+      font-size:10px;color:var(--muted);letter-spacing:2px;
+      text-transform:uppercase;margin-bottom:14px;
+    }
+    .sug-grid{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+    .sug-card{
+      display:flex;align-items:center;gap:8px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid var(--border);border-radius:10px;
+      padding:10px 16px;text-decoration:none;
+      transition:all .15s;
+    }
+    .sug-card:hover{
+      border-color:rgba(124,58,237,0.35);
+      background:rgba(124,58,237,0.08);
+      transform:translateY(-2px);
+    }
+    .sug-icon{font-size:18px;}
+    .sug-name{font-size:12px;font-weight:700;color:var(--text);}
+    .sug-genre{font-size:10px;color:var(--muted);}
+
+    /* COUNTDOWN */
+    .countdown{
+      margin-top:28px;
+      font-family:'DM Mono',monospace;
+      font-size:12px;color:var(--muted);
+      animation:fadeIn .6s ease .7s both;
+    }
+    .countdown span{color:var(--primary);font-weight:700;}
+
+    @keyframes fadeIn{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+    /* FLOATING PARTICLES */
+    .particle{
+      position:fixed;border-radius:50%;pointer-events:none;
+      animation:floatUp linear infinite;opacity:0;
+    }
+    @keyframes floatUp{
+      0%{transform:translateY(100vh) scale(1);opacity:0;}
+      10%{opacity:.6;}
+      90%{opacity:.2;}
+      100%{transform:translateY(-10vh) scale(.3);opacity:0;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="scanlines"></div>
+
+<div class="container">
+  <div class="glitch-wrap">
+    <div class="glitch">404</div>
+  </div>
+
+  <div class="error-code">ERROR · PAGE_NOT_FOUND</div>
+
+  <div class="title">This level doesn't exist</div>
+  <div class="subtitle">The page you're looking for wandered off into the void. Maybe it got eaten by a Brute, or flipped into the wrong gravity lane.</div>
+
+  <div class="actions">
+    <a href="/" class="btn-primary">🏠 Back to Zorblify</a>
+    <a href="/#games" class="btn-secondary">🎮 Browse Games</a>
+  </div>
+
+  <div class="suggestions">
+    <div class="sug-label">Jump straight into a game</div>
+    <div class="sug-grid">
+      <a href="/games/gravity-flip/page.html" class="sug-card">
+        <span class="sug-icon">🌀</span>
+        <div><div class="sug-name">Gravity Flip</div><div class="sug-genre">Arcade</div></div>
+      </a>
+      <a href="/games/aura-clash/page.html" class="sug-card">
+        <span class="sug-icon">🌟</span>
+        <div><div class="sug-name">Aura Clash</div><div class="sug-genre">Arcade</div></div>
+      </a>
+      <a href="/games/castle-defense/page.html" class="sug-card">
+        <span class="sug-icon">⚔️</span>
+        <div><div class="sug-name">Castle Defense</div><div class="sug-genre">Strategy</div></div>
+      </a>
+      <a href="/games/neon-runner/page.html" class="sug-card">
+        <span class="sug-icon">🏃</span>
+        <div><div class="sug-name">Neon Runner</div><div class="sug-genre">Arcade</div></div>
+      </a>
+    </div>
+  </div>
+
+  <div class="countdown">Auto-redirecting in <span id="cd">10</span>s</div>
+</div>
+
+<script>
+  // Countdown + redirect
+  let t = 10;
+  const el = document.getElementById('cd');
+  const timer = setInterval(() => {
+    t--;
+    el.textContent = t;
+    if (t <= 0) { clearInterval(timer); window.location.href = '/'; }
+  }, 1000);
+
+  // Floating particles
+  const colors = ['#7c3aed','#06b6d4','#a78bfa','#f0c060'];
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 5 + 2;
+    p.style.cssText = `
+      width:${size}px;height:${size}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      left:${Math.random()*100}vw;
+      animation-duration:${Math.random()*12+8}s;
+      animation-delay:${Math.random()*8}s;
+    `;
+    document.body.appendChild(p);
+  }
+</script>
+</body>
+</html>
