@@ -1,4 +1,4 @@
-const CACHE = 'zorblify-v3';
+const CACHE = 'zorblify-v4';
 
 self.addEventListener('install', e => {
   e.waitUntil(
