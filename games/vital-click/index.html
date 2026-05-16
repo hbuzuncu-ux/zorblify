@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Vital Click — Hospital Idle Game | Zorblify</title>
+<meta name="description" content="Build your hospital empire. Click to treat patients, unlock departments, automate with doctors and nurses. Free idle clicker game."/>
+<meta property="og:title" content="Vital Click — Hospital Idle Game | Zorblify"/>
+<meta property="og:description" content="Build your hospital empire. Click to treat patients, unlock departments, automate. Free idle clicker."/>
+<meta property="og:url" content="https://zorblify.com/games/vital-click/"/>
+<meta property="og:image" content="https://zorblify.com/favicon-512.png"/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Vital Click — Hospital Idle Game | Zorblify"/>
+<meta name="twitter:description" content="Build your hospital empire. Click to treat patients, unlock departments, automate. Free idle clicker."/>
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QPDBHFXQES"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-QPDBHFXQES");</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"VideoGame",
+  "name":"Vital Click",
+  "url":"https://zorblify.com/games/vital-click/",
+  "description":"Build your hospital empire. Click to treat patients, unlock departments, automate with doctors and nurses.",
+  "genre":"Idle",
+  "gamePlatform":"Web Browser",
+  "applicationCategory":"Game",
+  "operatingSystem":"Any",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+  "publisher":{"@type":"Organization","name":"Zorblify","url":"https://zorblify.com"}
+}
+</script>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- TOP BAR -->
+  <div id="topbar">
+    <span class="logo">🏥 VITAL CLICK</span>
+    <div class="res-group">
+      <div class="res-pill">
+        <div class="res-pill-icon rpi-gold">💰</div>
+        <div class="res-pill-data">
+          <div class="res-pill-val" id="tb-gold">0</div>
+          <div class="res-pill-lbl">Gold</div>
+          <div class="res-pill-rate" id="tb-gps">+0/s</div>
+        </div>
+      </div>
+      <div class="res-pill">
+        <div class="res-pill-icon rpi-pts">🩺</div>
+        <div class="res-pill-data">
+          <div class="res-pill-val" id="tb-patients">0</div>
+          <div class="res-pill-lbl">Patients</div>
+        </div>
+      </div>
+      <div class="res-pill">
+        <div class="res-pill-icon rpi-star">⭐</div>
+        <div class="res-pill-data">
+          <div class="res-pill-val" id="tb-prestige">×1.00</div>
+          <div class="res-pill-lbl">Prestige</div>
+        </div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="btn-shop" id="btn-shop">🏪 Upgrades</button>
+      <button class="btn-save" id="btn-save">💾 Save</button>
+    </div>
+  </div>
+
+  <!-- LEFT PANEL — DEPARTMENTS -->
+  <div id="left-panel">
+    <!-- Built by ui.js → buildDeptCards() -->
+  </div>
+
+  <!-- CENTER — CANVAS -->
+  <div id="center">
+    <canvas id="game-canvas"></canvas>
+    <div id="float-layer"></div>
+  </div>
+
+  <!-- RIGHT PANEL — STATS -->
+  <div id="right-panel">
+    <div id="stat-cards">
+      <!-- Built by ui.js → buildStatCard() -->
+    </div>
+    <div id="prestige-card">
+      <!-- Built by ui.js → buildPrestigeCard() -->
+    </div>
+    <div id="ach-strip">
+      <!-- Built by ui.js → buildAchievements() -->
+    </div>
+  </div>
+
+  <!-- BOTTOM BAR -->
+  <div id="bottombar">
+    <span class="bottom-tip" id="bottom-tip">💡 Click the main button to treat patients and earn gold.</span>
+    <span class="bottom-version">Vital Click v1.0 · Zorblify</span>
+  </div>
+
+</div>
+
+<!-- SHOP OVERLAY -->
+<div id="shop-overlay">
+  <div class="shop-header">
+    <div class="shop-title">🏪 Hospital Upgrades</div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div class="shop-gold">💰 <span id="shop-gold">0</span></div>
+      <button class="shop-close" id="shop-close-btn">✕ Close</button>
+    </div>
+  </div>
+  <div class="shop-body">
+    <div class="shop-section">
+      <div class="shop-section-title">🖱 Click Power</div>
+      <div class="upg-grid" id="shop-click-upg"></div>
+    </div>
+    <div class="shop-section">
+      <div class="shop-section-title">⚙ Automation & Special</div>
+      <div class="upg-grid" id="shop-auto-upg"></div>
+    </div>
+  </div>
+  <!-- Dept upgrades (full width below) -->
+  <div style="margin-top:16px;">
+    <div class="shop-section-title" style="font-size:11px;font-weight:800;color:var(--text-dim);letter-spacing:1.5px;text-transform:uppercase;padding-bottom:6px;border-bottom:1px solid var(--border);margin-bottom:10px;">
+      🏥 Department Levels
+    </div>
+    <div class="dept-upg-section" id="shop-dept-upg"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- SCRIPTS — order matters: save → upgrades → ui → game -->
+<script src="save.js"></script>
+<script src="upgrades.js"></script>
+<script src="ui.js"></script>
+<script src="game.js"></script>
+
+</body>
+</html>
