@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Vital Click — Hospital Idle Game | Zorblify</title>
+<meta name="description" content="Build your hospital empire. Click to treat patients, unlock departments, automate with doctors and nurses. Free idle clicker game — no download, no login."/>
+<meta property="og:title" content="Vital Click — Hospital Idle Game | Zorblify"/>
+<meta property="og:description" content="Build your hospital empire. Click to treat patients, unlock departments, automate. Free idle clicker."/>
+<meta property="og:url" content="https://zorblify.com/games/vital-click/page.html"/>
+<meta property="og:image" content="https://zorblify.com/favicon-512.png"/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="Vital Click — Hospital Idle Game | Zorblify"/>
+<meta name="twitter:description" content="Build your hospital empire. Click to treat patients, unlock departments, automate. Free idle clicker."/>
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<!-- GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QPDBHFXQES"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-QPDBHFXQES");</script>
+<!-- JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"VideoGame",
+  "name":"Vital Click",
+  "url":"https://zorblify.com/games/vital-click/",
+  "description":"Build your hospital empire. Click to treat patients, unlock departments, automate with doctors and nurses.",
+  "genre":"Idle",
+  "gamePlatform":"Web Browser",
+  "applicationCategory":"Game",
+  "operatingSystem":"Any",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+  "publisher":{"@type":"Organization","name":"Zorblify","url":"https://zorblify.com"}
+}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#07070f;--surface:#0d0d1c;--surface2:#12122a;
+  --primary:#3b82f6;--primary2:#1e3a8a;
+  --text:#f0f0ff;--text-muted:#8888aa;--border:rgba(255,255,255,0.07);
+  --gold:#f0c060;
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;line-height:1.6;}
+body{display:flex;flex-direction:column;min-height:100vh;overflow-x:hidden;}
+
+/* HEADER */
+header{
+  height:52px;background:rgba(7,7,15,0.98);border-bottom:1px solid rgba(255,255,255,0.06);
+  display:flex;align-items:center;justify-content:space-between;padding:0 20px;
+  flex-shrink:0;z-index:100;position:sticky;top:0;backdrop-filter:blur(20px);
+}
+.h-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.h-logo-text{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;letter-spacing:2px;
+  background:linear-gradient(135deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.h-badge{font-size:10px;color:var(--text-muted);background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:20px;padding:3px 10px;}
+.h-back{font-size:12px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text-muted);text-decoration:none;
+  border:1px solid var(--border);padding:5px 12px;border-radius:7px;transition:all .15s;}
+.h-back:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
+
+/* GAME META */
+.game-meta{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.game-genre{font-size:10px;font-weight:700;font-family:'Syne',sans-serif;letter-spacing:1px;
+  padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.05);color:var(--text-muted);border:1px solid var(--border);}
+.game-tag{font-size:10px;font-weight:700;font-family:'Syne',sans-serif;letter-spacing:1px;
+  padding:3px 10px;border-radius:20px;background:rgba(255,255,255,0.05);color:#4ade80;border:1px solid #4ade8044;}
+.game-title{font-family:'Syne',sans-serif;font-size:clamp(22px,3vw,32px);font-weight:900;margin-bottom:4px;}
+.game-tagline{font-size:13px;color:var(--text-muted);margin-bottom:14px;}
+
+/* IFRAME */
+.iframe-wrap{
+  position:relative;width:100%;max-width:1100px;margin:0 auto;
+  background:#000;border-radius:12px 12px 0 0;overflow:hidden;
+  border:1px solid var(--border);border-bottom:none;
+}
+.iframe-wrap iframe{display:block;width:100%;height:600px;border:none;}
+@media(max-width:600px){.iframe-wrap iframe{height:480px;}}
+
+/* FULLSCREEN BAR */
+.fullscreen-row{
+  max-width:1100px;margin:0 auto;
+  background:var(--surface);border:1px solid var(--border);border-top:none;
+  border-radius:0 0 12px 12px;
+  padding:10px 16px;display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:32px;
+}
+.fs-info{font-size:11px;color:var(--text-muted);}
+.fs-btn{font-size:11px;font-weight:700;font-family:'Syne',sans-serif;color:#3b82f6;
+  background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.25);
+  padding:6px 14px;border-radius:7px;cursor:pointer;text-decoration:none;transition:all .15s;}
+.fs-btn:hover{background:rgba(59,130,246,0.2);}
+
+/* CONTENT */
+.content{max-width:1100px;margin:0 auto;padding:0 20px 60px;width:100%;}
+.section{margin-bottom:32px;}
+.section-title{font-size:13px;font-weight:700;font-family:'Syne',sans-serif;
+  color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* RATING */
+.rating-box{
+  background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:20px 24px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;
+}
+.rating-avg{text-align:center;}
+.rating-num{font-size:40px;font-weight:800;font-family:'Syne',sans-serif;color:var(--gold);line-height:1;}
+.rating-count{font-size:11px;color:var(--text-muted);margin-top:4px;}
+.rating-stars-big{display:flex;gap:6px;margin:8px 0;}
+.rsb{font-size:28px;cursor:pointer;color:rgba(255,255,255,0.15);transition:color .1s,transform .1s;user-select:none;}
+.rsb:hover{transform:scale(1.2);}
+.rsb.filled{color:var(--gold);}
+.rsb.voted{cursor:default;}
+.rating-prompt{font-size:13px;color:var(--text-muted);}
+.rating-thanks{font-size:13px;color:#4ade80;display:none;}
+.rating-bar-wrap{flex:1;min-width:200px;}
+.rbar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.rbar-lbl{font-size:11px;color:var(--text-muted);width:10px;text-align:right;}
+.rbar-track{flex:1;height:6px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden;}
+.rbar-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .4s;}
+
+/* SHARE */
+.share-row{display:flex;gap:10px;flex-wrap:wrap;}
+.share-btn{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;
+  font-size:13px;font-weight:700;font-family:'Syne',sans-serif;
+  text-decoration:none;transition:all .15s;border:1px solid;cursor:pointer;}
+.share-twitter{color:#1d9bf0;border-color:#1d9bf044;background:rgba(29,155,240,0.08);}
+.share-twitter:hover{background:rgba(29,155,240,0.18);}
+.share-whatsapp{color:#25d366;border-color:#25d36644;background:rgba(37,211,102,0.08);}
+.share-whatsapp:hover{background:rgba(37,211,102,0.18);}
+.share-copy{color:var(--text-muted);border-color:var(--border);background:rgba(255,255,255,0.04);}
+.share-copy:hover{color:var(--text);border-color:rgba(255,255,255,0.2);}
+.copied-msg{font-size:11px;color:#4ade80;opacity:0;transition:opacity .3s;align-self:center;}
+
+/* CONTROLS */
+.controls-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+@media(max-width:500px){.controls-grid{grid-template-columns:1fr;}}
+.ctrl-row{display:flex;align-items:flex-start;gap:10px;background:var(--surface);
+  border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+.ctrl-key{font-size:10px;font-weight:700;font-family:'Syne',sans-serif;color:#3b82f6;
+  background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);
+  padding:3px 8px;border-radius:5px;white-space:nowrap;flex-shrink:0;}
+.ctrl-val{font-size:12px;color:var(--text-muted);line-height:1.5;}
+
+/* TIPS */
+.tips-list{display:flex;flex-direction:column;gap:8px;}
+.tip-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--text-muted);
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+.tip-dot{color:#3b82f6;flex-shrink:0;font-size:10px;margin-top:3px;}
+
+/* FAQ */
+.faq-item{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:8px;}
+.faq-q{width:100%;text-align:left;padding:14px 16px;background:var(--surface);border:none;
+  cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;color:var(--text);transition:background .15s;}
+.faq-q:hover{background:rgba(59,130,246,0.06);}
+.faq-q.open{background:rgba(59,130,246,0.08);color:#93c5fd;}
+.faq-chevron{font-size:11px;color:var(--text-muted);transition:transform .25s;flex-shrink:0;}
+.faq-q.open .faq-chevron{transform:rotate(180deg);}
+.faq-a{display:none;padding:12px 16px;font-size:13px;color:var(--text-muted);line-height:1.8;
+  border-top:1px solid var(--border);background:rgba(255,255,255,0.01);}
+.faq-a.open{display:block;}
+
+/* DESCRIPTION */
+.desc-text p{font-size:14px;color:var(--text-muted);line-height:1.85;margin-bottom:14px;}
+.desc-text p:last-child{margin-bottom:0;}
+
+/* SIMILAR */
+.similar-list{display:flex;flex-direction:column;gap:8px;}
+.similar-card{display:flex;align-items:center;gap:14px;
+  background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  padding:14px 16px;text-decoration:none;transition:all .2s;}
+.similar-card:hover{border-color:rgba(59,130,246,0.3);transform:translateX(4px);}
+.similar-icon{font-size:24px;width:40px;text-align:center;}
+.similar-info{flex:1;}
+.similar-title{font-size:14px;font-weight:700;font-family:'Syne',sans-serif;color:var(--text);}
+.similar-genre{font-size:11px;color:var(--text-muted);}
+.similar-play{font-size:12px;font-weight:700;color:#3b82f6;font-family:'Syne',sans-serif;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;color:var(--text-muted);flex-wrap:wrap;gap:8px;margin-top:auto;}
+footer a{color:var(--text-muted);text-decoration:none;}
+footer a:hover{color:var(--text);}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="h-logo"><span class="h-logo-text">ZORBLIFY</span></a>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <span class="h-badge">Free · No Login</span>
+    <a href="/" class="h-back">← All Games</a>
+  </div>
+</header>
+
+<div style="max-width:1100px;margin:0 auto;padding:16px 20px 0;width:100%;">
+  <div class="game-meta">
+    <span class="game-genre">IDLE</span>
+    <span class="game-tag">🏥 Hospital</span>
+  </div>
+  <div class="game-title">Vital Click</div>
+  <div class="game-tagline">Build your hospital empire — click, automate, prestige.</div>
+</div>
+
+<div style="max-width:1100px;margin:0 auto;padding:0 20px;width:100%;">
+  <div class="iframe-wrap">
+    <iframe src="./index.html" title="Vital Click — Hospital Idle Game" allowfullscreen
+      allow="autoplay *" loading="eager"></iframe>
+  </div>
+  <div class="fullscreen-row">
+    <span class="fs-info">Click inside the hospital to start treating patients</span>
+    <a href="./index.html" class="fs-btn" target="_blank">⛶ Full Screen</a>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- RATING -->
+  <div class="section">
+    <div class="section-title">Rate This Game</div>
+    <div class="rating-box">
+      <div class="rating-avg">
+        <div class="rating-num" id="rAvg">—</div>
+        <div class="rating-stars-big" id="rStars">
+          <span class="rsb" data-v="1" onmouseenter="hoverR(1)" onmouseleave="resetR()" onclick="submitR(1)">★</span>
+          <span class="rsb" data-v="2" onmouseenter="hoverR(2)" onmouseleave="resetR()" onclick="submitR(2)">★</span>
+          <span class="rsb" data-v="3" onmouseenter="hoverR(3)" onmouseleave="resetR()" onclick="submitR(3)">★</span>
+          <span class="rsb" data-v="4" onmouseenter="hoverR(4)" onmouseleave="resetR()" onclick="submitR(4)">★</span>
+          <span class="rsb" data-v="5" onmouseenter="hoverR(5)" onmouseleave="resetR()" onclick="submitR(5)">★</span>
+        </div>
+        <div class="rating-count" id="rCount">Loading...</div>
+      </div>
+      <div class="rating-bar-wrap">
+        <div class="rbar-row"><span class="rbar-lbl">5</span><div class="rbar-track"><div class="rbar-fill" id="rb5" style="width:0%"></div></div></div>
+        <div class="rbar-row"><span class="rbar-lbl">4</span><div class="rbar-track"><div class="rbar-fill" id="rb4" style="width:0%"></div></div></div>
+        <div class="rbar-row"><span class="rbar-lbl">3</span><div class="rbar-track"><div class="rbar-fill" id="rb3" style="width:0%"></div></div></div>
+        <div class="rbar-row"><span class="rbar-lbl">2</span><div class="rbar-track"><div class="rbar-fill" id="rb2" style="width:0%"></div></div></div>
+        <div class="rbar-row"><span class="rbar-lbl">1</span><div class="rbar-track"><div class="rbar-fill" id="rb1" style="width:0%"></div></div></div>
+      </div>
+      <div>
+        <div class="rating-prompt" id="rPrompt">How would you rate Vital Click?</div>
+        <div class="rating-thanks" id="rThanks">Thanks for rating! ⭐</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHARE -->
+  <div class="section">
+    <div class="section-title">Share</div>
+    <div class="share-row">
+      <a href="https://twitter.com/intent/tweet?text=Play Vital Click on Zorblify — free hospital idle game!&url=https://zorblify.com/games/vital-click/page.html" target="_blank" rel="noopener" class="share-btn share-twitter">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.261 5.635zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        Share on X
+      </a>
+      <a href="https://wa.me/?text=Play Vital Click on Zorblify — free hospital idle game!%20https://zorblify.com/games/vital-click/page.html" target="_blank" rel="noopener" class="share-btn share-whatsapp">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <button class="share-btn share-copy" onclick="copyLink()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        Copy Link
+      </button>
+      <span class="copied-msg" id="copiedMsg">Copied!</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="section">
+    <div class="section-title">How to Play</div>
+    <div class="controls-grid">
+      <div class="ctrl-row"><span class="ctrl-key">Click Main Button</span><span class="ctrl-val">Treat a patient — earn gold instantly</span></div>
+      <div class="ctrl-row"><span class="ctrl-key">Click Department</span><span class="ctrl-val">Activate a department manually for bonus gold</span></div>
+      <div class="ctrl-row"><span class="ctrl-key">Upgrades Shop</span><span class="ctrl-val">Spend gold to boost click power and automation</span></div>
+      <div class="ctrl-row"><span class="ctrl-key">Prestige</span><span class="ctrl-val">Reset for a permanent gold multiplier bonus</span></div>
+      <div class="ctrl-row"><span class="ctrl-key">Earn Thresholds</span><span class="ctrl-val">Departments unlock as your total gold grows</span></div>
+      <div class="ctrl-row"><span class="ctrl-key">Auto Mode</span><span class="ctrl-val">Departments auto-earn once fully staffed</span></div>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="section">
+    <div class="section-title">Tips & Tricks</div>
+    <div class="tips-list">
+      <div class="tip-item"><span class="tip-dot">◆</span>Click the main button rapidly early — manual clicks are your fastest gold source before automation</div>
+      <div class="tip-item"><span class="tip-dot">◆</span>Prioritize upgrading department levels over click power once automation kicks in</div>
+      <div class="tip-item"><span class="tip-dot">◆</span>Hospital AI reduces all cooldowns — invest early for maximum passive income</div>
+      <div class="tip-item"><span class="tip-dot">◆</span>Prestige at 10,000 total earned — each prestige multiplies all future income permanently</div>
+      <div class="tip-item"><span class="tip-dot">◆</span>Nano Medicine Protocol (×5 click) is the biggest single upgrade — save for it</div>
+      <div class="tip-item"><span class="tip-dot">◆</span>Research Center is the highest-yield department — unlock it as fast as possible</div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section">
+    <div class="section-title">Frequently Asked Questions</div>
+    <div class="faq-item">
+      <button class="faq-q">Is Vital Click free to play?<span class="faq-chevron">▼</span></button>
+      <div class="faq-a">Yes, completely free. No download, no account, no payment required. Open the page and start treating patients immediately in your browser.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Does my progress save automatically?<span class="faq-chevron">▼</span></button>
+      <div class="faq-a">Yes. The game auto-saves every 60 seconds to your browser's local storage. You can also manually save using the Save button in the top bar. Progress is tied to your browser — clearing browser data will erase it.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">What is Prestige and should I use it?<span class="faq-chevron">▼</span></button>
+      <div class="faq-a">Prestige resets your current run (gold, upgrades, departments) but grants a permanent gold multiplier that applies to all future runs. The first prestige gives ×1.50, the second ×1.75, and so on. Prestige once you have reached 10,000 total gold earned and want to accelerate long-term growth.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">How do departments unlock?<span class="faq-chevron">▼</span></button>
+      <div class="faq-a">Departments unlock based on your total gold earned (not current gold). Emergency Room is available from the start. ICU unlocks at 50g earned, Surgery at 200g, Laboratory at 800g, Pharmacy at 3,000g, and Research Center at 10,000g.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">What does automation mean?<span class="faq-chevron">▼</span></button>
+      <div class="faq-a">Once a department reaches its automation threshold (total gold earned), it begins earning gold automatically on a cooldown cycle — no clicking required. You can see the AUTO badge appear on the department card and a progress bar showing the next payout countdown.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Does Vital Click work on mobile?<span class="faq-chevron">▼</span></button>
+      <div class="faq-a">Yes. The game is fully playable on mobile browsers. Tap the main hospital button to treat patients, and tap department cards to activate them. The layout adapts for smaller screens.</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section">
+    <div class="section-title">About Vital Click</div>
+    <div class="desc-text">
+      <p>Vital Click is a hospital idle clicker game where you build a medical empire from a single emergency room to a full research institution. Click the central hospital button to treat patients and earn gold, then reinvest that gold into department upgrades, click power boosts, and automation systems that keep your hospital earning around the clock.</p>
+      <p>Six departments form the backbone of your hospital: the Emergency Room handles walk-in trauma cases, the ICU manages critical patients requiring continuous monitoring, the Operating Theatre performs complex surgical procedures, the Diagnostics Laboratory processes blood work and imaging, the Pharmacy synthesizes and dispenses medication, and the Research Center drives breakthrough medical discoveries with the highest gold yield of any department.</p>
+      <p>Each department can be leveled up for higher payouts and eventually automated with staff — doctors, nurses, and AI systems that work without player input. The upgrade shop offers eight permanent improvements split between click power (Stethoscope, Expert Surgeon Hands, AI Diagnosis Assistant, Nano Medicine Protocol) and automation efficiency (Night Shift Staff, Hospital Management AI, Express Care Protocol, Quantum Research Engine).</p>
+      <p>The prestige system rewards long-term play with compounding multipliers. Each prestige reset resets your progress but permanently increases all gold income, enabling exponentially faster progression in subsequent runs. Vital Click is designed to be satisfying both as an active clicker and as a passive idle game — leave it running and return to a full treasury.</p>
+    </div>
+  </div>
+
+  <!-- SIMILAR GAMES -->
+  <div class="section">
+    <div class="section-title">More Games</div>
+    <div class="similar-list">
+      <a href="/games/gravity-flip/page.html" class="similar-card">
+        <div class="similar-icon">🌀</div>
+        <div class="similar-info">
+          <div class="similar-title">Gravity Flip</div>
+          <div class="similar-genre">Arcade</div>
+        </div>
+        <div class="similar-play">Play →</div>
+      </a>
+      <a href="/games/castle-defense/page.html" class="similar-card">
+        <div class="similar-icon">⚔️</div>
+        <div class="similar-info">
+          <div class="similar-title">Castle Defense</div>
+          <div class="similar-genre">Strategy</div>
+        </div>
+        <div class="similar-play">Play →</div>
+      </a>
+      <a href="/games/volt-grid/page.html" class="similar-card">
+        <div class="similar-icon">⚡</div>
+        <div class="similar-info">
+          <div class="similar-title">Volt Grid</div>
+          <div class="similar-genre">Puzzle</div>
+        </div>
+        <div class="similar-play">Play →</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>© 2026 Zorblify. All rights reserved.</span>
+  <div style="display:flex;gap:16px;">
+    <a href="/">Home</a>
+    <a href="/privacy.html">Privacy</a>
+  </div>
+</footer>
+
+<script>
+const SB_URL='https://lscqqfeqpbfmcccifrwj.supabase.co';
+const SB_KEY='sb_publishable_HPGXHwa51dk_1nmAqoeoXA_6zCzOVzM';
+const GAME_ID='vital-click';
+const VOTED_KEY='zorblify_rated_'+GAME_ID;
+
+async function loadRating(){
+  try{
+    const r=await fetch(SB_URL+'/rest/v1/ratings?select=rating&game_id=eq.'+GAME_ID,{
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+    });
+    const data=await r.json();
+    if(!data||!data.length){
+      document.getElementById('rAvg').textContent='—';
+      document.getElementById('rCount').textContent='No ratings yet — be first!';
+      return;
+    }
+    const counts={1:0,2:0,3:0,4:0,5:0};
+    let sum=0;
+    data.forEach(d=>{counts[d.rating]=(counts[d.rating]||0)+1;sum+=d.rating;});
+    const avg=(sum/data.length).toFixed(1);
+    const total=data.length;
+    document.getElementById('rAvg').textContent=avg;
+    document.getElementById('rCount').textContent=total+' rating'+(total!==1?'s':'');
+    const max=Math.max(...Object.values(counts))||1;
+    [1,2,3,4,5].forEach(v=>{
+      document.getElementById('rb'+v).style.width=Math.round(counts[v]/max*100)+'%';
+    });
+    updateStarDisplay(Math.round(parseFloat(avg)));
+  }catch(e){document.getElementById('rCount').textContent='—';}
+}
+
+function updateStarDisplay(n){
+  document.querySelectorAll('.rsb').forEach((s,i)=>{s.classList.toggle('filled',i<n);});
+}
+function hoverR(v){
+  if(localStorage.getItem(VOTED_KEY))return;
+  document.querySelectorAll('.rsb').forEach((s,i)=>s.style.color=i<v?'var(--gold)':'rgba(255,255,255,0.15)');
+}
+function resetR(){
+  if(localStorage.getItem(VOTED_KEY))return;
+  document.querySelectorAll('.rsb').forEach(s=>s.style.color='');
+  loadRating();
+}
+async function submitR(v){
+  if(localStorage.getItem(VOTED_KEY))return;
+  localStorage.setItem(VOTED_KEY,v);
+  document.querySelectorAll('.rsb').forEach(s=>{s.classList.add('voted');s.style.color='';s.onmouseenter=null;s.onmouseleave=null;});
+  document.getElementById('rPrompt').style.display='none';
+  document.getElementById('rThanks').style.display='block';
+  try{
+    await fetch(SB_URL+'/rest/v1/ratings',{
+      method:'POST',
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({game_id:GAME_ID,rating:v})
+    });
+  }catch(e){}
+  loadRating();
+}
+
+function copyLink(){
+  navigator.clipboard.writeText(window.location.href).then(()=>{
+    const m=document.getElementById('copiedMsg');
+    m.style.opacity='1';
+    setTimeout(()=>m.style.opacity='0',2000);
+  });
+}
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const isOpen=btn.classList.contains('open');
+    document.querySelectorAll('.faq-q').forEach(b=>{b.classList.remove('open');b.nextElementSibling.classList.remove('open');});
+    if(!isOpen){btn.classList.add('open');btn.nextElementSibling.classList.add('open');}
+  });
+});
+
+// Init
+if(localStorage.getItem(VOTED_KEY)){
+  document.querySelectorAll('.rsb').forEach(s=>{s.classList.add('voted');s.onmouseenter=null;s.onmouseleave=null;});
+  document.getElementById('rPrompt').style.display='none';
+  document.getElementById('rThanks').style.display='block';
+}
+loadRating();
+</script>
+
+</body>
+</html>
