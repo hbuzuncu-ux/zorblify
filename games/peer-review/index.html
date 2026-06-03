@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="Peer Review — Bir araştırma laboratuvarı yönet, Nobel Ödülü'ne ulaş.">
+  <title>Peer Review | Zorblify</title>
+
+  <!-- Fontlar -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── Reset & Temel ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }
+
+    body {
+      background: #07070f;
+      color: #f0f0ff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Ana Grid ── */
+    #game-root {
+      display: grid;
+      grid-template-rows: 52px 1fr 48px;
+      grid-template-columns: 220px 1fr 240px;
+      grid-template-areas:
+        "topbar  topbar  topbar"
+        "left    center  right"
+        "bottom  bottom  bottom";
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+
+    /* ── Topbar ── */
+    #topbar {
+      grid-area: topbar;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: #0d0d1c;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0 16px;
+      z-index: 10;
+    }
+
+    #topbar-lab-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #f0c060;
+      margin-right: 16px;
+      min-width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #topbar-time {
+      font-size: 12px;
+      color: #8888aa;
+      margin-right: 16px;
+      white-space: nowrap;
+    }
+
+    .topbar-divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(255,255,255,0.07);
+      margin: 0 12px;
+      flex-shrink: 0;
+    }
+
+    #topbar-budget {
+      font-size: 13px;
+      font-weight: 700;
+      min-width: 80px;
+      white-space: nowrap;
+    }
+
+    #topbar-prestige {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: 4px;
+    }
+
+    #topbar-prestige-label {
+      font-size: 11px;
+      color: #8888aa;
+    }
+
+    #topbar-prestige-bar {
+      width: 80px;
+      height: 5px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    #topbar-prestige-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #7c3aed, #a78bfa);
+      border-radius: 3px;
+      transition: width 0.4s;
+    }
+
+    #topbar-prestige-val {
+      font-size: 11px;
+      font-weight: 700;
+      color: #a78bfa;
+      min-width: 32px;
+    }
+
+    #topbar-nobel {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: 4px;
+    }
+
+    #topbar-nobel-label {
+      font-size: 11px;
+      color: #8888aa;
+    }
+
+    #topbar-nobel-score {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f0c060;
+    }
+
+    .topbar-spacer { flex: 1; }
+
+    #topbar-save-btn {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #8888aa;
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+      min-height: 30px;
+    }
+    #topbar-save-btn:hover { background: rgba(255,255,255,0.1); color: #f0f0ff; }
+
+    /* ── Panel'ler ── */
+    #panel-left {
+      grid-area: left;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #panel-center {
+      grid-area: center;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #panel-right {
+      grid-area: right;
+      border-left: 1px solid rgba(255,255,255,0.07);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Bottombar ── */
+    #bottombar {
+      grid-area: bottom;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #0d0d1c;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 0 16px;
+    }
+
+    #btn-advance {
+      background: rgba(124,58,237,0.2);
+      border: 1px solid rgba(124,58,237,0.4);
+      color: #a78bfa;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+      min-height: 36px;
+      white-space: nowrap;
+    }
+    #btn-advance:hover:not(:disabled) {
+      background: rgba(124,58,237,0.4);
+    }
+    #btn-advance:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    #btn-auto {
+      background: rgba(6,182,212,0.15);
+      border: 1px solid rgba(6,182,212,0.35);
+      color: #06b6d4;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+      min-height: 36px;
+      white-space: nowrap;
+    }
+    #btn-auto.active {
+      background: rgba(6,182,212,0.35);
+      border-color: #06b6d4;
+      color: #fff;
+    }
+    #btn-auto:hover { background: rgba(6,182,212,0.3); }
+
+    #bottombar-tip {
+      flex: 1;
+      font-size: 11px;
+      color: #555577;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ── Bildirim Sistemi ── */
+    #notifications {
+      position: fixed;
+      bottom: 56px;
+      right: 16px;
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      pointer-events: none;
+      max-width: 320px;
+    }
+
+    .notif {
+      padding: 9px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid;
+      pointer-events: auto;
+      animation: notif-in 0.2s ease;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .notif--exit { opacity: 0; transform: translateX(20px); }
+
+    .notif--info    { background: rgba(59,130,246,0.15);  border-color: rgba(59,130,246,0.3);  color: #93c5fd; }
+    .notif--success { background: rgba(74,222,128,0.15);  border-color: rgba(74,222,128,0.3);  color: #86efac; }
+    .notif--warning { background: rgba(251,146,60,0.15);  border-color: rgba(251,146,60,0.3);  color: #fdba74; }
+    .notif--danger  { background: rgba(248,113,113,0.15); border-color: rgba(248,113,113,0.3); color: #fca5a5; }
+
+    @keyframes notif-in {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ── Başlangıç Ekranı ── */
+    #start-screen {
+      position: fixed;
+      inset: 0;
+      background: #07070f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      flex-direction: column;
+      gap: 24px;
+      padding: 24px;
+    }
+
+    #start-screen h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: #f0c060;
+      text-align: center;
+    }
+
+    #start-screen p {
+      font-size: 14px;
+      color: #8888aa;
+      text-align: center;
+      max-width: 380px;
+      line-height: 1.6;
+    }
+
+    #start-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 340px;
+    }
+
+    #start-form label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #8888aa;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    #lab-name-input {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #f0f0ff;
+      font-size: 14px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    #lab-name-input:focus { border-color: rgba(124,58,237,0.6); }
+    #lab-name-input::placeholder { color: #555577; }
+
+    #start-btn {
+      width: 100%;
+      background: rgba(124,58,237,0.25);
+      border: 1px solid rgba(124,58,237,0.5);
+      color: #a78bfa;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      min-height: 48px;
+      transition: background 0.15s;
+      font-family: 'Syne', sans-serif;
+    }
+    #start-btn:hover { background: rgba(124,58,237,0.45); }
+
+    #continue-btn {
+      width: 100%;
+      background: rgba(6,182,212,0.15);
+      border: 1px solid rgba(6,182,212,0.35);
+      color: #06b6d4;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      min-height: 44px;
+      transition: background 0.15s;
+      display: none;
+    }
+    #continue-btn:hover { background: rgba(6,182,212,0.3); }
+    #continue-btn.visible { display: block; }
+
+    #save-meta {
+      font-size: 11px;
+      color: #555577;
+      text-align: center;
+    }
+
+    /* ── Oyun Bitiş Ekranı ── */
+    #end-screen {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.90);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 900;
+      flex-direction: column;
+      gap: 20px;
+      padding: 24px;
+      backdrop-filter: blur(8px);
+    }
+    #end-screen.visible { display: flex; }
+
+    #end-screen h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      text-align: center;
+    }
+
+    #end-stats {
+      background: #0d0d1c;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 20px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 280px;
+    }
+
+    .end-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+    .end-stat__k { color: #8888aa; }
+    .end-stat__v { font-weight: 700; }
+
+    #end-new-game-btn {
+      background: rgba(124,58,237,0.25);
+      border: 1px solid rgba(124,58,237,0.5);
+      color: #a78bfa;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: 8px;
+      cursor: pointer;
+      min-height: 44px;
+      transition: background 0.15s;
+    }
+    #end-new-game-btn:hover { background: rgba(124,58,237,0.45); }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      #game-root {
+        grid-template-columns: 200px 1fr 0px;
+      }
+      #panel-right { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      #game-root {
+        grid-template-columns: 0px 1fr 0px;
+        grid-template-rows: 52px 1fr 48px;
+      }
+      #panel-left  { display: none; }
+      #panel-right { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Başlangıç Ekranı -->
+  <div id="start-screen">
+    <h1>🔬 Peer Review</h1>
+    <p>Bir araştırma laboratuvarı kur, rakiplerini geç, Nobel Ödülü'ne ulaş.</p>
+    <div id="start-form">
+      <label for="lab-name-input">Laboratuvar Adı</label>
+      <input id="lab-name-input" type="text"
+             placeholder="Örn: İstanbul Araştırma Enstitüsü"
+             maxlength="40" autocomplete="off">
+      <button id="start-btn">Laboratuvarı Kur →</button>
+      <button id="continue-btn">Kaldığın Yerden Devam Et</button>
+      <div id="save-meta"></div>
+    </div>
+  </div>
+
+  <!-- Oyun Ana Layout -->
+  <div id="game-root" style="display:none">
+
+    <!-- Topbar -->
+    <div id="topbar">
+      <div id="topbar-lab-name">Laboratuvar</div>
+      <div id="topbar-time">Yıl 1, Ay 1, H1</div>
+
+      <div class="topbar-divider"></div>
+
+      <div id="topbar-budget" style="color:#4ade80">5,000</div>
+
+      <div class="topbar-divider"></div>
+
+      <div id="topbar-prestige">
+        <span id="topbar-prestige-label">Prestij</span>
+        <div id="topbar-prestige-bar">
+          <div id="topbar-prestige-fill" style="width:0%"></div>
+        </div>
+        <span id="topbar-prestige-val">0</span>
+      </div>
+
+      <div class="topbar-divider"></div>
+
+      <div id="topbar-nobel">
+        <span id="topbar-nobel-label">🏅 Nobel</span>
+        <span id="topbar-nobel-score">0</span>
+      </div>
+
+      <div class="topbar-spacer"></div>
+
+      <button id="topbar-save-btn">💾 Kaydet</button>
+    </div>
+
+    <!-- Sol Panel -->
+    <div id="panel-left"></div>
+
+    <!-- Merkez Panel -->
+    <div id="panel-center"></div>
+
+    <!-- Sağ Panel -->
+    <div id="panel-right"></div>
+
+    <!-- Bottombar -->
+    <div id="bottombar">
+      <button id="btn-advance">▶ 1 Hafta İlerle</button>
+      <button id="btn-auto">▶▶ Otomatik</button>
+      <div id="bottombar-tip">İpucu: Araştırmacı moralini yüksek tut.</div>
+    </div>
+  </div>
+
+  <!-- Bildirimler -->
+  <div id="notifications"></div>
+
+  <!-- Oyun Bitiş Ekranı -->
+  <div id="end-screen">
+    <h2 id="end-title">Oyun Bitti</h2>
+    <div id="end-stats"></div>
+    <button id="end-new-game-btn">Yeni Oyun Başlat</button>
+  </div>
+
+  <!-- Oyun Başlatma Scripti -->
+  <script type="module">
+    import {
+      startGame, pauseGame, resumeGame, endGame,
+      advanceOneWeek, startAutoAdvance, stopAutoAdvance,
+      isAutoAdvancing, manualSave, EventBus,
+    } from './core/game.js';
+
+    import {
+      initState, getState,
+    } from './core/state.js';
+
+    import { loadGame, hasSave, getSaveMeta, deleteSave } from './core/save.js';
+    import { loadSettings } from './core/save.js';
+
+    import { registerResearcherSystem } from './systems/researchers.js';
+    import { registerProjectSystem }    from './systems/projects.js';
+    import { registerEconomySystem }    from './systems/economy.js';
+    import { registerRivalSystem, initRivals } from './systems/rivals.js';
+    import { registerEventSystem }      from './systems/events.js';
+
+    import { initLeftPanel }   from './ui/panels/left.js';
+    import { initCenterPanel } from './ui/panels/center.js';
+    import { initRightPanel }  from './ui/panels/right.js';
+    import { initEventModal }  from './ui/modals/event.js';
+
+    import { generateStartingResearchers } from './data/researcher_defs.js';
+    import { addResearcher }               from './core/state.js';
+
+    // ── Başlangıç Ekranı ─────────────────────────────────────────────────────
+
+    const startScreen  = document.getElementById('start-screen');
+    const gameRoot     = document.getElementById('game-root');
+    const labInput     = document.getElementById('lab-name-input');
+    const startBtn     = document.getElementById('start-btn');
+    const continueBtn  = document.getElementById('continue-btn');
+    const saveMeta     = document.getElementById('save-meta');
+
+    // Kayıtlı oyun varsa devam butonunu göster
+    if (hasSave()) {
+      const meta = getSaveMeta();
+      continueBtn.classList.add('visible');
+      if (meta) {
+        saveMeta.textContent =
+          `${meta.labName || 'Lab'} — Yıl ${meta.year}, Ay ${meta.month}`;
+      }
+    }
+
+    startBtn.addEventListener('click', () => {
+      const name = labInput.value.trim() || 'Araştırma Enstitüsü';
+      launchGame(name, false);
+    });
+
+    labInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') startBtn.click();
+    });
+
+    continueBtn.addEventListener('click', () => {
+      launchGame(null, true);
+    });
+
+    // ── Oyun Başlatma ─────────────────────────────────────────────────────────
+
+    function launchGame(labName, isContinue) {
+      // Tüm sistemleri kaydet
+      registerResearcherSystem();
+      registerProjectSystem();
+      registerEconomySystem();
+      registerRivalSystem();
+      registerEventSystem();
+
+      // Oyunu başlat
+      const state = startGame(isContinue ? null : labName);
+
+      // Rakipleri başlat
+      initRivals(state);
+
+      // Yeni oyunda başlangıç araştırmacıları ekle
+      if (!isContinue && state.researchers.length === 0) {
+        const starters = generateStartingResearchers();
+        starters.forEach(r => addResearcher(r));
+      }
+
+      // UI panellerini başlat
+      initLeftPanel(document.getElementById('panel-left'));
+      initCenterPanel(document.getElementById('panel-center'));
+      initRightPanel(document.getElementById('panel-right'));
+      initEventModal();
+
+      // Topbar & bottombar bağla
+      bindTopbar();
+      bindBottombar();
+      startTopbarTick();
+
+      // Başlangıç ekranını gizle, oyunu göster
+      startScreen.style.display  = 'none';
+      gameRoot.style.display     = 'grid';
+    }
+
+    // ── Topbar ───────────────────────────────────────────────────────────────
+
+    function bindTopbar() {
+      document.getElementById('topbar-save-btn')
+        .addEventListener('click', manualSave);
+    }
+
+    function startTopbarTick() {
+      updateTopbar();
+      EventBus.on('game:week_end',      updateTopbar);
+      EventBus.on('game:month_end',     updateTopbar);
+      EventBus.on('lab:prestige_changed', updateTopbar);
+      EventBus.on('economy:month_tick', updateTopbar);
+      EventBus.on('nobel:score_updated',updateTopbar);
+    }
+
+    function updateTopbar() {
+      const state = getState();
+
+      // Lab adı
+      document.getElementById('topbar-lab-name').textContent =
+        state.lab.name || 'Laboratuvar';
+
+      // Zaman
+      document.getElementById('topbar-time').textContent =
+        `Yıl ${state.time.year}, Ay ${state.time.month}, H${state.time.week}`;
+
+      // Bütçe
+      const budgetEl    = document.getElementById('topbar-budget');
+      const budget      = state.lab.budget;
+      budgetEl.textContent = budget.toLocaleString('tr-TR');
+      budgetEl.style.color =
+        budget > 10000 ? '#4ade80' :
+        budget > 3000  ? '#f0c060' :
+        '#f87171';
+
+      // Prestij
+      const prestige    = state.lab.prestige;
+      const prestigePct = Math.min(100, Math.round(prestige / 10));
+      document.getElementById('topbar-prestige-fill').style.width = prestigePct + '%';
+      document.getElementById('topbar-prestige-val').textContent  = prestige;
+
+      // Nobel
+      const nobelTotal = Object.values(state.lab.nobelScores ?? {})
+        .reduce((s, v) => s + v, 0);
+      document.getElementById('topbar-nobel-score').textContent =
+        Math.round(nobelTotal);
+    }
+
+    // ── Bottombar ─────────────────────────────────────────────────────────────
+
+    const TIPS = [
+      'İpucu: Araştırmacı moralini yüksek tut.',
+      'İpucu: Ekip uyumu üretimi %20 artırabilir.',
+      'İpucu: Temel araştırma Nobel puanı için en güçlü.',
+      'İpucu: Burnout başlamadan izin ver.',
+      'İpucu: Hibe başvurularını zamanında yap.',
+      'İpucu: Ekipman bakımını ihmal etme.',
+      'İpucu: Rakibin güçlü olduğu alanda niş bul.',
+      'İpucu: Saha araştırması en yüksek Nobel katsayısına sahip.',
+      'İpucu: Etik puanı düşük araştırmacı retraction riski taşır.',
+    ];
+
+    let _tipIndex = 0;
+
+    function bindBottombar() {
+      const advBtn = document.getElementById('btn-advance');
+      const autoBtn = document.getElementById('btn-auto');
+
+      advBtn.addEventListener('click', () => {
+        advanceOneWeek();
+      });
+
+      autoBtn.addEventListener('click', () => {
+        if (isAutoAdvancing()) {
+          stopAutoAdvance();
+          autoBtn.classList.remove('active');
+          autoBtn.textContent = '▶▶ Otomatik';
+        } else {
+          startAutoAdvance();
+          autoBtn.classList.add('active');
+          autoBtn.textContent = '⏸ Durdur';
+        }
+      });
+
+      // İpucu rotasyonu — her 15 saniyede bir
+      setInterval(() => {
+        _tipIndex = (_tipIndex + 1) % TIPS.length;
+        document.getElementById('bottombar-tip').textContent = TIPS[_tipIndex];
+      }, 15000);
+
+      // Bekleyen event varsa ileri butonunu devre dışı bırak
+      EventBus.on('event:pending', () => {
+        advBtn.disabled = true;
+        autoBtn.disabled = true;
+      });
+      EventBus.on('event:resolved', () => {
+        const state = getState();
+        if (state.events.pending.length === 0) {
+          advBtn.disabled  = false;
+          autoBtn.disabled = false;
+        }
+      });
+    }
+
+    // ── Bildirim Sistemi ──────────────────────────────────────────────────────
+
+    EventBus.on('ui:notification', ({ text, type }) => {
+      showNotification(text, type);
+    });
+
+    // state.js'deki addNotification EventBus üzerinden tetikler
+    EventBus.on('game:week_end', () => {
+      const state = getState();
+      if (!state.ui?.notifications) return;
+      for (const n of state.ui.notifications) {
+        showNotification(n.text, n.type);
+      }
+      state.ui.notifications = [];
+    });
+
+    function showNotification(text, type = 'info') {
+      const container = document.getElementById('notifications');
+      const el = document.createElement('div');
+      el.className = `notif notif--${type}`;
+      el.textContent = text;
+      container.appendChild(el);
+
+      // TTL'e göre sil
+      const ttl = type === 'danger' ? 8000 : type === 'success' ? 5000 : 4000;
+      setTimeout(() => {
+        el.classList.add('notif--exit');
+        setTimeout(() => el.remove(), 300);
+      }, ttl);
+    }
+
+    // ── Oyun Bitiş Ekranı ─────────────────────────────────────────────────────
+
+    EventBus.on('game:over', ({ reason }) => {
+      showEndScreen(reason);
+    });
+
+    function showEndScreen(reason) {
+      const state     = getState();
+      const endScreen = document.getElementById('end-screen');
+      const endTitle  = document.getElementById('end-title');
+      const endStats  = document.getElementById('end-stats');
+
+      const titles = {
+        nobel_won:   '🏅 Nobel Ödülü Kazanıldı!',
+        time_limit:  '⏰ Zaman Doldu',
+        bankrupt:    '💸 Bütçe Tükendi',
+        manual:      '🔬 Oyun Kaydedildi',
+      };
+      endTitle.textContent = titles[reason] ?? 'Oyun Bitti';
+
+      const nobelTotal = Object.values(state.lab.nobelScores ?? {})
+        .reduce((s, v) => s + v, 0);
+
+      endStats.innerHTML = [
+        { k: 'Laboratuvar',       v: state.lab.name || '—' },
+        { k: 'Toplam Yıl',        v: `${state.time.year} yıl` },
+        { k: 'Yayın Sayısı',      v: state.stats.totalPublications },
+        { k: 'Toplam Citation',   v: state.stats.totalCitations.toLocaleString() },
+        { k: 'Nobel Skoru',       v: Math.round(nobelTotal) },
+        { k: 'En Yüksek IF',      v: state.stats.highestIF.toFixed(1) },
+        { k: 'Zirve Prestij',     v: state.stats.peakPrestige },
+      ].map(item => `
+        <div class="end-stat">
+          <span class="end-stat__k">${item.k}</span>
+          <span class="end-stat__v">${item.v}</span>
+        </div>
+      `).join('');
+
+      endScreen.classList.add('visible');
+    }
+
+    document.getElementById('end-new-game-btn').addEventListener('click', () => {
+      deleteSave();
+      location.reload();
+    });
+  </script>
+</body>
+</html>
